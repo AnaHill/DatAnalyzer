@@ -1,0 +1,141 @@
+function [Data_BPM] = find_peaks_in_loop(Data, DataInfo, Rule, ...
+    filenumbers, datacolumns, data_multiply) % TODO: gmin arvot
+% function [Data_BPM] = find_peaks_in_loop(Data, DataInfo, Rule,filenumbers, datacolumns, data_multiply)
+% find_peaks_in_loop(Data, DataInfo)
+% FIND_PEAKS_IN_LOOP find peaks 
+% Rule should have
+    % .FrameRate
+    % .MaxBPM
+    % .MinPeakValue
+    % TODO: katso miten kalsiumkuvantamisdatan kanssa menee
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%    
+narginchk(2,6) 
+nargoutchk(0,1)
+
+% set defaults if not all function inputs are given
+if nargin < 3 || isempty(Rule)
+    disp('Check if DataInfo has rules, ask to used them or not')
+    use_datainfo_rule = 0;
+    if isfield(DataInfo, 'Rule')
+        disp('TODO: ask if using rules found in DataInfo')
+        % if yes
+        use_datainfo_rule = 1;    
+    end
+    if use_datainfo_rule == 1
+        Rule = DataInfo.Rule;
+    else
+        disp('TODO: set rules if not defined')
+        disp('TODO: ask if default or user input rules are used')
+        % if default chosen
+        use_default_rules=1;
+        if use_default_rules == 1         % set default values    
+            disp('Now default rules')
+            DataInfo.Rule = set_default_filetype_rules_for_peak_finding;
+            Rule = DataInfo.Rule;
+        end
+    end
+end
+  
+if nargin < 4 || isempty(filenumbers)
+  filenumbers =  [1:DataInfo.files_amount]';
+end
+if nargin < 5 ||  isempty(datacolumns)
+  datacolumns =  1:length(Data{filenumbers(1),1}.data(1,:));
+end    
+% setting data_multiply, if 1, high peaks are found
+% if -1 -> data will be converted (data * -1), and therefore finding low
+% peaks
+if nargin < 6 || isempty(data_multiply)
+  data_multiply =  1; % 1= high peaks
+end 
+if data_multiply > 0
+    try
+       Data_BPM = evalin('base', 'Data_BPM');
+       disp('Data_BPM read from workspace')
+    catch
+        disp('No Data_BPM on workspace')
+    end
+end
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+try
+    min_peak_distance_in_frames = Rule.FrameRate * 60/Rule.MaxBPM;
+    min_peak_value  = Rule.MinPeakValue;
+    min_peak_width  = Rule.minimum_peak_width;
+catch
+    min_peak_distance_in_frames = Rule.MinDist_sec*Rule.FrameRate;
+    min_peak_value  = 2.5e-5;
+    min_peak_width  = 50;
+end
+% find peaks_in loop
+disp(['Finding peaks from Data: ',DataInfo.experiment_name,...
+    '_',DataInfo.measurement_name,10, ...
+    'Number of data/electrodes: ',num2str(length(datacolumns))])
+disp('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
+Data_peaks = [];
+total_time = 0;
+tic_whole_find_peak_loop = tic;
+for pp = 1:length(filenumbers)
+    % index = 1;
+    index = filenumbers(pp);
+    tic_round = tic;  
+    % if data_multiply == -1 -> raw_data*-1 --> finding low peaks
+    raw_data = Data{index,1}.data * data_multiply;
+    % figure, plot(raw_data)
+    disp(['Checking, round ',num2str(pp),'/',num2str(length(filenumbers)),...
+        ' (= file ',num2str(index),'/', num2str(length(Data)),')'])
+    for kk = 1:length(datacolumns)
+        col = datacolumns(kk); 
+        dataToCheck = raw_data(:,col);
+        % negative values set to zero for peak finding
+        dataToCheck(dataToCheck < 0) = 0;
+        [pks, locs, w] = findpeaks(dataToCheck,'MinPeakDistance',...
+            min_peak_distance_in_frames, 'MinPeakHeight', min_peak_value);%,...
+            % 'MinPeakWidth',min_peak_width)
+        if data_multiply > 0 % high peaks
+            Data_BPM{index,1}.peak_values_high{col,1} = pks; 
+            Data_BPM{index,1}.peak_locations_high{col,1} = locs;
+            Data_BPM{index,1}.peak_widths_high{col,1} = w;
+            pks_amount(col,1) = length(Data_BPM{index,1}.peak_values_high{col,1});
+            %%% Modification 2021/08: {col,1} --> (col,1) in both high and low
+%             Data_BPM{index, 1}.Amount_of_peaks_high{col,1} = pks_amount(col,1);
+            Data_BPM{index, 1}.Amount_of_peaks_high(col,1) = pks_amount(col,1);
+            % disp(['High Peaks found: ', num2str(length(pks))])
+        else % datamultiply negative -> low peaks
+            Data_BPM{index,1}.peak_values_low{col,1} = pks* data_multiply; 
+            Data_BPM{index,1}.peak_locations_low{col,1} = locs;
+            Data_BPM{index,1}.peak_widths_low{col,1} = w;
+            % disp(['Low Peaks found: ', num2str(length(pks))])
+            pks_amount(col,1) = length(Data_BPM{index,1}.peak_values_low{col,1});
+            %%% Modification 2021/08: {col,1} --> (col,1) in both high and low
+%             Data_BPM{index, 1}.Amount_of_peaks_low{col,1} = pks_amount(col,1);
+            Data_BPM{index, 1}.Amount_of_peaks_low(col,1) = pks_amount(col,1);
+        end
+        
+    end
+    try
+        disp(['CHECKED, round time: ',num2str(round(toc(tic_round),1)),' s'])
+        if data_multiply > 0 % high peaks
+            disp(['High Peaks found: ', num2str(pks_amount')])
+        else
+            disp(['Low Peaks found: ', num2str(pks_amount')])
+        end
+        total_time = total_time + toc(tic_round);        
+    catch
+        disp(['Data read: File#',num2str(index),'/',...
+            num2str((DataInfo.files_amount))])
+    end
+
+    %%% ending statement
+    if index == filenumbers(end) % DataInfo.files_amount
+        try 
+            disp(['CHECKED total ',num2str(length(filenumbers)),...
+                ' files',10,'Total time (min): ',...
+             num2str(round(toc(tic_whole_find_peak_loop)/60,1)) ])
+            disp('%%%%%%%%%%%%%%%%%%%%%%%')
+        catch
+            disp('EI TOIMI lopetus')
+            disp('ending')
+        end
+    end
+ 
+end
