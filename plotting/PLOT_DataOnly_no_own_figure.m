@@ -35,9 +35,6 @@ sub_fig_rows=fig_parameters(1);
 sub_fig_cols=fig_parameters(2);
 new_fig_number  = fig_parameters(3);
 
-% fig_full
-
-fil_index = file_index;
 hfig_raw = []; % for raw data plots, legend easier
 legs = [];
 for zz = 1:length(datacolumns) 
@@ -77,13 +74,9 @@ for zz = 1:length(datacolumns)
             sqtitle_text = ['Datafile#', num2str(round(...
                 Data{file_index, 1}.measurement_time.time_sec/3600,1)),10,...
                 DataInfo.file_names{file_index, 1}];
-%             sqtitle_text = ['Datafile#', num2str(file_index),10,...
-%                 Data{file_index, 1}.filename];
         end
     end
-    try % mea
-%         title_general_start = ['Electrode#',...
-%             num2str(Data{file_index,1}.MEA_electrode_numbers(col_ind))]; 
+    try % mea 
         title_general_start = ['Electrode#',...
             num2str(DataInfo.MEA_electrode_numbers(col_ind))]; 
     catch % non-mea or old data
@@ -94,7 +87,7 @@ for zz = 1:length(datacolumns)
             try 
                 title_general_start = ['Col#',...
                     num2str(Data{file_index,1}.datacolumns(col_ind))];
-            catch % vanhat datat
+            catch % old data
                 title_general_start = ['Electrode#',...
                     num2str(Data{file_index,1}.data_MEA_electrode_number(col_ind))];
             end
