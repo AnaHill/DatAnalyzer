@@ -2,7 +2,20 @@ function hfig = plot_file_indexes_to_same(file_indexes, Data, Data_BPM, datacolu
     plotting_data_columns_to_same, plotting_peak_numbers)
 % function hfig = plot_file_indexes_to_same(file_indexes, Data, Data_BPM, datacolumns, ...
 %     plotting_data_columns_to_same, plotting_peak_numbers );
-% hfig = plot_file_indexes_to_same(file_indexes);
+% Examples
+    % default with output variable
+        % hfig = plot_file_indexes_to_same([1,3]);
+    % default, no output variable
+        % plot_file_indexes_to_same([1,3]);
+    % choose which datacolumns plotted
+        % hfig = plot_file_indexes_to_same([1,5,3],[],[],1);
+    % plot data columns to same figure, not separate subplotes
+        % hfig = plot_file_indexes_to_same([1,5,3],[],[],[],1);
+    % exclude peak numbers
+        % hfig = plot_file_indexes_to_same([1,5,3],[],[],[],[],0);
+    
+    
+    
 narginchk(1,6)
 nargoutchk(0,1)
 if isempty(file_indexes) % nargin < 1 || isempty(file_indexes)
@@ -32,13 +45,12 @@ if nargin < 3 || isempty(Data_BPM)
     end
 end
 
-
 % Choosing subplot parameters based on how many datacolumns are included
 if nargin < 4 || isempty(datacolumns)
     % taking datacolumn lenght from first file_index
     datacolumns = 1:length(Data{file_indexes(1),1}.data(1,:));
 end
-% plotting datacolumns to separate subplots (default) all or to same fig
+% plotting datacolumns to separate subplots (default) or all to same figure
 if nargin < 5 || isempty(plotting_data_columns_to_same)
     plotting_data_columns_to_same = 0;
 end
