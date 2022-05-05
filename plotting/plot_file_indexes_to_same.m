@@ -74,18 +74,6 @@ sub_fig_cols=fig_parameters(2);
 new_fig_number  = fig_parameters(3);
 extra_in_x_axis = 0.2; % for peak numbers
 
-
-
-%% tarviiko, poista
-% try
-%     fs = DataInfo.framerate(file_index,1);
-% catch % old data where framerate only one file
-%     fs = DataInfo.framerate(1);
-% end
-% % disp(['Sampling frequency: ', num2str(fs)])
-% ts = 1/fs;
-% hfig_raw = []; % for raw data plots, legend easier
-% legs = [];
 %%
 if plotting_data_columns_to_same == 0
     data_with_legend = [];
