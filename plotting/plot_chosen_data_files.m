@@ -1,10 +1,12 @@
 function [] = plot_chosen_data_files(Data, DataInfo, ...
-    filenumbers, datacolumns, helping_levels, MonitorNumber)
+    filenumbers, datacolumns, helping_levels)
 % function [] = plot_chosen_data_files(Data, DataInfo, ...
-%     filenumbers, datacolumns, helping_levels, MonitorNumber)
+%     filenumbers, datacolumns, helping_levels)
 % PLOT_CHOSEN_DATA_FILES Plots chosen datafiles from Data
+% default: plotting every 10th file, so that first and last will be plotted
 
-narginchk(2,6)
+
+narginchk(2,5)
 nargoutchk(0,0)
 
 % default: plotting every 10th file, so that first and last will be plotted
@@ -22,11 +24,6 @@ end
 if nargin < 5
     helping_levels = 2.7*[1 -1]*1e-5;
     disp(['Setting default helping level (abs): ',num2str(helping_levels(1))])
-end
-% default: last monitor is plotted (typically second, larger screen in
-% laptops)
-if nargin < 6
-    MonitorNumber = 0; % set to zero --> last MP will be chosen
 end
     
 %%% checking input data
@@ -64,19 +61,6 @@ if max(size(helping_levels)) ~= 2
     helping_levels = helping_levels(1);
     helping_levels(end+1) = -helping_levels;
 end
-%%%%%%%%%%%%%%
-% choosing monitor for figure, default is the largest
-% % MP = get(0, 'MonitorPositions');
-% % found_monitor_numbers = 1:length(MP(:,1));
-% % if ~ismember(MonitorNumber,found_monitor_numbers)% taking last value in MP
-% % %     fig_out_pos = [MP(end,:)];
-% %     fig_ind = find(max(MP(:,3)) == MP(:,3),1);
-% %     fig_out_pos = [MP(fig_ind,:)];
-% % else
-% %     fig_out_pos = [MP(MonitorNumber,:)];
-% % end
-hfigchekc = figure();hfigchekc.WindowState = 'maximized';zoom on;
-fig_out_pos = get(hfigchekc,'outerposition'); close(hfigchekc), clear hfigchekc
 
 % Choosing subplot parameters based on how many datacolumns are included
 [fig_parameters] = cal_subfig_parameters(datacolumns);
@@ -89,18 +73,19 @@ if ~plot_all_index == 1
     disp('Chosen not to plot all data')
 else % if plotting all filenumbers
     num=1;
-    hfig=[];
-    hfig{end+1,1} = figure('units','pixel','outerposition',[fig_out_pos]);
+%     hfigu =  create_figure_with_size(); % full screen size
+    hfig = [];
+    hfig{end+1,1} = create_figure_with_size(); % hfigu;
     zoom on, 
     for index = 1:length(filenumbers)
         if num == new_fig_number
-            hfig{end+1,1} = figure('units','pixel','outerposition',[fig_out_pos]);
+            hfig{end+1,1} = create_figure_with_size(); 
+            %figure('units','pixel','outerposition',[fig_out_pos]);
             zoom on,
             num = 1;
         end
         datanumber=filenumbers(index);
         d_raw = Data{datanumber,1};
-    %     ts = 1/d_raw.framerate;
         try
             fs = DataInfo.framerate(datanumber,1);
         catch % old data where framerate only one file
