@@ -59,21 +59,16 @@ for pp = 1:length(file_indexes)
     Data_filtered{pp,1}.file_index = ind;
     try 
         Data_filtered{pp,1}.MEA_electrode_numbers = ...
-            round(double(Data{ind,1}.MEA_electrode_numbers(datacolumns)));
+            DataInfo.MEA_electrode_numbers(datacolumns);
     catch
-        try
-            Data_filtered{pp,1}.MEA_electrode_numbers = ...
-                round(double(Data{ind,1}.data_MEA_electrode_number(datacolumns))); 
-        catch
-            disp('No electrode number')
-        end
+        disp('No electrode number')
     end
     Data_filtered{pp,1}.yf_median_filter_order = n_order1;
     Data_filtered{pp,1}.yff_mov_mean_filter_order = n_order_filt;   
     Data_filtered{pp,1}.fs = fs;
-    Data_filtered{pp,1}.filename = Data{ind,1}.filename;
-    Data_filtered{pp,1}.experiment_name = Data{ind,1}.experiment_name;
-    Data_filtered{pp,1}.measurement_time.time_sec = Data{ind, 1}.measurement_time.time_sec;
+    Data_filtered{pp,1}.filename = DataInfo.file_names{ind};
+    Data_filtered{pp,1}.experiment_name = DataInfo.experiment_name;
+    Data_filtered{pp,1}.measurement_time.time_sec = DataInfo.measurement_time.time_sec(ind);
     for kk = 1:length(datacolumns)
         col = datacolumns(kk);
         % filter raw data
