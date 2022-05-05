@@ -5,4 +5,4 @@ Current status: works best with MEA .h5 files
 
 ## Future improvements
 TO DO list
-- abf file reading for MEA files
+- [ ] abf file reading for MEA files
