@@ -17,7 +17,11 @@ if nargin < 4 || isempty(datacolumns)
     datacolumns = 1:length(Data{index,1}.data(1,:));
 end
 
-
+try
+    DataInfo = evalin('base', 'DataInfo');
+catch
+    error('No proper DataInfo')
+end
 
 %%% fig parameters
 [fig_parameters] = cal_subfig_parameters(datacolumns);
