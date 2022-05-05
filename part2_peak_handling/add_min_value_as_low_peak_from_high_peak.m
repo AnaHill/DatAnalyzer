@@ -154,10 +154,10 @@ for pp = 1:length(file_index)
             disp('filtering data for analysis')
             if default_filt_values == 1
                 [Data_filtered] = filter_signal_data(...
-                    Data,ind, col,[]);
+                    ind, Data, col,[]);
             else % filter values from input
                 [Data_filtered] = filter_signal_data(...
-                    Data,ind, col,[filt1_size  filt2_size]);  
+                    ind, Data, col,[filt1_size  filt2_size]);  
             end
         end
         for hh = 1:length(peak_numbers_to_used_for_new_peak)

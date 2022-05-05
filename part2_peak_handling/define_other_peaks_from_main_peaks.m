@@ -77,7 +77,7 @@ for pp = 1:length(file_index)
         rawdata= Data{ind,1}.data(:,col);
         t = 0:1/fs:(length(rawdata)-1)/fs;
         % filtteröinti: omassa funktiossa
-       [Data_filtered] = filter_signal_data(Data, ind, col,...
+       [Data_filtered] = filter_signal_data(ind, Data, col,...
            [n_order1,n_order_filt]);
 % %         Data_filtered{pp,1}.dyf(:,kk) = ymed1_der;
 % %         Data_filtered{pp,1}.dyff(:,kk) = ymed1_fil_der;

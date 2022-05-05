@@ -57,7 +57,7 @@ for pp = 1:length(file_index)
         % filter raw data
         rawdata= Data{ind,1}.data(:,col);
         t = 0:1/fs:(length(rawdata)-1)/fs;
-       [Data_filtered] = filter_signal_data(Data, ind, col,...
+       [Data_filtered] = filter_signal_data(ind, Data, col,...
            [n_order1,n_order_filt]);
        % fig_full, plot(Data{ind,1}.data), yyaxis right, plot(Data{ind,1}.yf)
        % fig_full, plot(Data{ind, 1}.time_derivative, Data{ind,1}.data), yyaxis right, plot(Data{ind, 1}.measurement_time.time_sec, Data{ind,1}.yf)

@@ -1,24 +1,31 @@
-function [Data_filtered] = filter_signal_data(Data, file_index, ... % compulsory
-    datacolumns, filter_window_sizes)
-% function [Data_filtered] = filter_signal_data(Data, file_index,datacolumns, filter_window_sizes)
-narginchk(2,4)
+function [Data_filtered] = filter_signal_data(file_indexes, ... % compulsory
+    Data, datacolumns, filter_window_sizes)
+% function [Data_filtered] = filter_signal_data(file_indexes, Data, datacolumns, filter_window_sizes)
+% ORG: function [Data_filtered] = filter_signal_data(Data, file_indexes,datacolumns, filter_window_sizes)
+narginchk(1,4)
 nargoutchk(0,1)
 
-%% TODO: tee paremmin tarvitaan lähinnä fs, voisi olla funktiokutsussa
-DataInfo = evalin('base','DataInfo');
-%%
-% all data columns (e.g. electrodes)
+if nargin < 2 || isempty(Data)
+    try
+        Data = evalin('base','Data');
+    catch
+        error('No proper Data')
+    end
+end
+
+try
+    DataInfo = evalin('base', 'DataInfo');
+catch
+    error('No proper DataInfo')
+end
+
+% If not given, filtering all data columns (e.g. electrodes)
 if nargin < 3 || isempty(datacolumns)
    try
-       datacolumns =  1:length(Data{file_index(1),1}.data(1,:));
+       datacolumns =  1:length(DataInfo.datacol_numbers);
    catch
-%        try
-%            datacolumns =  1:length(Data_BPM{file_index(1),1}.peak_values_low);
-%        catch
-           error('no prober data information found')
-%        end
+       error('no prober Data Information found')
    end
-           
 end    
 
 % default: set default filtering methods if not given
@@ -41,9 +48,9 @@ end
 
 %%
 disp(['Filtering signal'])
-% Data_filtered = Data{file_index,1};
-for pp = 1:length(file_index)
-    ind = file_index(pp);
+% Data_filtered = Data{file_indexes,1};
+for pp = 1:length(file_indexes)
+    ind = file_indexes(pp);
     try
         fs = DataInfo.framerate(ind,1);
     catch % old data where framerate only one file
