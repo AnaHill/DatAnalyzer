@@ -113,14 +113,7 @@ for file_index = 1:DataInfo.files_amount
         num2str(file_index),'/',num2str(DataInfo.files_amount)])
     for kk = 1:length(chosen_datacol_indexes)
         col_index = chosen_datacol_indexes(kk);
-%         if file_index == 43     
-%             disp('just debugging')
-%         end
         try
-            % Data_BPM_summary.peak_locations(kk,:) = Data_BPM{kk, 1}.peak_locations(:)';
-%             Data_BPM_summary.peak_distances{file_index,1}(:,col_index) = ...
-%                 diff(Data_BPM{file_index, 1}.peak_locations{col_index})/...
-%                 fs*1e3;
             Data_BPM_summary.peak_distances{file_index,col_index} = ...
                 diff(Data_BPM{file_index, 1}.peak_locations{col_index})/...
                 fs*1e3;
@@ -128,16 +121,10 @@ for file_index = 1:DataInfo.files_amount
             disp(['file index: ',num2str(file_index)])
             disp('error, set to zero')
             Data_BPM{file_index, 1}.peak_locations{file_index,col_index} = [NaN];
-%             Data_BPM_summary.peak_distances{file_index,1}(:,col_index) = 0;
-%             disp('error, set to empty')
-            % Data_BPM_summary.peak_distances{file_index,1}(:,col_index) = [];
-
         end
         if isempty(Data_BPM_summary.peak_distances{file_index,col_index})
             disp(['file index: ',num2str(file_index)])
             Data_BPM_summary.peak_distances{file_index,col_index} = NaN; % 0;
-%         if isempty(Data_BPM_summary.peak_distances{file_index,1}(:,col_index))
-%             Data_BPM_summary.peak_distances{file_index,1}(:,col_index) = 0;
         end
     end
 
@@ -152,13 +139,7 @@ for file_index = 1:DataInfo.files_amount
         Data_BPM_summary.peak_distances_avg(file_index,col_index) = ...
             mean(Data_BPM_summary.peak_distances{file_index,col_index});
         Data_BPM_summary.peak_distances_std(file_index,col_index) = ...
-            std(Data_BPM_summary.peak_distances{file_index,col_index});  
-        
-        
-%         Data_BPM_summary.peak_distances_avg(file_index,col_index) = ...
-%             mean(Data_BPM_summary.peak_distances{file_index,1}(:,col_index));
-%         Data_BPM_summary.peak_distances_std(file_index,col_index) = ...
-%             std(Data_BPM_summary.peak_distances{file_index,1}(:,col_index));         
+            std(Data_BPM_summary.peak_distances{file_index,col_index});          
         
     end
 
