@@ -61,7 +61,11 @@ for pp = 1:length(filenumbers)
             for zz = 1:length(ind_out_range)
                 index_dis_number = ind_out_range(zz);
                 % modifation 2021/08: now value_to_avg 
-                value_to_avg = pd(index_dis_number)/pavg;
+                try
+                    value_to_avg = pd(index_dis_number)/pavg;
+                catch
+                   error('error happened') 
+                end
                 % value_to_avg = pd(index_dis_number)/pavg - 1;
                 
                 % as distance calculated with diff --> index 1 is between
