@@ -1,5 +1,7 @@
-function Data_BPM = update_Data_BPM_single_file(filenums, datacols, using_high_peaks,DataInfo, Data_BPM)
-% function Data_BPM = update_Data_BPM_single_file(filenums, datacols, using_high_peaks,DataInfo, Data_BPM)
+function Data_BPM = update_Data_BPM_single_file(filenums, datacols, ...
+    using_high_peaks,DataInfo, Data_BPM)
+% function Data_BPM = update_Data_BPM_single_file(filenums, datacols, ...
+% using_high_peaks,DataInfo, Data_BPM)
 % function Data_BPM = update_Data_BPM_single_file(filenums, datacols, 0)
 
 narginchk(2,5)
