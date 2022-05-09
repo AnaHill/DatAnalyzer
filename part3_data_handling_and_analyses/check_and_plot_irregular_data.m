@@ -86,6 +86,20 @@ end
 
 if plot_all_index == 1
     irreg_beat_limit = DataInfo.irregular_beating_limit;
+    if ~exist('Data','var')
+        try
+            Data = evalin('base', 'Data');
+        catch
+            error('No proper Data')
+        end
+    end
+    if ~exist('Data_BPM','var')
+        try
+            Data_BPM = evalin('base', 'Data_BPM');
+        catch
+            error('No proper Data_BPM')
+        end
+    end    
     for kk = 1:length(irregu_file_index)
         ind_file = irregu_file_index(kk);
         fig_full
