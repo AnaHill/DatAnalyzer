@@ -86,45 +86,12 @@ try
 catch
     Data_BPM = update_Data_BPM(DataInfo, Data_BPM, 0); % jos vain alapiikit
 end
-
-try
-    DataInfo.file_names;
-catch
-%     [folder_of_files, filename_list] = list_files(filetype); 
-    file_numbers_to_analyze = 1:DataInfo.files_amount;
-    DataInfo.file_names = DataInfo.file_names_mat(file_numbers_to_analyze);
-end
-try
-    DataInfo.measurement_time.names;
-catch
-    DataInfo = create_time_names_for_DataInfo(DataInfo);
-end
-% if not exist datacol_numbers
-try
-    DataInfo.datacol_numbers =DataInfo.MEA_columns;
-catch
-    DataInfo.datacol_numbers = 1:length(Data{1,1}.data(1,:));
-end
+% update datainfo
+DataInfo = update_DataInfo(DataInfo);
 % check edges
 [DataInfo, Data_BPM] = run_check_edges(Data, DataInfo, Data_BPM);
-%%%% Update some DataInfo if not exist datacol_numbers
-try
-    DataInfo.datacol_numbers =DataInfo.MEA_columns;
-catch
-    DataInfo.datacol_numbers = 1:length(Data{1,1}.data(1,:));
-end
-try
-    DataInfo.file_names;
-catch
-%     [folder_of_files, filename_list] = list_files(filetype); 
-    file_numbers_to_analyze = 1:DataInfo.files_amount;
-    DataInfo.file_names = DataInfo.file_names_mat(file_numbers_to_analyze);
-end
-try
-    DataInfo.measurement_time.names;
-catch
-    DataInfo = create_time_names_for_DataInfo(DataInfo);
-end
+% update datainfo
+DataInfo = update_DataInfo(DataInfo);
 %% set proper MEA signal type
 signal_type = 'low_mea';
 [DataInfo] = set_signal_type(DataInfo,[],[],signal_type);
