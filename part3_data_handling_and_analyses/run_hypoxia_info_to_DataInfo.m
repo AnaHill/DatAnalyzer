@@ -33,12 +33,10 @@ if nargin < 3 || isempty(hpe)
     try
         hpe = find(tm >= thypox_end,1); % hypoxia end index
     catch
-      error('Proper hypoxia end index not found!') 
+        disp('Setting hypoxia end index to last one')
+        hpe = DataInfo.files_amount; % last index
+        % error('Proper hypoxia end index not found!')
     end
-    
-    
-    
-
 end
 
 
