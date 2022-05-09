@@ -42,7 +42,7 @@ if strcmp(DataInfo.file_type,'.h5')
     create_Data_from_h5files % Reading raw MEA data (.h5 files)
 end
 % Update DataInfo
-update_DataInfo_datacol_and_time_names
+DataInfo = update_DataInfo(DataInfo);
 DataInfo = set_signal_type(DataInfo);
 
 %% Checking data
