@@ -73,7 +73,7 @@ if ~strcmp(DataInfo.experiment_name,'demo3')
         time_names{end+1,1} = ['Reoxygenation t = ',...
             (num2str(fix(10*time_reoxy_h(pp))/10)),'h'];
     end
-    disp('DataInfo.hypoxia.names created for non demo3 data')
+    % disp('DataInfo.hypoxia.names created for non demo3 data')
 
 end
 
@@ -135,19 +135,12 @@ if strcmp(DataInfo.experiment_name,'demo3')
                 num2str(round(time_vector_in_h_for_reoxy(pp,1),1)),'h'];
         end
     end    
-
-    
-    
-    
-    
-    
-
-    
     
     disp('DataInfo.hypoxia.names created for Demo3 data')
 end
 %%
 DataInfo.hypoxia.names = time_names;
-
+disp('Created following hypoxia names')
+DataInfo.hypoxia.names
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 end
