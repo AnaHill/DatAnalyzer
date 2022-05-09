@@ -8,7 +8,7 @@ if nargin < 1 || isempty(DataInfo)
    DataInfo = evalin('base','DataInfo');
 end
 
-tm=DataInfo.measurement_time.time_sec/3600;
+tm = DataInfo.measurement_time.time_sec/3600;
 
 if nargin < 2 || isempty(hps)
     % hypoxia information in hour
