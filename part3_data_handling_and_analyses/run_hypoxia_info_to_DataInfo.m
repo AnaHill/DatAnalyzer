@@ -33,7 +33,7 @@ if nargin < 3 || isempty(hpe)
     try
         hpe = find(tm >= thypox_end,1); % hypoxia end index
     catch
-      error('Proper hypoxia start index not found!') 
+      error('Proper hypoxia end index not found!') 
     end
     
     
