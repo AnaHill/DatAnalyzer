@@ -4,6 +4,7 @@ function DataInfo = run_hypoxia_info_to_DataInfo(DataInfo, hps, hpe)
 % hpe = hypoxia end index
 narginchk(0,3)
 nargoutchk(1,1)
+
 if nargin < 1 || isempty(DataInfo)
    DataInfo = evalin('base','DataInfo');
 end
