@@ -6,7 +6,7 @@ function DataInfo = update_DataInfo(DataInfo)
 % .measurement.time.names = adding "measurement name" for legend purposes
 narginchk(0,1)
 nargoutchk(0,1)
-
+disp('Updating DataInfo if missing struct fields')
 if nargin < 1 || isempty(DataInfo)
     try
         DataInfo = evalin('base', 'DataInfo');
