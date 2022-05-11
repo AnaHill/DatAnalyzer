@@ -139,8 +139,6 @@ if plot_all_index == 1
         end
         subplot(313)
        	histogram(Data_BPM_summary.peak_distances{ind_file,irregu_col_index{kk}(pp)})
-
-%         histogram(Data_BPM_summary.peak_distances{ind_file,1}(:,col))
         ylabel('Frequency')
         axis tight
     end
@@ -148,7 +146,5 @@ else
     disp('Chosen not to plot all data')
 
 end
-
-%%
-remove_other_variables_than_needed
+%% remove_other_variables_than_needed
  
