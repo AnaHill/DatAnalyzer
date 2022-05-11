@@ -87,7 +87,7 @@ end
 file_index = unique(sort(file_index));
 datacolumns = unique(sort(datacolumns));
 disp(['%%%%%%%%%%%%%'])
-disp(['Setting signal type to: ',signal_type, ' in the following files:'])
+disp(['Setting signal type to ',signal_type, 10, 'in the following data:'])
 disp(['Datafiles: ',num2str(file_index)])
 disp(['Datacolumns: ',num2str(datacolumns)])
 disp(['%%%%%%%%%%%%%'])
