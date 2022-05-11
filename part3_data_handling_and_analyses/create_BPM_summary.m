@@ -18,15 +18,22 @@ if nargin < 4 || isempty(Data_BPM)
         error('No proper Data_BPM')
     end
 end
+disp([10,'%%%%%%%%%%%%%%%%%%%%%%%%%',10,'Creating Data_BPM_summary',10,...
+    '%%%%%%%%%%%%%%%%%%%%%%%%%'])
 if nargin < 1 || isempty(normalizing_indexes)
     try % if hypoxia -> normalizing to start index
-        normalizing_indexes = DataInfo.hypoxia.start_time_index;
-        if normalizing_indexes > 3 
-            normalizing_indexes = [normalizing_indexes-3:normalizing_indexes-1];
-        elseif normalizing_indexes == 3
-            normalizing_indexes = [normalizing_indexes-2:normalizing_indexes-1];
+        indexes_before_hypoxia = find(DataInfo.measurement_time.time_sec ...
+            <= DataInfo.hypoxia.start_time_sec);
+        last_index_before_hypoxia = indexes_before_hypoxia(end);
+        % normalizing_indexes = DataInfo.hypoxia.start_time_index;
+        if last_index_before_hypoxia  >= 3 
+            normalizing_indexes = [last_index_before_hypoxia-2:last_index_before_hypoxia];
+            disp('normalizing to last 3 indexes before hypoxia starts')
+        elseif last_index_before_hypoxia == 2
+            normalizing_indexes = [last_index_before_hypoxia-1:last_index_before_hypoxia];
+            disp('normalizing to last 2 indexes before hypoxia starts')
         end
-        disp('normalizing to hypoxia start index')
+        
     catch % normalizing to first value
         normalizing_indexes = 1;
         disp('normalizing to first value')
@@ -102,6 +109,7 @@ Data_BPM_summary.BPM_norm = ...
     Data_BPM_summary.BPM_avg ./ nanmean(Data_BPM_summary.BPM_avg(normalizing_indexes,:),1);
 
 %% calculate peak distances
+disp([' '])
 for file_index = 1:DataInfo.files_amount
 %     index = filenumbers(pp);
     try
@@ -109,7 +117,7 @@ for file_index = 1:DataInfo.files_amount
     catch % old data where framerate only one file
         fs = DataInfo.framerate(1);
     end
-    disp(['Checking peak distances in file#',...
+    disp(['Calculating Data_BPM_summary.peak_distances in file#',...
         num2str(file_index),'/',num2str(DataInfo.files_amount)])
     for kk = 1:length(chosen_datacol_indexes)
         col_index = chosen_datacol_indexes(kk);
@@ -118,12 +126,14 @@ for file_index = 1:DataInfo.files_amount
                 diff(Data_BPM{file_index, 1}.peak_locations{col_index})/...
                 fs*1e3;
         catch
-            disp(['file index: ',num2str(file_index)])
-            disp('error, set to zero')
+            disp(['Error in peak distance in: file index#',num2str(file_index),...
+                ' col#',num2str(col_index)])
+            disp('Setting now to zero')
             Data_BPM{file_index, 1}.peak_locations{file_index,col_index} = [NaN];
         end
         if isempty(Data_BPM_summary.peak_distances{file_index,col_index})
-            disp(['file index: ',num2str(file_index)])
+            disp(['No peak distance in file index#',num2str(file_index),...
+                ' col#',num2str(col_index)])
             Data_BPM_summary.peak_distances{file_index,col_index} = NaN; % 0;
         end
     end
@@ -131,11 +141,10 @@ for file_index = 1:DataInfo.files_amount
 end
 %% Calculate avg and std peak distances
 for file_index = 1:DataInfo.files_amount
-    disp(['Calculating avg peak distance in file#',...
+    disp(['Calculating average peak distances in file#',...
         num2str(file_index),'/',num2str(DataInfo.files_amount)])
     for kk = 1:length(chosen_datacol_indexes)
         col_index = chosen_datacol_indexes(kk);
-        % after 2021/08 ->
         Data_BPM_summary.peak_distances_avg(file_index,col_index) = ...
             mean(Data_BPM_summary.peak_distances{file_index,col_index});
         Data_BPM_summary.peak_distances_std(file_index,col_index) = ...
