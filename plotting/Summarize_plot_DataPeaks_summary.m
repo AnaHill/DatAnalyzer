@@ -17,14 +17,14 @@
         % function plot_hypoxia_line(timep, dat, DataInfo)
         % function [timep, xlabel_text] = choose_timep_unit(timep_unit,DataInfo)
 %% Summarize:  BPM, amplitude, signal duration
-fpd_correction = 'Izumi-Nakeseko';
+fpd_correction = 'Izumi-Nakaseko';
 % fpd_correction = 'Bazett';
 % fpd_correction = 'Fridericia';
 fpd_correction = 'none'; % if not corrected FPD, just pure FPD plotted
 
 timep_unit = 'datetime';  
-timep_unit = 'hours';  
-timep_unit = 'file_index';  
+% timep_unit = 'hours';  
+% timep_unit = 'file_index';  
 unit = '';
 
 [timep, xlabel_text] = choose_timep_unit(timep_unit,DataInfo);
@@ -80,7 +80,7 @@ end
 
 
 %% Summarize, normalized: BPM, amplitude, signal duration
-% fpd_correction = 'Izumi-Nakeseko';
+% fpd_correction = 'Izumi-Nakaseko';
 % fpd_correction = 'Bazett';
 % fpd_correction = 'Fridericia';
 % fpd_correction = 'none'; % for just FPD 
