@@ -41,22 +41,7 @@ elseif using_high_peaks == 0 % always low
 end
 
 %% Update some DataInfo if not exist
-try
-    DataInfo.file_names;
-catch
-%     [folder_of_files, filename_list] = list_files(filetype); 
-    file_numbers_to_analyze = 1:DataInfo.files_amount;
-    DataInfo.file_names = DataInfo.file_names_mat(file_numbers_to_analyze);
-    assigning('base','DataInfo',DataInfo)
-    disp('file names updated to DataInfo')
-end
-try
-    DataInfo.measurement_time.names;
-catch
-    DataInfo = create_time_names_for_DataInfo(DataInfo);
-    assigning('base','DataInfo',DataInfo)
-    disp('measurenment.time names updated to DataInfo')
-end
+DataInfo = update_DataInfo(DataInfo);
 %% Update Data_BPM
 try
     howmanydatacolumns = length(DataInfo.datacol_numbers);
@@ -111,24 +96,27 @@ for kk = 1:length(Data_BPM)
         %%% Checking if low or high peak is used to "define" BPM etc
         try 
             % Default: basic beating rate from "low" peaks
-            Data_BPM{kk,1}.peak_locations{pp,1} = Data_BPM{kk,1}.peak_locations_low{pp,1};
-            Data_BPM{kk,1}.peak_values{pp,1} = Data_BPM{kk,1}.peak_values_low{pp,1};       
-            Data_BPM{kk,1}.Amount_of_peaks(pp,1) = Data_BPM{kk,1}.Amount_of_peaks_low(pp,1);
-            Data_BPM{kk,1}.BPM_avg(pp,1) = Data_BPM{kk,1}.BPM_avg_low(pp,1);
-            Data_BPM{kk,1}.peak_avg_distance_in_ms(pp,:) = ...
-                Data_BPM{kk,1}.peak_avg_distance_in_ms_low(pp,:);
-            Data_BPM{kk,1}.peak_distances_in_ms{pp,1} = Data_BPM{kk,1}.peak_distances_in_ms_low{pp,1};
-            try 
-                Data_BPM{kk,1}.peak_widths{pp,1} = Data_BPM{kk,1}.peak_widths_low{pp,1};              
-            catch
-                disp('No low peak widths available')
-            end
+% %             Data_BPM{kk,1}.peak_locations{pp,1} = Data_BPM{kk,1}.peak_locations_low{pp,1};
+% %             Data_BPM{kk,1}.peak_values{pp,1} = Data_BPM{kk,1}.peak_values_low{pp,1};       
+% %             Data_BPM{kk,1}.Amount_of_peaks(pp,1) = Data_BPM{kk,1}.Amount_of_peaks_low(pp,1);
+% %             Data_BPM{kk,1}.BPM_avg(pp,1) = Data_BPM{kk,1}.BPM_avg_low(pp,1);
+% %             Data_BPM{kk,1}.peak_avg_distance_in_ms(pp,:) = ...
+% %                 Data_BPM{kk,1}.peak_avg_distance_in_ms_low(pp,:);
+% %             Data_BPM{kk,1}.peak_distances_in_ms{pp,1} = Data_BPM{kk,1}.peak_distances_in_ms_low{pp,1};
+% %             try 
+% %                 Data_BPM{kk,1}.peak_widths{pp,1} = Data_BPM{kk,1}.peak_widths_low{pp,1};              
+% %             catch
+% %                 disp('No low peak widths available')
+% %             end
+            Data_BPM = update_Data_BPM_peaks_with_low_or_high_peaks(kk,pp, 'low', Data_BPM);
+            % function Data_BPM = update_Data_BPM_peaks_with_low_or_high_peaks(file_index, ...
+            %     datacolumn_index, low_or_high_peaks, Data_BPM)
         catch
             disp('no low peaks')
         end
         % checking if high peaks should be used
-        % using_high_peaks: > 0 always using high peaks, 0=always low peaks, -1=check which one
-        if using_high_peaks < 0 % check
+        % using_high_peaks > 0 always using high peaks, 0=always low peaks, -1=check which one
+        if using_high_peaks < 0 % if below 0, check which one used
             use_high_peaks = should_high_peak_data_be_used(Data_BPM{kk,1},pp);
             % function [use_high_peaks] = should_high_peak_data_be_used(data,elcol,high_peaks_ratio_to_low_peaks)
             % high_peaks_ratio_to_low_peaks is optional, default = 0.8
@@ -148,20 +136,22 @@ for kk = 1:length(Data_BPM)
                 [name_file,' -> ', time_exp_name,10,datacol_name];
             name_files_for_high_peak_index{end,2} = [kk];
             disp('Current Data_BPM values changed to data from high peaks')
-            Data_BPM{kk,1}.peak_locations{pp,1} = Data_BPM{kk,1}.peak_locations_high{pp,1};   
-            Data_BPM{kk,1}.peak_values{pp,1} = Data_BPM{kk,1}.peak_values_high{pp,1};
-            Data_BPM{kk,1}.Amount_of_peaks(pp,1) = Data_BPM{kk,1}.Amount_of_peaks_high(pp,1);
-            Data_BPM{kk,1}.BPM_avg(pp,1) = Data_BPM{kk,1}.BPM_avg_high(pp,1);
-            Data_BPM{kk,1}.peak_avg_distance_in_ms(pp,:) = ...
-                Data_BPM{kk,1}.peak_avg_distance_in_ms_high(pp,:);
-            Data_BPM{kk,1}.peak_distances_in_ms{pp,1} = ...
-                Data_BPM{kk,1}.peak_distances_in_ms_high{pp,1};  
-            try 
-                Data_BPM{kk,1}.peak_widths{pp,1} = Data_BPM{kk,1}.peak_widths_high{pp,1};              
-            catch
-                disp('No high peak widths available')
-            end
-
+%             Data_BPM{kk,1}.peak_locations{pp,1} = Data_BPM{kk,1}.peak_locations_high{pp,1};   
+%             Data_BPM{kk,1}.peak_values{pp,1} = Data_BPM{kk,1}.peak_values_high{pp,1};
+%             Data_BPM{kk,1}.Amount_of_peaks(pp,1) = Data_BPM{kk,1}.Amount_of_peaks_high(pp,1);
+%             Data_BPM{kk,1}.BPM_avg(pp,1) = Data_BPM{kk,1}.BPM_avg_high(pp,1);
+%             Data_BPM{kk,1}.peak_avg_distance_in_ms(pp,:) = ...
+%                 Data_BPM{kk,1}.peak_avg_distance_in_ms_high(pp,:);
+%             Data_BPM{kk,1}.peak_distances_in_ms{pp,1} = ...
+%                 Data_BPM{kk,1}.peak_distances_in_ms_high{pp,1};  
+%             try 
+%                 Data_BPM{kk,1}.peak_widths{pp,1} = Data_BPM{kk,1}.peak_widths_high{pp,1};              
+%             catch
+%                 disp('No high peak widths available')
+%             end
+            Data_BPM = update_Data_BPM_peaks_with_low_or_high_peaks(kk,pp, 'high', Data_BPM);
+            % function Data_BPM = update_Data_BPM_peaks_with_low_or_high_peaks(file_index, ...
+            %     datacolumn_index, low_or_high_peaks, Data_BPM)
             try
                 name_files_for_high_peak_index{end,3}  = ...
                     num2str(DataInfo.MEA_electrode_numbers(pp));                
