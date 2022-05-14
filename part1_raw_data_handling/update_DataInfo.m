@@ -19,14 +19,17 @@ end
 % file names if only .file_names_mat exist
 try
     DataInfo.file_names;
+    disp('DataInfo.file_names ok')
 catch
     file_numbers_to_analyze = 1:DataInfo.files_amount;
     DataInfo.file_names = DataInfo.file_names_mat(file_numbers_to_analyze);
+    disp('DataInfo.file_names updated')
 end
 
 % datacol_numbers
 try
     DataInfo.datacol_numbers;
+    disp('DataInfo.datacol_numbers ok')
 catch
     disp('Creating DataInfo.datacol_numbers')
     try
@@ -40,11 +43,13 @@ catch
         DataInfo.datacol_numbers = 1:length(Data{1,1}.data(1,:));
     end
     DataInfo.datacol_numbers
+    disp('DataInfo.datacol_numbers updated')
 end
 
 % datacol_names
 try
     DataInfo.datacol_names;
+    disp('DataInfo.datacol_names ok')
 catch
     disp('Creating DataInfo.datacol_names')
     for pp=1:length(DataInfo.datacol_numbers)
@@ -57,14 +62,18 @@ catch
         end
     end
     DataInfo.datacol_names
+    disp('DataInfo.datacol_names updated.')
 end
 
 % add "measurement name" to DataInfo.measurement.time for the legends
 try
     DataInfo.measurement_time.names;
+    disp('DataInfo.measurement_time.names ok')
 catch
     disp('Creating "measurement name" to DataInfo.measurement.time for the legends')
     DataInfo = create_time_names_for_DataInfo(DataInfo);
+	disp('DataInfo.measurement_time.names updated')
+
 end
 
 
