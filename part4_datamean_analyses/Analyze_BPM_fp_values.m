@@ -33,14 +33,16 @@ elseif strcmp(DataInfo.experiment_name,'Acute_hypoxia_MEA2A_12619LMNA_29112021_p
 %     t_back = -0.05;
 %     t_forw = 0.6+t_back;
 end
-check_peak_forms([],[],[],[t_back t_forw], [],[],1); % % mean plot included
-% check_peak_forms([],[],[],[t_back t_forw], 20,[],1); % % mean plot included
+check_peak_forms([t_back t_forw], [],[],1); % % mean plot included
+% check_peak_forms([t_back t_forw],20,[],1); % % mean plot included
 %% Luodaan DataPeaks ja sitten DataPeaks_mean
-DataPeaks = get_peak_signals([],[],[],[t_back t_forw]);
+% t_back = -.05; t_forw = 0.6;  
+% DataPeaks = get_peak_signals([],[],[],[t_back t_forw]);
+DataPeaks = get_peak_signals([t_back t_forw]);
 DataPeaks_mean = get_peak_signal_average(DataPeaks);
 remove_offset_from_DataPeaks
 remove_other_variables_than_needed,
-save_data_files(DataInfo.savefolder,1,1)
+save_data_files(DataInfo.savefolder,1,1);
 %% Create DataPeaks_summary: find peaks from DataPeaks_mean data and calculate fpd
 % old open('C:\Local\maki9\Data\MATLAB\data_analyysi\data_analysis_files\TEST_define_fpd.m')
 % 1) Find low peak
@@ -57,7 +59,8 @@ fpd_fpstart_and_depolarization_time;
 fpd_find_flatpeak_and_signal_end
 
 %% 
-save_data_files(DataInfo.savefolder)
+save_data_files(DataInfo.savefolder);
+save_data_files(DataInfo.savefolder,1,1); % DataPeaks_mean and DataPeaks
 % remove_other_variables_than_needed
 %% PLOTTING %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % plot certain DataPeaks_summary data toge
