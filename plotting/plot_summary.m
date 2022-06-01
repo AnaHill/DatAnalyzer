@@ -126,7 +126,7 @@ end
 figure(hfig)% fig_full    
 sgtitle([DataInfo.experiment_name,10, DataInfo.measurement_name],...
     'interpreter','none')
-%% if absolute values plotted
+%% if absolute values are plotted
 if normalizing == 0
     try
         how_many_different_data = 3;
@@ -174,7 +174,7 @@ if normalizing == 0
         axis tight
     end
 end
-%% if normalized values plotted
+%% if normalized values are plotted
 if normalizing == 1
     try
         how_many_different_data = 3;
