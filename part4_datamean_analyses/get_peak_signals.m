@@ -55,7 +55,6 @@ DataPeaks.data = {};
 DataPeaks.file_index = [];
 for kk = 1:length(file_indexes)
     % creates file_index, fs, time, and empty DataPeak
-    % get_file_parameters % not used
     file_index = file_indexes(kk);
     fs = DataInfo.framerate(file_index);
     index_from_peak = time_range_from_peak*fs;

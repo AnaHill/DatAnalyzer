@@ -2,7 +2,9 @@ function Data_BPM = trim_peaks_values_and_locations(filenumbers, datacolumns,...
     DataInfo, Data, Data_BPM)
 % function Data_BPM = trim_peaks_values_and_locations(filenumbers, datacolumns, ...
 % DataInfo, Data, Data_BPM)
-%%% TODO: now only low peaks!
+% TODO: 
+    % now only using low peaks!
+    % Movmean using 10 --> could be changeable
 
 narginchk(0,5)
 nargoutchk(0,1)
@@ -50,7 +52,7 @@ for file_ind = filenumbers
              peak_value = Data_BPM{file_ind, 1}.peak_values_low{col_ind}(peak_locs);
              value_index = round([-fs fs]/100)+peak_point;
              values = Data{file_ind}.data(value_index(1):value_index(2),col_ind);
-             values_mean=movmean(values,10);
+             values_mean = movmean(values,10);
              [M,I] = min(values_mean); % [Morg,Iorg] = min(values)
              new_peak_point = value_index(1)+I-1;
              new_peak_value = M;
