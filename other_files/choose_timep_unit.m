@@ -6,7 +6,9 @@ switch timep_unit
     case 'hours'
         timep = DataInfo.measurement_time.time_sec/3600;
         xlabel_text = 'Time (h)';
-        
+     case 'seconds'
+        timep = DataInfo.measurement_time.time_sec;
+        xlabel_text = 'Time (sec)';       
     case 'file_index'
         timep = 1:DataInfo.files_amount;
         xlabel_text = 'File#';
@@ -14,3 +16,4 @@ switch timep_unit
         error('check time')
 end
 end
+
