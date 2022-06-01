@@ -1,7 +1,9 @@
 % Plot summary of the results: BPM, amplitude, and signal duration (FPD or FPDc)
-    % Parameters: 1) spike amplitude (AMP), (2) field potential duration (FPD), and (3) beat period (BP).
-    % REF [Hayes et al., Sci. Rep., 9(1):11893, 2019.]
-    % To account for rate dependent effects, FPD was are also reported as beat rate-corrected (FPDc) using the Fridericia correction
+% Parameters: 1) spike amplitude (AMP), (2) field potential duration (FPD), and (3) beat period (BP).
+% REF [Hayes et al., Sci. Rep., 9(1):11893, 2019.]
+    % To account for rate dependent effects, 
+    % FPD was are also reported as beat rate-corrected (FPDc) 
+    % using the Fridericia correction
 
 %%%%% some info
 % Possible FPDc equations, see 
@@ -13,7 +15,7 @@
     % open('.\DataPeaks_summary_yksittaisten_plottaus.m')
 % Versions
     % 2022/01: Created separate functions (m-files) for following functions
-        % function [dat, tittext] = which_fpd_correction(fpd_correction,dat, Data_BPM_summary)
+        % function [dat, tittext] = which_fpd_correction(dat, fpd_correction, Data_BPM_summary)
         % function plot_hypoxia_line(timep, dat, DataInfo)
         % function [timep, xlabel_text] = choose_timep_unit(timep_unit,DataInfo)
 %% Summarize:  BPM, amplitude, signal duration
