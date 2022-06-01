@@ -22,20 +22,15 @@ end
 
 switch fpd_correction_equation
     case 'Izumi-Nakaseko'
-        % \cite{Hyyppa2018}: Izumi-Nakeseko 2017
         data_out = data_in ./ (Data_BPM_summary.BPM_avg/60).^0.22; 
-%         tittext = ['BMP corrected signal duration',10,'FPDc=FPD/(60/BPM)^{0.22} (ms)'];
-%         tittext = [10,'Izumi-Nakaseko FPDc=FPD/(60/BPM)^{0.22} (ms)'];
         tittext = [10,'FPDc=FPD/(60/BPM)^{0.22}'];
         disp('Choosing Izumi-Nakaseko: FPDc=FPD/(60/BPM)^{0.22}')
     case 'Bazett'
         data_out = data_in ./ sqrt(Data_BPM_summary.BPM_avg/60);
-%         tittext = [10,'Bazetts FPDc=FPD/(60/BPM)^{1/2} (ms)'];
         tittext = [10,'FPDc=FPD/(60/BPM)^{1/2}'];
-        disp('Choosing Bazetts: FPDc=FPD/(60/BPM)^{1/2}')
+        disp('Choosing Bazett: FPDc=FPD/(60/BPM)^{1/2}')
     case 'Fridericia'
         data_out = data_in ./ (Data_BPM_summary.BPM_avg/60).^(1/3);
-%         tittext = [10,'Fridericia FPDc=FPD/(60/BPM)^{1/3} (ms)'];
         tittext = [10,'FPDc=FPD/(60/BPM)^{1/3}'];
         disp('Choosing Fridericia: FPDc=FPD/(60/BPM)^{1/3}')
     otherwise
