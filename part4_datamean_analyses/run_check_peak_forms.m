@@ -1,10 +1,13 @@
-% check_peak_forms(Data, DataInfo, Data_BPM,...
-%     time_range_from_peak, every_nth_data, datacolumns, plot_average)
-% check_peak_forms % default values, fastest
-% check_peak_forms([],[],[],[], [],[],1); % default time [-.2 1.4], incl mean
+%% update 2022/06: input order changed
+% function check_peak_forms(time_range_from_peak, every_nth_data, datacolumns, plot_average,...
+%     Data, DataInfo, Data_BPM)
+check_peak_forms() % default time [-.2 1.4], no mean
+    % check_peak_forms([],[],[],1);incl mean
+t_back = -.1; t_forw = .95; % demo 3.3.
+check_peak_forms([t_back t_forw])
 
-%%% find suitable time range
-% t_back = -.1; t_forw = .95; % demo 3.3.
-% t_back = -.1; t_forw = 1.2; % demo 3.13.
 
-check_peak_forms([],[],[],[t_back t_forw], [],[],1); % % mean plot included
+
+
+
+

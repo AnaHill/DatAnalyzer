@@ -1,11 +1,21 @@
-function check_peak_forms(Data, DataInfo, Data_BPM,...
-    time_range_from_peak, every_nth_data, datacolumns, plot_average)
+function check_peak_forms(time_range_from_peak, every_nth_data, datacolumns, ...
+    plot_average, Data, DataInfo, Data_BPM)
+% function check_peak_forms(time_range_from_peak, every_nth_data, datacolumns, ...
+%     plot_average, Data, DataInfo, Data_BPM)
+
+%% old
 % function check_peak_forms(Data, DataInfo, Data_BPM,...
 %     time_range_from_peak, every_nth_data, datacolumns, plot_average)
+
+%%
 narginchk(0,7)
 nargoutchk(0,0)
+% default time: 0.2 sec backwards, 1.4 sec forward
+if nargin < 1 || isempty(time_range_from_peak) 
+    time_range_from_peak = [-.2 1.4]; 
+end
 
-if nargin < 1 || isempty(Data) 
+if nargin < 5 || isempty(Data) 
     try
         Data = evalin('base','Data');
     catch
@@ -13,7 +23,7 @@ if nargin < 1 || isempty(Data)
     end
 end
 
-if nargin < 2 || isempty(DataInfo) 
+if nargin < 6 || isempty(DataInfo) 
     try
         DataInfo = evalin('base','DataInfo');
     catch
@@ -21,19 +31,16 @@ if nargin < 2 || isempty(DataInfo)
     end
 end
 
-if nargin < 3 || isempty(Data_BPM) 
+if nargin < 7 || isempty(Data_BPM) 
     try
         Data_BPM = evalin('base','Data_BPM');
     catch
         error('No Data_BPM')
     end
 end
-% default time: 0.2 sec backwards, 1.5 sec forward
-if nargin < 4 || isempty(time_range_from_peak) 
-    time_range_from_peak = [-.2 1.4]; 
-end
+
 % default: every 10th data is plotted
-if nargin < 5 || isempty(every_nth_data) 
+if nargin < 2 || isempty(every_nth_data) 
     every_nth_data = 10;
 end
 
@@ -44,17 +51,15 @@ elseif every_nth_data > DataInfo.files_amount
 end
 
 % default: all datacolumns plotted
-if nargin < 6 || isempty(datacolumns) 
+if nargin < 3 || isempty(datacolumns) 
     datacolumns = 1:length(DataInfo.datacol_numbers);
 end
-% default: not calculate average
-if nargin < 7 || isempty(plot_average) 
+% default: average line not plotted
+if nargin < 4 || isempty(plot_average) 
     plot_average = 0;
 end
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 % check how many plots are drawn
 file_index_to_analyze = unique([1:every_nth_data:...
     DataInfo.files_amount,DataInfo.files_amount]);
@@ -84,7 +89,12 @@ for kk = 1:length(file_index_to_analyze)
     num=1;
     plot_mean = [];
     leg_mean = {};
-    get_file_parameters % creates file_index, fs, time, and empty DataPeak
+    % get_file_parameters % creates file_index, fs, time, and empty DataPeak
+    file_index = file_index_to_analyze(kk);
+    fs = DataInfo.framerate(file_index);
+    index_from_peak = time_range_from_peak*fs;
+    time = 0:1/fs:(abs(diff(index_from_peak)))/fs;
+    DataPeak = cell(1,length(datacolumns));
     % slice data and plot
     for pp = 1:length(datacolumns)
         slice_peak_data % slices data to DataPeak     
@@ -108,7 +118,7 @@ for kk = 1:length(file_index_to_analyze)
         end
         num=num+1;
         subfig_title_text = create_datacolumn_text(col, DataInfo);
-        % % function [datacolumn_info_text] = create_datacolumn_text(datacolumn_ind,DataInfo)
+        % function [datacolumn_info_text] = create_datacolumn_text(datacolumn_ind,DataInfo)
         title(subfig_title_text)
         grid
     end
@@ -117,11 +127,11 @@ for kk = 1:length(file_index_to_analyze)
         plot_mean = {};
         leg_mean = {};
     end
-    % experiment_title_text = create_experiment_info_text(file_index, Data,DataInfo);
     experiment_title_text = create_experiment_info_text(file_index,DataInfo);
-    sgtitle(experiment_title_text,'interpreter','none','fontsize',12, 'fontweight', 'bold')
+    sgtitle(experiment_title_text,'interpreter','none','fontsize',12,...
+        'fontweight', 'bold')
 end
-% presenting first above
+% presenting first figure on screen
 for fig_index = length(hfigs):-1:1
     figure(hfigs{fig_index,1}); 
 end
