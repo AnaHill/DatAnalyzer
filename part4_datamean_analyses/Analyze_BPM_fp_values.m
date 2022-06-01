@@ -46,17 +46,32 @@ save_data_files(DataInfo.savefolder,1,1);
 %% Create DataPeaks_summary: find peaks from DataPeaks_mean data and calculate fpd
 % old open('C:\Local\maki9\Data\MATLAB\data_analyysi\data_analysis_files\TEST_define_fpd.m')
 % 1) Find low peak
-    gain_for_time_range = 1.5; % set time range from the first p
+gain_for_time_range = 1.5; % set time range from the first p
 fpd_find_low_peak; % find low peaks
 % 2) find fpd start 
-    fpd_threshold_percent = 0.1; % threshold from baseline where FPD starts
-    low_freq = 1500;% low pass filter start freq [Hz], org 150 Hz
+fpd_threshold_percent = 0.1; % threshold from baseline where FPD starts
+low_freq = 1500;% low pass filter start freq [Hz], org 150 Hz
 fpd_fpstart_and_depolarization_time;
 % 3) find signal end and flat peak
-    low_freq = 2500; % 150, 25, 2500 low pass filter start freq [Hz]
-    fpd_threshold_percent = 0.1; % threshold from baseline where FPD ends
-    plotting_results = 0; % plot or not results
+low_freq = 2500; % 150, 25, 2500 low pass filter start freq [Hz]
+fpd_threshold_percent = 0.1; % threshold from baseline where FPD ends
+plotting_results = 0; % plot or not results
 fpd_find_flatpeak_and_signal_end
+%% yllä oleva uusilla funktioilla: DataPeaks_summary
+% 1) Find low peak
+gain_for_time_range = 1.5; 
+DataPeaks_summary = fpd_find_low_peaks(gain_for_time_range);
+% 2) find fpd start 
+fpd_threshold_percent = 0.1; % threshold from baseline where FPD starts
+low_freq = 1500;% low pass filter start freq [Hz], org 150 Hz
+DataPeaks_summary = fpd_fpstart_and_depolarization_times...
+    (fpd_threshold_percent, low_freq);
+% 3) find signal end and flat peak
+fpd_threshold_percent_flatpeak = 0.1; % threshold from baseline where FPD ends
+low_freq_flatpeak = 2500; % 150, 25, 2500 low pass filter start freq [Hz]
+% plotting_results = 0; % plot or not results
+DataPeaks_summary = fpd_find_flatpeaks_and_signal_ends...
+    (fpd_threshold_percent_flatpeak, low_freq_flatpeak);
 
 %% 
 save_data_files(DataInfo.savefolder);
