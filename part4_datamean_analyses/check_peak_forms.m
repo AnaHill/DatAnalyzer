@@ -3,10 +3,6 @@ function check_peak_forms(time_range_from_peak, every_nth_data, datacolumns, ...
 % function check_peak_forms(time_range_from_peak, every_nth_data, datacolumns, ...
 %     plot_average, Data, DataInfo, Data_BPM)
 
-%% old
-% function check_peak_forms(Data, DataInfo, Data_BPM,...
-%     time_range_from_peak, every_nth_data, datacolumns, plot_average)
-
 %%
 narginchk(0,7)
 nargoutchk(0,0)
