@@ -13,8 +13,8 @@ DataPeaks_summary.fpd = [];
 % plotting_results = 0;
 for file_index = 1:DataInfo.files_amount
     disp(['Finding flat peak and fpd end from file#', num2str(file_index),', ',num2str(length(DataInfo.datacol_numbers)), ' datacolumns'])
+    fs = DataInfo.framerate(file_index);
     for col_index = 1:length(DataInfo.datacol_numbers)
-        fs = DataInfo.framerate(file_index);
         data_all = DataPeaks_mean{file_index, 1}.data(:,col_index);
         time = 0:1/fs:(length(data_all)-1)/fs;
 %         disp(['Analyzing file & datacol: ', num2str([file_index, col_index])])

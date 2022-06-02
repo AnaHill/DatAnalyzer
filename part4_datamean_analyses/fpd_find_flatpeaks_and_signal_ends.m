@@ -154,10 +154,6 @@ for file_index = filenumbers
                 flat_peak_index;
             DataPeaks_summary.peaks{1,col_index}.flatp_val(file_index) = ...
                 val_flatp;
-            DataPeaks_summary.peaks{1,col_index}.flatp_loc(file_index) = ...
-                flat_peak_index;
-            DataPeaks_summary.peaks{1,col_index}.flatp_val(file_index) = ...
-                val_flatp;
         end
         try
             DataPeaks_summary.fpd_end_index(file_index, col_index) = peak_end_index;
