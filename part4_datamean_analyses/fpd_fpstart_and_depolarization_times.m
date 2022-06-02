@@ -62,10 +62,10 @@ if nargout < 1 % || isempty(DataPeaks_summary)
     warning('DataPeaks_summary will not be updated!')
 end
 %%
-
+running_file_index = 1;
 for file_index = filenumbers % 1:DataInfo.files_amount
-    disp(['Finding fpd start from file#', num2str([file_index]),', ',...
-        num2str(length(datacolumns)), ' datacolumns'])
+    disp(['Finding fpd start from file#', num2str([file_index]),' & ',...
+        'datacolumns: ',num2str((datacolumns))])
     for col_index = datacolumns % 1:length(DataInfo.datacol_numbers)
         % found low peak in DataPeaks_summary.peaks{1,col_index}.firstp_loc(file_index)
         % get baseline
@@ -81,14 +81,16 @@ for file_index = filenumbers % 1:DataInfo.files_amount
             Amp = peak_amp-baseline;
             threshold_value = baseline + fpd_threshold_percent*Amp;
             % peak start: backwards from peak: data_from_firstpeak to start
-            first_peak_index = DataPeaks_summary.peaks{col_index}.firstp_loc(file_index);
+%             first_peak_index = DataPeaks_summary.peaks{col_index}.firstp_loc(file_index);
+            first_peak_index = DataPeaks_summary.peaks{col_index}.firstp_loc(running_file_index); 
             datafil = lowpass(data,low_freq,fs,'ImpulseResponse','iir','Steepness',0.95);
             % making backwards
             datafildrop = datafil(first_peak_index:-1:1); % backwards
             ind = find(datafildrop >= threshold_value,1,'first'); 
             peak_start_value = datafildrop(ind);
             peak_start_index = first_peak_index-ind+1; % as ind is steps to backwards
-            depolarisation_end_peak_index = DataPeaks_summary.peaks{col_index}.firstp_loc(file_index);
+%             depolarisation_end_peak_index = DataPeaks_summary.peaks{col_index}.firstp_loc(file_index);
+            depolarisation_end_peak_index = DataPeaks_summary.peaks{col_index}.firstp_loc(running_file_index);
             tdep = (depolarisation_end_peak_index-peak_start_index)/fs;
         end
        
@@ -108,6 +110,7 @@ for file_index = filenumbers % 1:DataInfo.files_amount
 
         clear peak_end_index Amp tdep peak_start_index
     end
+    running_file_index = running_file_index + 1;
 end
 
 

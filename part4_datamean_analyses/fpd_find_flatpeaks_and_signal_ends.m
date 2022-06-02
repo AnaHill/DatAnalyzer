@@ -71,7 +71,7 @@ DataPeaks_summary.fpd_end_value = [];
 DataPeaks_summary.fpd = [];
 
 
-
+running_file_index = 1;
 for file_index = filenumbers
     disp(['Finding flat peak and fpd end from file#', num2str(file_index),...
         ', ',num2str(length(datacolumns)), ' datacolumns'])
@@ -85,7 +85,8 @@ for file_index = filenumbers
             warning('No DataPeaks_mean found!')
         else
             fpd_start_index = DataPeaks_summary.fpd_start_index(file_index, col_index);
-            first_peak_index = DataPeaks_summary.peaks{col_index}.firstp_loc(file_index);
+%             first_peak_index = DataPeaks_summary.peaks{col_index}.firstp_loc(file_index);
+            first_peak_index = DataPeaks_summary.peaks{col_index}.firstp_loc(running_file_index);
             data_to_end = data_all(first_peak_index:end);
             % TODO: ? mean(abs(abs(data)-abs(datafil))) % joku virhetarkistus tällä?!? onko low_freq hyvä
             datafil = lowpass(data_to_end,low_freq,fs,'ImpulseResponse','iir','Steepness',0.95);
@@ -99,7 +100,8 @@ for file_index = filenumbers
                 Amp = peak_amp-baseline;
                 threshold_value = baseline + fpd_threshold_percent*Amp;
                 % peak start: backwards from peak: data_from_firstpeak to start
-                first_peak_index = DataPeaks_summary.peaks{col_index}.firstp_loc(file_index);
+%                 first_peak_index = DataPeaks_summary.peaks{col_index}.firstp_loc(file_index);
+                first_peak_index = DataPeaks_summary.peaks{col_index}.firstp_loc(running_file_index);
                 datafil = lowpass(data_all,low_freq,fs,'ImpulseResponse','iir','Steepness',0.95);
                 datafildrop = datafil(first_peak_index:end); 
                 ind = find(datafildrop >= threshold_value,1,'first'); 
@@ -170,6 +172,7 @@ for file_index = filenumbers
         clear peak_end_index peak_start_index val ind flat_peak_index end_index_for_data
         clear data_to_modified data_all clear datafil ind2 
     end
+    running_file_index = running_file_index + 1;
 end
 
 
