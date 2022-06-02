@@ -7,6 +7,9 @@ function hfig = plot_summary(normalizing, fpd_correction, time_unit, hfig,...
     % - to new, full screen size, figure
 % plot_summary(1) % normalized values
 % plot_summary([],[],[],hfig) % if plotting to certain figure given in input
+% if want to limit y-axes, call limit_y_axes after this, e.g.
+    % plot_summary;pause(0.2); ylimits=[0 Inf];ylimits_o2=[0 Inf]; limit_y_axes(ylimits, ylimits_o2)
+
 % fpd_correction: Following FPDc equations
     % 1) 'Izumi-Nakaseko' (default): FPDc=FPD/(60/BPM)^{0.22}
     % 2) 'Bazett': FPDc=FPD/(60/BPM)^{1/2}
@@ -24,24 +27,11 @@ function hfig = plot_summary(normalizing, fpd_correction, time_unit, hfig,...
         % [data_out, tittext] = which_fpd_correction(data_in, fpd_correction, Data_BPM_summary)
     % plot_hypoxia_line
         % plot_hypoxia_line(timep, dat, DataInfo)    
+    % limit_y_axes
+        % limit_y_axes(ylimits, ylimits_o2)
 %% TODO:
-% see script open('.\plotting\Summarize_plot_DataPeaks_summary.m')
-    % 1) user could choose index(es) to be normalized
-    % 2) If want to limit y-axis to certain range, could give them in input
-    % ylimits = [0 2.5];
-    % ylimits_o2 = [0 1.1];
-    % for pp = 1:how_many_different_data
-    % 	subplot(how_many_different_data,1,pp)
-    %     try
-    %         Data_o2.data(Data_o2.measurement_time.datafile_index)
-    %         yyaxis left
-    %         ylim([ylimits])
-    %         yyaxis right
-    %         ylim([ylimits_o2])
-    %     catch
-    %         ylim([ylimits])
-    %     end
-    % end
+% 1) user could choose index(es) to be normalized
+    
 %% checking inputs and 
 narginchk(0,8)
 nargoutchk(0,1)
