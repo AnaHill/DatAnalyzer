@@ -82,7 +82,7 @@ title_text = ['File#',num2str(filenumbers(1))];
 for file_index = filenumbers
     if create_new_figure ~= 0
         fig_full % creates hfig
-        legs = {};
+        legs = {}; hplots = [];
     end
     fs = DataInfo.framerate(file_index);
     for col_index = datacolumns
