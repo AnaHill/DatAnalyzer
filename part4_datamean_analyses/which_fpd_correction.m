@@ -23,20 +23,21 @@ end
 switch fpd_correction_equation
     case 'Izumi-Nakaseko'
         data_out = data_in ./ (Data_BPM_summary.BPM_avg/60).^0.22; 
-        tittext = [10,'FPDc=FPD/(60/BPM)^{0.22}'];
+        tittext = ['Izumi-Nakaseko: FPDc = FPD / (60/BPM)^{0.22}'];
+        %tittext = [10,'Izumi-Nakaseko: FPDc = FPD / (60/BPM)^{0.22}'];
         disp('Choosing Izumi-Nakaseko: FPDc=FPD/(60/BPM)^{0.22}')
     case 'Bazett'
         data_out = data_in ./ sqrt(Data_BPM_summary.BPM_avg/60);
-        tittext = [10,'FPDc=FPD/(60/BPM)^{1/2}'];
+        tittext = ['Bazett: FPDc = FPD / (60/BPM)^{1/2}'];
         disp('Choosing Bazett: FPDc=FPD/(60/BPM)^{1/2}')
     case 'Fridericia'
         data_out = data_in ./ (Data_BPM_summary.BPM_avg/60).^(1/3);
-        tittext = [10,'FPDc=FPD/(60/BPM)^{1/3}'];
+        tittext = ['Fridericia: FPDc = FPD / (60/BPM)^{1/3}'];
         disp('Choosing Fridericia: FPDc=FPD/(60/BPM)^{1/3}')
     otherwise
         disp('No proper FPDc formula chosen: using FPD')
         data_out = data_in; 
-        tittext = ['FPD'];    
+        tittext = ['Pure FPD, not BPM corrected FPDc'];    
 end
 
 end
