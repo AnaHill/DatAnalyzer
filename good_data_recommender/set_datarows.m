@@ -1,4 +1,4 @@
-function datarows_total= set_datarows(how_many_seconds_used, part_of_full_data)
+function datarows_total = set_datarows(how_many_seconds_used, part_of_full_data)
 % set which part of data is used for recommender
     % how_many_seconds_used = 0; to use whole length
     % how_many_seconds_used = 5; to use 5 sec length
@@ -6,18 +6,20 @@ function datarows_total= set_datarows(how_many_seconds_used, part_of_full_data)
 narginchk(0,2)
 nargoutchk(0,1)
 
+% default values
+% setting how_many_seconds_used  to zero --> all rows are included
 if nargin < 1
-    % setting to zero so that all rows are included
     how_many_seconds_used = 0;
 end
+
 if nargin < 2
     part_of_full_data = 0;
 end
+
 if nargin == 2
     part_of_full_data = 0;
     disp('both inputs given, using only first one')
 end
-
 
 
 if part_of_full_data == 0

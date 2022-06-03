@@ -11,7 +11,7 @@ catch
         file_ind_to_get_fs = 1;
         h5file_info = get_h5info(DataInfo,file_ind_to_get_fs);
         fs = h5file_info.framerate;
-        disp(['fs from first file, fs = ',num2str(fs), ' Hz'])
+        disp(['Setting fs from the first file, fs = ',num2str(fs), ' Hz'])
         clear file_ind_to_get_fs
     end
 end

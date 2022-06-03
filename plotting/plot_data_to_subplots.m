@@ -21,15 +21,12 @@ function [ha,pos,hfig] = plot_data_to_subplots(rawdata, ...
 % Additional files    
     % For faster plotting, function uses plotBig if it is available, see 
         % https://github.com/JimHokanson/plotBig_Matlab
-     % (ntitle, available at:  https://se.mathworks.com/matlabcentral/fileexchange/42114-ntitle)
-        % update: title can be only plotted with axes command, so no more title is used
-        % instead, legend is used to plot "name"
 
 %% TODO: 
-    % can not handle if multiple fs are given
-    % "title text" is plotted with legend command 
-        % legend location is north, would be maybe better slightly to left
-        % or could title text be plotted without axes command
+% - can not handle if multiple fs are given
+% - "title text" is plotted with legend command 
+    % legend location is north, would be maybe better slightly to left
+    % or could title text be plotted without axes command
 %%    
 narginchk(1,5)
 nargoutchk(0,3)
@@ -113,7 +110,6 @@ set(ha,'Xlim',[-inf inf],'Ylim',[-inf inf])
 % modifying ticks:
     % remove all x-ticks except bottom subplots
     % remove all y-ticks
-
 set(ha(1:subplot_rows*subplot_columns-subplot_columns),'XTickLabel','');
 if show_yticklabel ~= 1
     set(ha,'YTickLabel','')

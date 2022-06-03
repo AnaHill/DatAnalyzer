@@ -7,13 +7,13 @@ nargoutchk(0,1)
 
 % default values
 
+% default frequency limit 2.5 Hz
 if nargin < 1 || isempty(fmaxHz)
-    % default fmaxHz = 2.5 Hz
     fmaxHz = 2.5;
 end
 
+% default method to choose data is mex vs median values below fmaxHz
 if nargin < 2 || isempty(method_to_choose_data_order)
-    % default method to choose data is mex vs median values below fmaxHz
     method_to_choose_data_order = 'max_vs_median_below_fmaxHz';
 end
 

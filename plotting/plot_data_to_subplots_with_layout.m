@@ -1,5 +1,5 @@
 function [ha,pos,hfig] = plot_data_to_subplots_with_layout(rawdata, ...
-    datacolumns, fs, subplot_rows, subplot_columns, show_yticklabel, plot_title_text)
+    datacolumns, fs, subplot_rows, subplot_columns, show_yticklabel, plot_title_text, hfig)
 % function [ha,pos,hfig] = plot_data_to_subplots_with_layout(rawdata, ...
 %     datacolumns, fs, subplot_rows, subplot_columns, show_yticklabel,plot_title_text)
 % plot_data_to_subplots_with_layout plots data columns to separate subplots, 
@@ -7,7 +7,9 @@ function [ha,pos,hfig] = plot_data_to_subplots_with_layout(rawdata, ...
 % For faster plotting, function uses plotBig if it is available, see 
     % https://github.com/JimHokanson/plotBig_Matlab
 % Examples
-    % plot_data_to_subplots_with_layout(data); plot all data, fs=1 Hz assumed
+    % plot_data_to_subplots_with_layout(data); 
+        % plot all data, fs = DataInfo.framerate(1) or 1 Hz used
+    % plot_data_to_subplots_with_layout(Data{1}.data,DataInfo.datacol_numbers)
     % plot_data_to_subplots_with_layout(data,DataInfo.datacol_numbers,DataInfo.framerate(1));
         % takes info from DataInfo struct
 % Required files
@@ -29,7 +31,7 @@ function [ha,pos,hfig] = plot_data_to_subplots_with_layout(rawdata, ...
     % legend location is north, would be maybe better slightly to left
     % or could title text be plotted without axes command
 %%
-narginchk(1,7)
+narginchk(1,8)
 nargoutchk(0,3)
 
 %%%%% Set default values %%%%%%%%%%%%%%%%%%%%%%%%%
@@ -83,14 +85,22 @@ if length(fs) > 1 % if multiple framerate values are given
     end
     disp(['Used fs = ', num2str(fs),' Hz'])
 end
+
+if nargin < 8 || isempty(hfig)
+    disp('Create new full size figure.')
+    fig_full % creates hfig
+end
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 time = 0:1/fs:(max(size(rawdata))-1)/fs;
-fig_full
+
 % [ha, pos] = tight_subplot(Nh, Nw, gap, marg_h, marg_w)
     % gap [gap_h gap_w] for different gaps in height and width in normalized units (0...1)
     % marg_h  margins  or [lower upper] in height in normalized units (0...1)
     % marg_w  margins or [left right] in width in normalized units (0...1)
+figure(hfig)
 if show_yticklabel ~= 1
     [ha, pos] = tight_subplot(subplot_rows,subplot_columns,5e-3,[.05 .01],5e-3);
 else
@@ -110,6 +120,7 @@ for ii = 1:length(datacolumns)
             % TODO: could choose below linestyle
 %             plotBig(ha(subplot_index),time, rawdata(:,ii),'.-')
         catch
+            disp('plotBig function not working.')
             plot(ha(subplot_index),time, rawdata(:,ii));
         end
         
