@@ -15,6 +15,7 @@ function [ha,pos,hfig] = plot_data_to_subplots_with_layout(rawdata, ...
     % fig_full.m, will create hfig matlab figure class
 % Additional files
     % plotBig, available at: https://se.mathworks.com/matlabcentral/fileexchange/60289-jimhokanson-plotbig_matlab?s_tid=srchtitle
+
 %% TODO: 
 % - can not handle if multiple fs are given
 % - might not work with other than 64 MEA layout
@@ -55,6 +56,7 @@ end
 if nargin < 5 || isempty(subplot_columns)
      subplot_columns = 8;   
 end
+
 % default: not showing yticks, only shown if yticklabel_shown == 1 given
 if nargin < 6 || isempty(show_yticklabel)
     show_yticklabel = 0;
@@ -96,14 +98,13 @@ else
 end
 
 for ii = 1:length(datacolumns)
-    % TODO: check how works with other, see explanation at the begin
+    % TODO: test how this works with other layouts, see explanation at the begin
     column_index = int8(floor(datacolumns(ii)/10));
     row_index = int8(rem(datacolumns(ii)/10,1)*10);    
     subplot_index = (row_index-1)*subplot_columns + column_index;
     
     % plot if not ground or other reference electrode  
-    if column_index ~= 0 && row_index ~= 0 
-        
+    if column_index ~= 0 && row_index ~= 0     
         try % if plotBig available
             plotBig(ha(subplot_index),time, rawdata(:,ii))
             % TODO: could choose below linestyle
@@ -113,22 +114,14 @@ for ii = 1:length(datacolumns)
         end
         
         if plot_title_text == 1
-            % title text will be done with legend function, as no axes command needed
-            % -> much faster
+            % title text will be done with legend function, because 
+            % no axes command needed -> much faster plotting
             hold on; hh2=line(ha(subplot_index),nan,nan,'Linestyle', 'none',...
                 'Marker', 'none', 'Color', 'none'); % plotting dummy for legend
             text_to_display = ['Ele#', num2str(column_index), num2str(row_index)];
             legend(hh2,text_to_display,...
                 'location','north','fontweight','bold',...
                 'Fontsize',[ha(subplot_index).FontSize+2],'box','off');
-            %%% FOLLOWING Slows down a lot, now commented out
-            % position: [left bottom width height]
-            % TODO: better moving relatively to subplot size, now fixed
-            % ha(subplot_index).Position       0.3831 0.1687 0.1144 0.1087
-            % ha(subplot_index).OuterPosition  0.3639 0.1526 0.1476 0.1412
-            % leg.Position:                    0.4160 0.2533 0.0483 0.0181
-%             org = leg.Position;leg.Position = org + [-.004 0.007 0 0];
-            % leg.Position = leg.Position + [-.004 0.007 0 0];
         end
         set(ha(subplot_index),'Ylim',[-inf inf]) % axis tight ei toimi
         set(ha(subplot_index),'Xlim',[-inf inf])
