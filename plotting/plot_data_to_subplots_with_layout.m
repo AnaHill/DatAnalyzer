@@ -15,21 +15,19 @@ function [ha,pos,hfig] = plot_data_to_subplots_with_layout(rawdata, ...
     % fig_full.m, will create hfig matlab figure class
 % Additional files
     % plotBig, available at: https://se.mathworks.com/matlabcentral/fileexchange/60289-jimhokanson-plotbig_matlab?s_tid=srchtitle
-    % (ntitle, available at:  https://se.mathworks.com/matlabcentral/fileexchange/42114-ntitle)
-        % update: title can be only plotted with axes command, so no more title is used
-        % instead, legend is used to plot "name"
-% TODO: now can not handle if multiple fs are given
-% TODO: might not work with other than 64 MEA layout
+%% TODO: 
+% - can not handle if multiple fs are given
+% - might not work with other than 64 MEA layout
     % following eq. calculates MATLAB's subplot index based on "MEA electrode location"
     % it works at least with 64 MEA from Multichannels
     % where e.g. electrode#42 is in location column = 4 and row = 2
         % column_index = int8(floor(datacolumns(ii)/10));
         % row_index = int8(rem(datacolumns(ii)/10,1)*10);    
         % subplot_index = (row_index-1)*subplot_columns + column_index;
-% TODO: Now "title text" is plotted with legend command 
+% - Now "title text" is plotted with legend command 
     % legend location is north, would be maybe better slightly to left
     % or could title text be plotted without axes command
-
+%%
 narginchk(1,7)
 nargoutchk(0,3)
 
