@@ -1,5 +1,7 @@
 function hfig = plot_summary(normalizing, fpd_correction, time_unit, hfig,...
-    DataInfo, Data_BPM_summary, DataPeaks_summary, Data_o2)
+    DataInfo, Data_BPM_summary, DataPeaks_summary, Data_o2, norm_indexes)
+% function hfig = plot_summary(normalizing, fpd_correction, time_unit, hfig,...
+%     DataInfo, Data_BPM_summary, DataPeaks_summary, Data_o2, norm_indexes)
 % PLOT_SUMMARY plots summary of the BPM analysis
 % plot_summary % default plot with absolute values and 
     % - fpd-correction: Izumi-Nakaseko FPDc
@@ -10,6 +12,8 @@ function hfig = plot_summary(normalizing, fpd_correction, time_unit, hfig,...
 % if want to limit y-axes, call limit_y_axes after this, e.g.
     % plot_summary;pause(0.2); ylimits=[0 Inf];ylimits_o2=[0 Inf]; limit_y_axes(ylimits, ylimits_o2)
 
+% plot_summary(1, [], [], [],[], [], [],[], 3:5);
+    
 % fpd_correction: Following FPDc equations
     % 1) 'Izumi-Nakaseko' (default): FPDc=FPD/(60/BPM)^{0.22}
     % 2) 'Bazett': FPDc=FPD/(60/BPM)^{1/2}
@@ -32,8 +36,8 @@ function hfig = plot_summary(normalizing, fpd_correction, time_unit, hfig,...
 %% TODO:
 % 1) user could choose index(es) to be normalized
     
-%% checking inputs and 
-narginchk(0,8)
+%% checking inputs and set defaults
+narginchk(0,9)
 nargoutchk(0,1)
 % set defaults
 if nargin < 1 || isempty(normalizing)
@@ -98,18 +102,21 @@ end
 % TODO: user could choose index(es) to be normalized
 if normalizing == 1
     % choosing index(es) which values are used for normalizing values
-    try % finding hypoxia starting time index
-        ind_hyp = DataInfo.hypoxia.start_time_index;
-        if ind_hyp >= 3
-            norm_index = ind_hyp-3:ind_hyp-1;
-        elseif ind_hyp >= 1
-            norm_index = ind_hyp-1;
-        else
-            norm_index =ind_hyp;
-        end
-    catch % no hypoxia index: taking first index as normalizing value
-        norm_index = 1;
-    end    
+    if ~exist('norm_indexes','var') % if not given in input
+        % first try to finding hypoxia starting time index
+        try 
+            ind_hyp = DataInfo.hypoxia.start_time_index;
+            if ind_hyp >= 3
+                norm_indexes = ind_hyp-3:ind_hyp-1;
+            elseif ind_hyp >= 1
+                norm_indexes = ind_hyp-1;
+            else
+                norm_indexes =ind_hyp;
+            end
+        catch % no hypoxia index: taking first index as normalizing value
+            norm_indexes = 1;
+        end    
+    end
 end
 
 %% Plotting %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -145,8 +152,15 @@ if normalizing == 0
     % calculate FPDc (or FPD)
     dat =  DataPeaks_summary.fpd; 
     [dat, tittext] = which_fpd_correction(dat,fpd_correction);
-
-    plot(timep, dat,'.-'), ylabel(tittext), title(tittext)
+    if strcmp(tittext,'Pure FPD, not BPM corrected FPDc') % if not FPDc, just FPD
+        ylabel_text = 'FPD';
+    else
+        ylabel_text = ['FPDc'];
+    end
+    % ylabel_text = [ylabel_text,' (s)'];
+    % set fpd in ms
+    dat = dat*1e3; ylabel_text = [ylabel_text,' (ms)'];
+    plot(timep, dat,'.-'), ylabel(ylabel_text), title(tittext)
     plot_hypoxia_line(timep, dat, DataInfo)
 
     for pp = 1:how_many_different_data
@@ -160,7 +174,6 @@ if normalizing == 0
         catch
             disp('No O2 data to plot.')
         end
-
         axis tight
     end
 end
@@ -170,16 +183,23 @@ if normalizing == 1
         how_many_different_data = 3;
         subplot(how_many_different_data,1,1)
         dat = Data_BPM_summary.BPM_avg;
-        dat = dat ./ mean(dat(norm_index,:));
-        tittext = 'Beating rate (norm)';
-        plot(timep, dat), ylabel(tittext), title(tittext)
+%         dat = dat ./ mean(dat([norm_indexes],:),1);
+%         tittext = ['Normalized beating rate, normalization from mean of file(s)#',...
+%             num2str(norm_indexes)];
+        dat = dat ./ median(dat([norm_indexes],:),1);
+        tittext = ['Normalized beating rate, normalization from median of file(s)#',...
+            num2str(norm_indexes)];
+        ylabel_text = 'Beating rate (norm)';
+        plot(timep, dat), ylabel(ylabel_text), title(tittext)
         plot_hypoxia_line(timep, dat, DataInfo)
         
         subplot(how_many_different_data,1,2)
         dat = abs(DataPeaks_summary.depolarization_amplitude);
-        tittext = 'Absolute amplitude (norm)';
-        dat = dat ./ mean(dat(norm_index,:));
-        plot(timep, dat), ylabel(tittext), title(tittext)
+        % dat = dat ./ mean(dat([norm_indexes],:),1);
+        dat = dat ./ median(dat([norm_indexes],:),1);
+        tittext = 'Normalized Absolute amplitude';
+        ylabel_text = 'Absolute amplitude (norm)';
+        plot(timep, dat), ylabel(ylabel_text), title(tittext)
         plot_hypoxia_line(timep, dat, DataInfo)
         ylim([0 Inf])
         
@@ -187,7 +207,8 @@ if normalizing == 1
         how_many_different_data = 2;
         subplot(how_many_different_data,1,1)
         dat = Data_BPM_summary.BPM_avg;
-        dat = dat ./ mean(dat(norm_index,:));
+        % dat = dat ./ mean(dat([norm_indexes],:),1);
+        dat = dat ./ median(dat([norm_indexes],:),1);
         tittext = 'Beating rate (norm)';
         plot(timep, dat), ylabel(tittext), title(tittext)
         plot_hypoxia_line(timep, dat, DataInfo)
@@ -199,11 +220,17 @@ if normalizing == 1
     dat =  DataPeaks_summary.fpd;
     [dat, titletext_fpdctype] = which_fpd_correction(dat, fpd_correction);
 %     tittext = ['Normalized signal duration fpd(c) based on ',titletext_fpdctype];
-    tittext = ['FPDc (norm)',titletext_fpdctype];
-
+    % calculate FPDc (or FPD)
+    if strcmp(titletext_fpdctype,'Pure FPD, not BPM corrected FPDc') % if not FPDc, just FPD
+        ylabel_text = 'FPD (norm)';
+    else
+        ylabel_text = ['FPDc (norm)'];
+    end
+    titletext_fpdctype = ['Normalized ',titletext_fpdctype];
     % normalizing
-    dat = dat./ mean(dat(norm_index,:));
-    plot(timep, dat,'.-'), ylabel(tittext), title(tittext)
+    % dat = dat ./ mean(dat([norm_indexes],:),1);
+    dat = dat ./ median(dat([norm_indexes],:),1);
+    plot(timep, dat,'.-'), ylabel(ylabel_text), title(titletext_fpdctype)
     plot_hypoxia_line(timep, dat, DataInfo)
     ylim([0 Inf])
     
@@ -214,7 +241,7 @@ if normalizing == 1
             Data_o2.data(Data_o2.measurement_time.datafile_index)
             yyaxis right
             dat = Data_o2.data(Data_o2.measurement_time.datafile_index);
-            dat = dat ./ mean(dat(norm_index,:));
+            dat = dat ./ mean(dat([norm_indexes],:),1);
             plot(timep,dat,'--')
             ylabel('O2 (norm)')
         catch
