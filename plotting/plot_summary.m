@@ -12,7 +12,8 @@ function hfig = plot_summary(normalizing, fpd_correction, time_unit, hfig,...
 % if want to limit y-axes, call limit_y_axes after this, e.g.
     % plot_summary;pause(0.2); ylimits=[0 Inf];ylimits_o2=[0 Inf]; limit_y_axes(ylimits, ylimits_o2)
 
-% plot_summary(1, [], [], [],[], [], [],[], 3:5);
+% Normalized plot, normalization based on file indexes 3-5
+    % plot_summary(1, [], [], [],[], [], [],[], 3:5);
     
 % fpd_correction: Following FPDc equations
     % 1) 'Izumi-Nakaseko' (default): FPDc=FPD/(60/BPM)^{0.22}
@@ -33,8 +34,6 @@ function hfig = plot_summary(normalizing, fpd_correction, time_unit, hfig,...
         % plot_hypoxia_line(timep, dat, DataInfo)    
     % limit_y_axes
         % limit_y_axes(ylimits, ylimits_o2)
-%% TODO:
-% 1) user could choose index(es) to be normalized
     
 %% checking inputs and set defaults
 narginchk(0,9)
@@ -99,10 +98,9 @@ end
 [timep, xlabel_text] = choose_timep_unit(time_unit,DataInfo);
 
 % get normalizing index(es) if used
-% TODO: user could choose index(es) to be normalized
 if normalizing == 1
     % choosing index(es) which values are used for normalizing values
-    if ~exist('norm_indexes','var') % if not given in input
+    if ~exist('norm_indexes','var') % if not given in function call 
         % first try to finding hypoxia starting time index
         try 
             ind_hyp = DataInfo.hypoxia.start_time_index;
