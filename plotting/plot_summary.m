@@ -121,6 +121,16 @@ end
 figure(hfig)% fig_full    
 sgtitle([DataInfo.experiment_name,10, DataInfo.measurement_name],...
     'interpreter','none')
+% legend
+legs = {};
+for col_index = 1:length(DataInfo.datacol_numbers)
+    try
+        legs{end+1,1} = ['MEA ele#',num2str(DataInfo.MEA_electrode_numbers(col_index))];
+    catch
+        legs{end+1,1} = ['Datacolumn#',num2str(col_index)];
+    end
+end
+dataplots = [];
 %% if absolute values are plotted
 if normalizing == 0
     try
@@ -128,25 +138,28 @@ if normalizing == 0
         subplot(how_many_different_data,1,1)
         dat = Data_BPM_summary.BPM_avg;
         tittext = 'Beating rate (BPM)';
-        plot(timep, dat,'.-'), ylabel(tittext), title(tittext)
-        plot_hypoxia_line(timep, dat, DataInfo)
-
+        dataplots = plot(timep, dat,'.-'); 
+        ylabel(tittext), title(tittext)
+        plot_hypoxia_line(timep, dat, DataInfo)        
         subplot(how_many_different_data,1,2)
         dat = abs(DataPeaks_summary.depolarization_amplitude)*1e3; 
         tittext = 'Amplitude (mV)';
         plot(timep, dat,'.-'), ylabel(tittext), title(tittext)
         plot_hypoxia_line(timep, dat, DataInfo)
+        
+        subplot(how_many_different_data,1,1) % for legend back to first subplot
     catch % no amplitude
         how_many_different_data = 2;
         subplot(how_many_different_data,1,1)
         dat = Data_BPM_summary.BPM_avg;
         tittext = 'Beating rate (BPM)';
-        plot(timep, dat,'.-'), ylabel(tittext), title(tittext)
+        dataplots = plot(timep, dat,'.-'); ylabel(tittext), title(tittext)
+        % legend(dataplots,legs, 'interpreter','none','location','best')
         plot_hypoxia_line(timep, dat, DataInfo) 
     end
+    legend(dataplots,legs, 'interpreter','none','location','best')
 
     subplot(how_many_different_data,1,how_many_different_data)
-
     % calculate FPDc (or FPD)
     dat =  DataPeaks_summary.fpd; 
     [dat, tittext] = which_fpd_correction(dat,fpd_correction);
@@ -155,9 +168,7 @@ if normalizing == 0
     else
         ylabel_text = ['FPDc'];
     end
-    % ylabel_text = [ylabel_text,' (s)'];
-    % set fpd in ms
-    dat = dat*1e3; ylabel_text = [ylabel_text,' (ms)'];
+    dat = dat*1e3; ylabel_text = [ylabel_text,' (ms)'];% set FPD in ms
     plot(timep, dat,'.-'), ylabel(ylabel_text), title(tittext)
     plot_hypoxia_line(timep, dat, DataInfo)
 
@@ -176,24 +187,24 @@ if normalizing == 0
     end
 end
 %% if normalized values are plotted
+% now median values used for normalization, e.g.
+% instead of dat = dat ./ mean(dat([norm_indexes],:),1);
+% --> dat = dat ./ median(dat([norm_indexes],:),1);
+
 if normalizing == 1
     try
         how_many_different_data = 3;
         subplot(how_many_different_data,1,1)
         dat = Data_BPM_summary.BPM_avg;
-%         dat = dat ./ mean(dat([norm_indexes],:),1);
-%         tittext = ['Normalized beating rate, normalization from mean of file(s)#',...
-%             num2str(norm_indexes)];
         dat = dat ./ median(dat([norm_indexes],:),1);
         tittext = ['Normalized beating rate, normalization from median of file(s)#',...
             num2str(norm_indexes)];
         ylabel_text = 'Beating rate (norm)';
-        plot(timep, dat), ylabel(ylabel_text), title(tittext)
+        dataplots = plot(timep, dat); ylabel(ylabel_text), title(tittext)
         plot_hypoxia_line(timep, dat, DataInfo)
         
         subplot(how_many_different_data,1,2)
         dat = abs(DataPeaks_summary.depolarization_amplitude);
-        % dat = dat ./ mean(dat([norm_indexes],:),1);
         dat = dat ./ median(dat([norm_indexes],:),1);
         tittext = 'Normalized Absolute amplitude';
         ylabel_text = 'Absolute amplitude (norm)';
@@ -201,24 +212,23 @@ if normalizing == 1
         plot_hypoxia_line(timep, dat, DataInfo)
         ylim([0 Inf])
         
+        subplot(how_many_different_data,1,1) % for legend back to first subplot
     catch % no amplitude
         how_many_different_data = 2;
         subplot(how_many_different_data,1,1)
         dat = Data_BPM_summary.BPM_avg;
-        % dat = dat ./ mean(dat([norm_indexes],:),1);
         dat = dat ./ median(dat([norm_indexes],:),1);
         tittext = 'Beating rate (norm)';
-        plot(timep, dat), ylabel(tittext), title(tittext)
+        dataplots = plot(timep, dat); ylabel(tittext), title(tittext)
         plot_hypoxia_line(timep, dat, DataInfo)
         ylim([0 Inf])
     end
-    
+legend(dataplots,legs, 'interpreter','none','location','best')
+
     subplot(how_many_different_data,1,how_many_different_data)
     % calculate FPDc (or FPD)
     dat =  DataPeaks_summary.fpd;
     [dat, titletext_fpdctype] = which_fpd_correction(dat, fpd_correction);
-%     tittext = ['Normalized signal duration fpd(c) based on ',titletext_fpdctype];
-    % calculate FPDc (or FPD)
     if strcmp(titletext_fpdctype,'Pure FPD, not BPM corrected FPDc') % if not FPDc, just FPD
         ylabel_text = 'FPD (norm)';
     else
@@ -226,7 +236,6 @@ if normalizing == 1
     end
     titletext_fpdctype = ['Normalized ',titletext_fpdctype];
     % normalizing
-    % dat = dat ./ mean(dat([norm_indexes],:),1);
     dat = dat ./ median(dat([norm_indexes],:),1);
     plot(timep, dat,'.-'), ylabel(ylabel_text), title(titletext_fpdctype)
     plot_hypoxia_line(timep, dat, DataInfo)
