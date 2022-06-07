@@ -1,19 +1,23 @@
 function [savefolder] = save_data_files(savefolder, saving_DataPeaks_mean, saving_DataPeaks,...
     saving_raw_data, DataInfo, Data_BPM, Data_BPM_summary, Data_o2,...
-    DataPeaks_summary, savename_end)
+    DataPeaks_summary, savename_end, not_asking_are_you_sure_to_save_Data)
 % function save_data_files(savefolder, saving_DataPeaks_mean, saving_DataPeaks,...
 %     saving_raw_data, DataInfo, Data_BPM, Data_BPM_summary, Data_o2,...
-%     DataPeaks_summary, savename_end)
+%     DataPeaks_summary, savename_end, not_asking_are_you_sure_to_save_Data)
 % save_data_files saves important data
 % Examples
 % save_data_files(savefolder) % not saving DataPeaks_mean, DataPeaks nor Data
+% save_data_files(DataInfo.savefolder)
 % save_data_files(savefolder,1) % saves DataPeaks_mean
 % save_data_files(savefolder,1,1) % saves also DataPeaks
 % save_data_files(savefolder,1,1,1) % saves also Data
-% save_data_files(savefolder,[],[],1) % saves only Data without DataPeaks and DataPeaks_mean
-% save_data_files(DataInfo.savefolder)
+% saves only Data without DataPeaks and DataPeaks_mean
+    % save_data_files(savefolder,[],[],1) 
+% saves all without asking do you really want to save Data
+    % save_data_files(savefolder,1,1,1,[],[],[],[],[],[],1) 
+ 
 
-narginchk(0,10)
+narginchk(0,11)
 nargoutchk(0,1)
 disp(['%%%%%%%%%%%%%%%%%%%%%%',10,'Saving data'])
 
@@ -97,8 +101,12 @@ if nargin < 10 || isempty(savename_end)
         savename_end = 'exp_meas_name';
     end
 end
+% default: will ask are you sure to save data which might take for a while
+if nargin < 11 || isempty(not_asking_are_you_sure_to_save_Data) 
+    not_asking_are_you_sure_to_save_Data = 0;
+end
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%
 if ~strcmp(savefolder(end),'\')
     savefolder = [savefolder,'\'];
 end
@@ -132,13 +140,20 @@ end
 
 % If saving also Data
 if saving_raw_data ~= 0
-    answer = questdlg('Do you really want to save Data, it might take for a while?', ...
-        'Saving Data', ...
-        'Yes.','No.','Yes.');
+    if any(not_asking_are_you_sure_to_save_Data) ~= 1 
+        answer = questdlg('Do you really want to save Data, it might take for a while?', ...
+            'Saving Data', ...
+            'Yes.','No.','Yes.');
+    else % if 1, not asking are you sure to save Data
+        answer = 'Yes.';
+        disp(['User chosed to save raw Data ',...
+            '(directly without asking are you for sure), ',...
+            'this might take for a while.'])
+    end
     % Handle response
     switch answer
         case 'No.'
-            disp(['Raw data not saved.'])
+            disp(['User chose not to save raw Data.'])
             saving_raw_data = 0;
         otherwise     
             names{end+1,1} = 'Data';  % names = [names,'Data'];
