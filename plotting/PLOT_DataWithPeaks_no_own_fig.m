@@ -215,8 +215,10 @@ if plot_datacolumns_to_same_fig == 1
     legend(hfig_raw, legs, 'location', 'best')
 end
 try
-    disp(['Peaks in file#',num2str(file_index),': ',10,...
+        disp(['Peaks in file#',num2str(file_index),': ',...
         num2str(Data_BPM{file_index, 1}.Amount_of_peaks(:)')])
+%     disp(['Peaks in file#',num2str(file_index),': ',10,...
+%         num2str(Data_BPM{file_index, 1}.Amount_of_peaks(:)')])
 catch
 end
 evalin( 'base', 'clear file_ind_workspace' )
