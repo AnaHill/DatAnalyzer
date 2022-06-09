@@ -11,13 +11,17 @@ col_indexes = [1:3]
 file_indexes=randi([1 DataInfo.files_amount],[1 1]); 
 % col_indexes = randi([1 length(DataInfo.datacol_numbers)],[1 1]);
 for file_index = file_indexes
-    fig_full
+    fig_full, 
+    pause(0.2)
+    fig_parameters = get(gcf);
     for col_index = col_indexes
         % file_index =    13
         % col_index = 1
         data=DataPeaks_mean{file_index,1}.data(:,col_index);
-        ax = gca;ax.ColorOrderIndex = ind_color;
         plot(data,'--'), hold on
+        fig_parameters = get(gcf);
+        gca = fig_parameters.Children;
+        ax = gca;ax.ColorOrderIndex = ind_color;
         fpd_ind1 = DataPeaks_summary.fpd_start_index(file_index, col_index);
         fpd_va11 = DataPeaks_summary.fpd_start_value(file_index, col_index);
         fpd_ind2= DataPeaks_summary.fpd_end_index(file_index, col_index);
@@ -39,7 +43,9 @@ for file_index = file_indexes
         axis tight
     end
 end
-title(['File & col: ',num2str([file_index, col_index])])
+% title(['File & col: ',num2str([file_index, col_index])])
+title(['File & colums are: ',num2str([file_indexes]),' & ',num2str([col_indexes])])
+
 %% yllä oleva niin että aika x-akselilla
 ind_color=1; % fig_full,
 % file_indexes= [40,100,120]; % file_indexes=file_indexes(3)
