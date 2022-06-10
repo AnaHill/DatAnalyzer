@@ -43,10 +43,12 @@ try
     hs=DataInfo.hypoxia.start_time_index;
     he=DataInfo.hypoxia.end_time_index;
     hold all,
-    plot([datetime(hs) datetime(hs)],[min(data_to_plot(:)) max(data_to_plot(:))] ,'--','color',[.4 .4 .4])
-    plot([datetime(he) datetime(he)],[min(data_to_plot(:)) max(data_to_plot(:))] ,'--','color',[.4 .4 .4])
+    plot([datetime(hs) datetime(hs)],...
+        [min(data_to_plot(:)) max(data_to_plot(:))] ,'--','color',[.4 .4 .4])
+    plot([datetime(he) datetime(he)],...
+        [min(data_to_plot(:)) max(data_to_plot(:))] ,'--','color',[.4 .4 .4])
 catch
     disp('No hypoxia info in DataInfo.hypoxia')
 end
-
+axis tight
 end
