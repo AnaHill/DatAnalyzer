@@ -60,7 +60,7 @@ end
 file_index_to_analyze = unique([1:every_nth_data:...
     DataInfo.files_amount,DataInfo.files_amount]);
 
-if length(file_index_to_analyze) > 15
+if length(file_index_to_analyze) > 10
     amount_figs = length(file_index_to_analyze);
     answer = questdlg(['Are you sure you want to plot all ',...
         num2str(amount_figs),' figs?'],'Plotting all', 'Yes','No','No'); 
