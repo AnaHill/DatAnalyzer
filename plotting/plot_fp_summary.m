@@ -138,7 +138,7 @@ if normalizing == 0
         subplot(how_many_different_data,1,2)
         dat = abs(DataPeaks_summary.depolarization_amplitude)*1e3; 
         ylabel_text = 'A (mV)';
-        tittext = 'Depolarization Amplitude (absolute)';
+        tittext = 'Depolarization amplitude (absolute)';
         plot(timep, dat,'.-'), ylabel(ylabel_text), title(tittext)
         plot_hypoxia_line(timep, dat, DataInfo)
         
@@ -195,8 +195,8 @@ if normalizing == 1
         subplot(how_many_different_data,1,2)
         dat = abs(DataPeaks_summary.depolarization_amplitude);
         dat = dat ./ median(dat([norm_indexes],:),1);
-        tittext = 'Normalized Absolute amplitude';
-        ylabel_text = 'A (norm)';
+        tittext = 'Normalized absolute amplitude';
+        ylabel_text = 'Normalized A';
         plot(timep, dat), ylabel(ylabel_text), title(tittext)
         plot_hypoxia_line(timep, dat, DataInfo)
         ylim([0 Inf])
