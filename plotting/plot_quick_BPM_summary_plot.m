@@ -26,6 +26,7 @@ if nargin < 3 || isempty(Data_BPM_summary)
     end
 end
 
+%%%
 switch bpm_or_amplitude
     case 'bpm'
         data_to_plot = Data_BPM_summary.BPM_avg;
@@ -35,10 +36,27 @@ switch bpm_or_amplitude
         ylabel_text = 'Amplitude (mV)';
 end
 
+legs = {};
+for col_index = 1:length(DataInfo.datacol_numbers)
+    try
+        legs{end+1,1} = ['MEA ele#',...
+            num2str(DataInfo.MEA_electrode_numbers(col_index))];
+    catch
+        legs{end+1,1} = ['Datacolumn#',num2str(col_index)];
+    end
+end
+dataplots = [];
+
 datetime=DataInfo.measurement_time.datetime;
-plot(datetime, data_to_plot,'marker','*')
+dataplots = plot(datetime, data_to_plot,'marker','*');
 title([DataInfo.experiment_name,' - ',DataInfo.measurement_name],'interpreter','none')
 ylabel(ylabel_text)
+try
+    legend(dataplots,legs, 'interpreter','none','location','best')
+catch
+    legend('interpreter','none','location','best')
+end
+
 try
     hs=DataInfo.hypoxia.start_time_index;
     he=DataInfo.hypoxia.end_time_index;
