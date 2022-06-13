@@ -171,11 +171,12 @@ for zz = 1:length(datacolumns)
     if zz == 1
         hfig_raw(zz,1) = plot(time, dat);hold all;   % hold on does not work...
         ax = gca; current_next_index = ax.ColorOrderIndex;
-    else % after first plot, update lien color index so that raw data is plotted
-        % with next
+    else
+        % update color index so that raw data is plotted with next color index
+        % related to raw data
         ax.ColorOrderIndex = current_next_index;
         hfig_raw(zz,1) = plot(time, dat); hold all;
-        % finally, update color index 
+        % finally, update color index by one
         current_next_index = current_next_index +1;
     end
 
@@ -221,14 +222,14 @@ for zz = 1:length(datacolumns)
     axis tight
     clear title_full
 end
+
 if plot_datacolumns_to_same_fig == 1
     legend(hfig_raw, legs, 'location', 'best')
 end
+
 try
-        disp(['Peaks in file#',num2str(file_index),': ',...
+    disp(['Peaks in file#',num2str(file_index),': ',...
         num2str(Data_BPM{file_index, 1}.Amount_of_peaks(:)')])
-%     disp(['Peaks in file#',num2str(file_index),': ',10,...
-%         num2str(Data_BPM{file_index, 1}.Amount_of_peaks(:)')])
 catch
 end
 evalin( 'base', 'clear file_ind_workspace' )
