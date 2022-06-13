@@ -167,8 +167,18 @@ for zz = 1:length(datacolumns)
             sgtitle(sqtitle_text,'interpreter','none','fontsize',12)
         end
     end
-      
-    hfig_raw(zz,1) = plot(time, dat); hold all, 
+    % Update 2022/06: now color index is updated to "raw data
+    if zz == 1
+        hfig_raw(zz,1) = plot(time, dat);hold all;   % hold on does not work...
+        ax = gca; current_next_index = ax.ColorOrderIndex;
+    else % after first plot, update lien color index so that raw data is plotted
+        % with next
+        ax.ColorOrderIndex = current_next_index;
+        hfig_raw(zz,1) = plot(time, dat); hold all;
+        % finally, update color index 
+        current_next_index = current_next_index +1;
+    end
+
     try
         plot(time(Data_BPM{file_index,1}.peak_locations_high{col_ind}), ...
             Data_BPM{file_index,1}.peak_values_high{col_ind},'ro'),
