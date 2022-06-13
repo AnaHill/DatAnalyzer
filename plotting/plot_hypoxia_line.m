@@ -7,6 +7,6 @@ try
     line([timep(hyp_end) timep(hyp_end)], [min(dat(:)) max(dat(:))],...
         'color', [.4 .4 .4],'linestyle','--')
 catch
-    disp('no hypoxia information')
+    disp('no hypoxia information to plot')
 end
 end
