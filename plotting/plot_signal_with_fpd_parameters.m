@@ -109,13 +109,21 @@ for file_index = filenumbers
         color_index_current = get(gca,'ColorOrderIndex');
         plot(time(first_peak_index:end), datafil(first_peak_index:end),'--',...
             'color',[0.4 0.4 0.4])
-        set(gca,'ColorOrderIndex',color_index_current-1)
+        if color_index_current > 1
+            set(gca,'ColorOrderIndex',color_index_current-1)
+        end
         scatter(time(fpd_start_index), data(fpd_start_index),100,'>','filled')
-        set(gca,'ColorOrderIndex',color_index_current-1)
+        if color_index_current > 1
+            set(gca,'ColorOrderIndex',color_index_current-1)
+        end
         scatter(time(first_peak_index),data(first_peak_index),100,'o','filled')
-        set(gca,'ColorOrderIndex',color_index_current-1)
+        if color_index_current > 1
+            set(gca,'ColorOrderIndex',color_index_current-1)
+        end
         scatter(time(flat_peak_index), flat_peak_value,100,'sq','filled')
-        set(gca,'ColorOrderIndex',color_index_current-1)
+        if color_index_current > 1
+            set(gca,'ColorOrderIndex',color_index_current-1)
+        end
         scatter(time(peak_end_index), peak_end_value,100,'<','filled')
         axis tight
         if time_multiply == 1e3
