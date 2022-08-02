@@ -10,7 +10,9 @@ function plot_signal_with_fpd_parameters(filenumbers,datacolumns,...
     % plot_signal_with_fpd_parameters([1,5,7],[1,3])
 % plot specific signal so that time = sec and data = original
     % plot_signal_with_fpd_parameters(4,[],[],[],[],[],0)
-
+% plot a specific signal to previous figure (to current figure), e.g. 
+    % plot_signal_with_fpd_parameters(1,2), hold all, plot_signal_with_fpd_parameters(2,2,[],[],[],gcf)
+    
 %% TODO
 % low_pass_filter_freq = 2500; % TODO paremmin, tämä pitäisi saada jostain millä tehty
 %%
@@ -30,7 +32,6 @@ if nargin < 1 || isempty(filenumbers)
 end
 
 if nargin < 2 || isempty(datacolumns)
-    %datacolumns = randi(length(DataInfo.datacol_numbers),1);
     datacolumns = 1:length(DataInfo.datacol_numbers);
 end
 
