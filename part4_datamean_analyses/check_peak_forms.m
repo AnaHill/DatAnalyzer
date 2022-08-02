@@ -64,12 +64,9 @@ if length(file_index_to_analyze) > 10
     amount_figs = length(file_index_to_analyze);
     answer = questdlg(['Are you sure you want to plot all ',...
         num2str(amount_figs),' figs?'],'Plotting all', 'Yes','No','No'); 
-    switch answer
-        case 'Yes'
-            plot_all_index = 1;
-        otherwise
-            disp('Chosen not to plot data as so many chosen, returning')
-            return
+    if strcmp(answer,'No')
+        disp(['Chosen not to plot ',num2str(amount_figs), ' figures, returning'])
+        return
     end
 end
 
