@@ -63,6 +63,7 @@ for kk = 1:length(file_indexes)
     % slice data
     try
         for pp = 1:length(datacolumns)
+            col = datacolumns(pp);
             slice_peak_data % slices Data.data to DataPeak
         end
     catch

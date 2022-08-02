@@ -1,5 +1,4 @@
 %slice peak data
-col = datacolumns(pp);
 locs = Data_BPM{file_index, 1}.peak_locations{col};
 index_from_start = index_from_peak(end)-index_from_peak(1);
 locs_start = locs+index_from_peak(1);

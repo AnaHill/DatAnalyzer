@@ -90,16 +90,17 @@ for kk = 1:length(file_index_to_analyze)
     DataPeak = cell(1,length(datacolumns));
     % slice data and plot
     for pp = 1:length(datacolumns)
+        col = datacolumns(pp);
         slice_peak_data % slices data to DataPeak     
         % plot all data columns to same figure to different subfigs
         subplot(sub_fig_rows,sub_fig_cols,num)
         try
-            plot(time, DataPeak{1,pp});
+            plot(time, DataPeak{1,col});
             axis tight
             xlabel('Time (sec)')
             ylabel('Measurement (V)')
             if plot_average ~= 0
-                mean_data(:,1) = mean(DataPeak{1,pp},2);
+                mean_data(:,1) = mean(DataPeak{1,col},2);
                 hold all,
                 plot_mean(end+1) = plot(time, mean_data(:,1),':',...
                     'linewidth',3,'color','k');%[.7 .7 .7]);
