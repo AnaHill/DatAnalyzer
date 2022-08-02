@@ -1,4 +1,5 @@
 DataPeaks_mean = remove_offset(DataPeaks_mean);
+
 % get DataInfo if not available
 try
     DataInfo;

@@ -1,12 +1,14 @@
-function [Data] = remove_offset(Data,DataInfo, ...
+function [data] = remove_offset(data,DataInfo, ...
     baseline_time_range, baseline_index_start_and_stop,...
     file_index_to_analyze, datacolumns)
-% function [Data] = remove_offset(Data,DataInfo, ...
+% function [data] = remove_offset(Data,DataInfo, ...
 %     baseline_time_range, baseline_index_start_and_stop,...
 %     file_index_to_analyze, datacolumns)
 narginchk(1,6)
 nargoutchk(0,1)
-% Assuming data in Data{file_index,1}.data(:,datacolumns) format
+
+
+% Assuming data in data{file_index,1}.data(:,datacolumns) format
 if nargin < 2 || isempty(DataInfo) 
     try
         DataInfo = evalin('base','DataInfo');
@@ -78,26 +80,76 @@ end
 framerates = DataInfo.framerate;
 bs = baseline_index_start_and_stop(1);
 be = baseline_index_start_and_stop(end);
+
+% initially, will ask if offset is removed even though 
+% it would have been already removed earlier
+choosing_to_remove_all_offsets_even_already_removed = 0;
+do_not_ask_again = 0;
+
 for kk = 1:length(file_index_to_analyze)
     file_index = file_index_to_analyze(kk);
     fs = framerates(file_index);   
 	for pp = 1:length(datacolumns)
         col = datacolumns(pp);
-        dat = Data{file_index,1}.data(:,col);
-        % offset = mean
-%         offset_dat = mean(dat(bs:be,1));
-        % offset = median --> better than mean? update 2021/09
-        offset_dat = median(dat(bs:be,1));
-        % remove offset
-        dat_offset_removed = dat-offset_dat;
-        % update
-        Data{file_index,1}.data(:,col) = dat_offset_removed;
-        disp(['Removed offset from File#',num2str(file_index),' - datacol#',...
-            num2str(col),': ',num2str(round(offset_dat*1e6,2)),'e-6'])
-        Data{file_index,1}.removed_offset(col,1) = offset_dat;
+        dat = data{file_index,1}.data(:,col);
+        
+        if choosing_to_remove_all_offsets_even_already_removed ~= 0           
+            % if chosen, that remove all offsets, not asking even though
+            % offset would have been removed beforehand
+            % NOTICE: this might lead "incorrect" offset value, 
+            % as new offset will be calculated from removed data
+            remove_offset_from_single_data_and_update_Data;    
+        
+        else % check, abd ask if offset is removed even though it would exists         
+            
+            % check if Data has already removed_offset field; if does, ask
+            try
+                data{file_index,1}.removed_offset(col,1);
+                if do_not_ask_again == 1
+                    % disp('Not removing offset again')
+                else
+                    % if offset is removed beforehand, ask if remove again
+                    promp_text = {'Offset already removed!',['Removed value: ',...
+                        num2str(data{file_index,1}.removed_offset(col,1))'.'],...
+                        'Remove again?'};
+                    option_list = {...
+                        'Yes, every time.',...
+                        'Yes, this time only.',...
+                        'Not this time.',...
+                        'Never (and do not ask again).'}; 
+                    [idx, tf] = listdlg('PromptString',promp_text,...
+                        'ListString', option_list,'SelectionMode', 'Single', ...
+                        'Initialvalue', 1,'ListSize',[300 100], ...
+                        'Name', 'Removing offset');
+                    if tf
+                        choice_remove_offset_again = option_list{idx}; 
+                    else
+                        return % user canceled or closed dialog
+                    end
+                    switch choice_remove_offset_again
+                        case 'Yes, every time.'
+                            % not asking anymore; update variable
+                            choosing_to_remove_all_offsets_even_already_removed = 1;
+                            remove_offset_from_single_data_and_update_Data;
+                        case 'Yes, this time only.'
+                            % only remove this time and ask again
+                            remove_offset_from_single_data_and_update_Data;
+                        case  'Not this time.'
+                            disp('Not removing offset this time.')
+                        otherwise
+                            do_not_ask_again = 1;
+                            disp('Not removing any offset again.')
+                    end           
+                end
+            % if no offset removed beforehand, remove it    
+            catch 
+                remove_offset_from_single_data_and_update_Data;
+            end 
+        
+        end
+        
     end
     
 end
-
 
 end
