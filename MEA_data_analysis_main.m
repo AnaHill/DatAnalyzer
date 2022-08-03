@@ -119,4 +119,4 @@ hold all, plot([time(hs) time(hs)],[min(data(:)) max(data(:))] ,'--','color',[.4
 plot([time(he) time(he)],[min(data(:)) max(data(:))] ,'--','color',[.4 .4 .4])
 title([DataInfo.experiment_name,' - ',DataInfo.measurement_name],'interpreter','none')
 %% 4) ANALYZING MEAN SIGNALS from peaks
-open('C:\Local\maki9\Data\MATLAB\data_analyysi\data_analysis_files\part4_datamean_analyses\Analyze_BPM_fp_values.m')
+open('C:\Local\maki9\Data\MATLAB\data_analyysi\data_analysis_files\Explore_and_TEMP\Analyze_BPM_fp_values.m')
