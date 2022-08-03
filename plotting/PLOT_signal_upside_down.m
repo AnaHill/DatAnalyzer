@@ -1,7 +1,7 @@
-function [] = PLOT_signal_upside_down(Data,Data_BPM, file_index,datacolumns)
-%  PLOT_signal_upside_down(Data, Data_BPM, file_index,datacolumns)
-%  PLOT_signal_upside_down(Data, Data_BPM, [1:25:110 120],[1:3])
-%  PLOT_signal_upside_down(Data, [], [1:25:110 120],[1,3])
+function [] = plot_signal_upside_down(Data,Data_BPM, file_index,datacolumns)
+%  plot_signal_upside_down(Data, Data_BPM, file_index,datacolumns)
+%  plot_signal_upside_down(Data, Data_BPM, [1:25:110 120],[1:3])
+%  plot_signal_upside_down(Data, [], [1:25:110 120],[1,3])
 
 narginchk(1,4)
 nargoutchk(0,0)
