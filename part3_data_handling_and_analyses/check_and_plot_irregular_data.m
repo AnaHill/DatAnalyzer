@@ -1,5 +1,5 @@
 % check_and_plot_irregular_data: Data_BPM_summary required
-    % need to include .irregular_beating_table 
+% need to include .irregular_beating_table 
 try
     irregu_file_index = unique(Data_BPM_summary.irregular_beating_table.File_index);
     irregu_col_index  = [];
