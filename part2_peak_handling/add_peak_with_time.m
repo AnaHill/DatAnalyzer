@@ -2,7 +2,7 @@ function [Data_BPM] = add_peak_with_time(Data, Data_BPM, DataInfo, file_index,..
     datacolumns,time_range,high_or_low_peaks)
 % 
 % if only one value given ,default_time = 0.3 s forward from that 
-    % -> local maxima is fouund from [Data(t_input:t_input+0.3)
+    % -> local maxima is found from [Data(t_input:t_input+0.3)
 % Examples
     % [Data_BPM] = add_peaks_with_time(Data, Data_BPM, DataInfo, file_index, datacolumns, time_range, high_or_low_peak)
     % fil = 1; col = 2; time_range = [0.8 1.8]; 
