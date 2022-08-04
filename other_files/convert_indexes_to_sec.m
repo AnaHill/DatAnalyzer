@@ -1,4 +1,5 @@
-function times_sec = convert_indexes_to_sec(indexes,fs,starting_time)
+function times_sec = convert_indexes_to_sec(indexes,fs,starting_time,...
+    display_if_empty_index)
 % function times_sec = convert_indexes_to_sec(indexes,fs,starting_time)
 % if indexes is matrix, concerning max(size(indexes))
 % Examples
@@ -10,13 +11,19 @@ function times_sec = convert_indexes_to_sec(indexes,fs,starting_time)
 % starting_time = DataInfo.measurement_time.time_sec(file_index);
 % times_sec = convert_indexes_to_sec(indexes, fs,starting_time);
 
-
-narginchk(1,3)
+narginchk(1,4)
 nargoutchk(0,1)
+
+if nargin < 4 || isempty(display_if_empty_index)
+    display_if_empty_index = 0; 
+end
+display_if_empty_index=display_if_empty_index(1);
 % if indexes is empty(e.g. no peaks found), set times_sec = empty and return
 if isempty(indexes)
     times_sec = [];
-    disp('Empty indexes given! Returning empty times_sec.')
+    if display_if_empty_index ~=0 % only pring following if chosen
+        disp('Empty indexes given! Returning empty times_sec.')
+    end
     return
     
 end
