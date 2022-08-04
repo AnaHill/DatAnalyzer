@@ -24,12 +24,17 @@ switch wanted_y_unit
     case 'BPM'
        data_converted = 60./data_distance_in_seconds;
        ylabel_text = 'Beating rate (BPM)';
+    case 'frequency'
+       data_converted = 1 ./ data_distance_in_seconds;
+       ylabel_text = 'Frequency (Hz)';     
     case 'peak_distance_in_milliseconds'   
         data_converted = data_distance_in_seconds;
         ylabel_text = 'Peak-to-peak distance (ms)';
-    otherwise
+    case 'peak_distance_in_seconds'   
         ylabel_text = 'Peak-to-peak distance (s)';
-        data_converted = data_distance_in_seconds;  
+        data_converted = data_distance_in_seconds; 
+    otherwise
+        error('Check unit!')
 end
 
 if ~isempty(normalizing_indexes)
