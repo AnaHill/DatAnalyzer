@@ -3,8 +3,6 @@ function Data_BPM_summary = include_peak_distance_matrix_to_Data_BPM_summary(...
 % function Data_BPM_summary = include_peak_distance_matrix_to_Data_BPM_summary(...
 %     file_indexes, datacolumn_indexes, Data_BPM, Data_BPM_summary, DataInfo)
 
-
-
 %% check input values
 max_inputs = 5;
 narginchk(0,max_inputs)
@@ -68,7 +66,27 @@ for kk = datacolumn_indexes
     matrix_of_values{end+1} = times_and_values;
 end
 
-% Update Data_BPM_summary with field peak_distance_with_running_index
-disp('Add matrix Data_BPM_summary.peak_distance_with_running_index');
-Data_BPM_summary.peak_distance_with_running_index = matrix_of_values;
+
+% Include field peak_distance_with_running_index to Data_BPM_summary 
+field = 'peak_distance_with_running_index';
+if ~isfield(Data_BPM_summary,field)
+    Data_BPM_summary.peak_distance_with_running_index = matrix_of_values;
+	disp('Data_BPM_summary.peak_distance_with_running_index created.')
+else % ask if exist
+    answer = questdlg([...
+        'Data_BPM_summary.peak_distance_with_running_index exists.',10, ...
+        'Do you want to overwrite it?'],'Overwriting?','Yes','No','Yes');
+    switch answer
+        case 'Yes'
+            Data_BPM_summary = rmfield(Data_BPM_summary,field);
+            Data_BPM_summary.peak_distance_with_running_index = matrix_of_values;
+            disp('Data_BPM_summary.peak_distance_with_running_index updated.')
+        otherwise
+            disp('NOT updating Data_BPM_summary.peak_distance_with_running_index.')
+    end
+    
+end
+
+
+
 end
