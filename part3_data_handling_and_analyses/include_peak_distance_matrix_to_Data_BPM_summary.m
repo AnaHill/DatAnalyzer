@@ -69,6 +69,6 @@ for kk = datacolumn_indexes
 end
 
 % Update Data_BPM_summary with field peak_distance_with_running_index
-disp('Including matrix to Data_BPM_summary.peak_distance_with_running_index');
+disp('Add matrix Data_BPM_summary.peak_distance_with_running_index');
 Data_BPM_summary.peak_distance_with_running_index = matrix_of_values;
 end
