@@ -4,11 +4,20 @@ function plot_peak_distance_matrix(y_unit, time_unit, ...
 % function plot_peak_distance_matrix(y_unit, time_unit, ...
 %     normalizing_y_indexes, hfig, ...
 %     datacolumn_indexes, Data_BPM_summary, DataInfo)
+% possible y_unit: 
+    % BPM, frequency, peak_distance_in_milliseconds, peak_distance_in_seconds
+% possible time_unit: 
+    % duration, datetime, hours, seconds
+
 % Examples
 % normalizing_y_indexes = DataInfo.hypoxia.start_time_index;
 % norm_indexes = 1;
-% plot_peak_distance_matrix('peak_distance_in_millisecond','datetime',1:3, [],1)
+% norm_index = plot_peak_distance_matrix('peak_distance_in_millisecond','datetime',norm_indexes, [],1)
 
+
+
+%% TODO: voisiko poistaa tietyn alun halutessaan, jolloin plot siirtyisi siihen?!?
+% apua: \KEHITYS\plottaa_juokseva_bpm\plot_with_meas_running_time.m
 %% check input values
 max_inputs = 7;
 narginchk(0,max_inputs)
@@ -56,8 +65,7 @@ if ~isempty(normalizing_y_indexes)
         normalizing_y_indexes = [];
     end
 end
-%% TODO: voisiko poistaa tietyn alun halutessaan?!?
-% apua: \KEHITYS\plottaa_juokseva_bpm\plot_with_meas_running_time.m
+
 
 %% Plot: default plot in new figure
 if nargin < 4 || isempty(hfig)
@@ -72,32 +80,33 @@ for kk = 1:length(datacolumn_indexes)
     if kk == 1
         % x-axis
         [timep, xlabel_text] = convert_seconds_to_different_time_units(...
-            time_unit, Data_BPM_summary.peak_distance_with_running_index{1}(:,1),...
+            time_unit, Data_BPM_summary.peak_distance_with_running_index{kk}(:,1),...
             DataInfo.measurement_time.datetime(1));
         % y-axis
         [data_converted, ylabel_text] = ...
             create_data_and_ylabel_text_for_peak_analysis_plot(...
-            Data_BPM_summary.peak_distance_with_running_index{1}(:,2),...
+            Data_BPM_summary.peak_distance_with_running_index{kk}(:,2),...
             y_unit, normalizing_y_indexes);
 
     else % no label text after first rounf
         [timep, ~] = convert_seconds_to_different_time_units(...
-            time_unit, Data_BPM_summary.peak_distance_with_running_index{1}(:,1),...
+            time_unit, Data_BPM_summary.peak_distance_with_running_index{kk}(:,1),...
             DataInfo.measurement_time.datetime(1));
         [data_converted, ~] = ...
             create_data_and_ylabel_text_for_peak_analysis_plot(...
-            Data_BPM_summary.peak_distance_with_running_index{1}(:,2),...
+            Data_BPM_summary.peak_distance_with_running_index{kk}(:,2),...
             y_unit, normalizing_y_indexes);
     end        
    
+    % plot(timep, data_converted,'o'), 
     plot(timep, data_converted,'.-'), 
+
     
 end
 ylabel(ylabel_text), % title(tittext)
 xlabel(xlabel_text)
 % for hypoxia line, use
 [time_o2, ~] = choose_timep_unit(time_unit,DataInfo);
-
 plot_hypoxia_line(time_o2, data_converted, DataInfo)
 
     
