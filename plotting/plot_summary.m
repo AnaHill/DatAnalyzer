@@ -223,7 +223,7 @@ if normalizing == 1
         plot_hypoxia_line(timep, dat, DataInfo)
         ylim([0 Inf])
     end
-legend(dataplots,legs, 'interpreter','none','location','best')
+    legend(dataplots,legs, 'interpreter','none','location','best')
 
     subplot(how_many_different_data,1,how_many_different_data)
     % calculate FPDc (or FPD)
