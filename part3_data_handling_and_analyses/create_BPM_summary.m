@@ -153,21 +153,24 @@ for file_index = 1:DataInfo.files_amount
 end
 
 % Include peak distance matrix
-if ~isfield(Data_BPM_summary,'peak_distance_with_running_index')
+field = 'peak_distance_with_running_index';
+if ~isfield(Data_BPM_summary,field)
     Data_BPM_summary = include_peak_distance_matrix_to_Data_BPM_summary(...
         [], chosen_datacol_indexes, Data_BPM, Data_BPM_summary, DataInfo);
-else % ask if exist
+    disp('Data_BPM_summary.peak_distance_with_running_index created.')
+else % ask if field exists
     answer = questdlg([...
         'Data_BPM_summary.peak_distance_with_running_index exists.',10, ...
         'Do you want to overwrite it?'],'Overwriting?','Yes','No','Yes');
     switch answer
         case 'Yes'
+            Data_BPM_summary = rmfield(Data_BPM_summary,field);
             Data_BPM_summary = include_peak_distance_matrix_to_Data_BPM_summary(...
                 [], chosen_datacol_indexes, Data_BPM, Data_BPM_summary, DataInfo);
+            disp('Data_BPM_summary.peak_distance_with_running_index updated.')
         otherwise
-            disp('Data_BPM_summary.peak_distance_with_running_index NOT updated.')
+            disp('NOT updating Data_BPM_summary.peak_distance_with_running_index.')
     end
-    
 end
 
 
