@@ -43,25 +43,22 @@ end
 if nargin < 2 || isempty(chosen_datacol_indexes)
    chosen_datacol_indexes = 1:length(DataInfo.datacol_numbers);
 end
-
+%%%%
 
 
 ind_col = chosen_datacol_indexes; 
 % Amount of peaks and BPM avg
 for kk = 1:DataInfo.files_amount
-    
     if ~isfield(Data_BPM{kk,1},'Amount_of_peaks')
-        %TODO: check that this is good and works in later analysis stages
         Data_BPM_summary.Amount_of_peaks(kk,:) = nan(1,length(DataInfo.datacol_numbers));
         Data_BPM_summary.BPM_avg(kk,:) = nan(1,length(DataInfo.datacol_numbers))';
         Data_BPM_summary.BPM_avg_stdpros(kk,:) = nan(1,length(DataInfo.datacol_numbers));
         for pp = 1:length(ind_col)
             ind = ind_col(pp);
-            Data_BPM{kk,1}.peak_values{ind,1} = nan; % nan(1,length(DataInfo.datacol_numbers));
+            Data_BPM{kk,1}.peak_values{ind,1} = nan; 
             Data_BPM{kk,1}.peak_locations{ind,1} = nan;
         end
     else
-        % disp(['kk  = ', num2str(kk)])   
         Data_BPM_summary.Amount_of_peaks(kk,:) = Data_BPM{kk,1}.Amount_of_peaks(:)';
         Data_BPM_summary.BPM_avg(kk,:) = Data_BPM{kk,1}.BPM_avg(:)';
         dt = Data_BPM{kk,1}.peak_avg_distance_in_ms;
@@ -73,13 +70,11 @@ for kk = 1:DataInfo.files_amount
     clear d ds dt d2
 end
 
-%% BPM_Amplitudes and peak widths
+% BPM_Amplitudes and peak widths
 for kk = 1:DataInfo.files_amount
     % disp(['kk  = ', num2str(kk)])        
     for pp = 1:length(ind_col)
         ind = ind_col(pp);
-        % TODO: tarkista että oikein kun säädett 2022/04
-        %disp(['row kk  = ', num2str(kk),', col(',num2str(pp)',') = ',num2str(ind)])        
         Data_BPM_summary.peak_values(kk,:) = Data_BPM{kk, 1}.peak_values(:)';
         Data_BPM_summary.peak_locations(kk,:) = Data_BPM{kk, 1}.peak_locations(:)';
         try
@@ -101,14 +96,17 @@ for kk = 1:DataInfo.files_amount
         end
     end
 end
-%% Normalizing amplitudes and BPM
-Data_BPM_summary.Amplitude_norm = ...
-    Data_BPM_summary.Amplitude_avg ./ nanmean(Data_BPM_summary.Amplitude_avg(normalizing_indexes,:),1);
+% Normalizing amplitudes and BPM
+Data_BPM_summary.Amplitude_norm = Data_BPM_summary.Amplitude_avg ./ ...
+    nanmean(Data_BPM_summary.Amplitude_avg(normalizing_indexes,:),1);
 
-Data_BPM_summary.BPM_norm = ...
-    Data_BPM_summary.BPM_avg ./ nanmean(Data_BPM_summary.BPM_avg(normalizing_indexes,:),1);
+Data_BPM_summary.BPM_norm = Data_BPM_summary.BPM_avg ...
+     ./ nanmean(Data_BPM_summary.BPM_avg(normalizing_indexes,:),1);
 
-%% calculate peak distances
+% Add normalizing indexes
+Data_BPM_summary.normalizing_indexes = normalizing_indexes;
+
+% calculate peak distances
 disp([' '])
 for file_index = 1:DataInfo.files_amount
 %     index = filenumbers(pp);
@@ -126,7 +124,7 @@ for file_index = 1:DataInfo.files_amount
                 diff(Data_BPM{file_index, 1}.peak_locations{col_index})/...
                 fs*1e3;
         catch
-            disp(['Error in peak distance in: file index#',num2str(file_index),...
+            disp(['Error in peak distance in file index#',num2str(file_index),...
                 ' col#',num2str(col_index)])
             disp('Setting now to zero')
             Data_BPM{file_index, 1}.peak_locations{file_index,col_index} = [NaN];
@@ -139,7 +137,7 @@ for file_index = 1:DataInfo.files_amount
     end
 
 end
-%% Calculate avg and std peak distances
+% Calculate avg and std peak distances
 for file_index = 1:DataInfo.files_amount
     disp(['Calculating average peak distances in file#',...
         num2str(file_index),'/',num2str(DataInfo.files_amount)])
@@ -154,6 +152,23 @@ for file_index = 1:DataInfo.files_amount
 
 end
 
+% Include peak distance matrix
+if ~isfield(Data_BPM_summary,'peak_distance_with_running_index')
+    Data_BPM_summary = include_peak_distance_matrix_to_Data_BPM_summary(...
+        [], chosen_datacol_indexes, Data_BPM, Data_BPM_summary, DataInfo);
+else % ask if exist
+    answer = questdlg([...
+        'Data_BPM_summary.peak_distance_with_running_index exists.',10, ...
+        'Do you want to overwrite it?'],'Overwriting?','Yes','No','Yes');
+    switch answer
+        case 'Yes'
+            Data_BPM_summary = include_peak_distance_matrix_to_Data_BPM_summary(...
+                [], chosen_datacol_indexes, Data_BPM, Data_BPM_summary, DataInfo);
+        otherwise
+            disp('Data_BPM_summary.peak_distance_with_running_index NOT updated.')
+    end
+    
+end
 
 
 end
