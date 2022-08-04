@@ -2,7 +2,7 @@ function plot_peak_distance_matrix(y_unit, time_unit, ...
     normalizing_y_indexes, hfig, shift_time_seconds,...
     datacolumn_indexes, Data_BPM_summary, DataInfo)
 % function plot_peak_distance_matrix(y_unit, time_unit, ...
-%     normalizing_y_indexes, hfig, ...
+%     normalizing_y_indexes, hfig, shift_time_seconds,...
 %     datacolumn_indexes, Data_BPM_summary, DataInfo)
 % possible y_unit: 
     % BPM, frequency, peak_distance_in_milliseconds, peak_distance_in_seconds
@@ -69,13 +69,27 @@ end
 % empty normaling if any index is 0 or below
 if ~isempty(normalizing_y_indexes)
     if any(normalizing_y_indexes <= 0)
+        disp(['Not proper normalizing indexes given: ', ...
+            num2str(normalizing_y_indexes)])
+        disp('-> using absolut values, no normalizing')
         normalizing_y_indexes = [];
     end
 end
 % Plot: default plot in new figure
 if nargin < 4 || isempty(hfig)
     disp('Create new full size figure.')
-    fig_full   
+    fig_full 
+    legs = {};
+    dataplots = [];
+else
+    try
+        leg_prev = get(gca,'Legend');
+        legs = leg_prev.String;
+        dataplots = get(gca,'Children');
+    catch
+       legs = {}; 
+       dataplots = [];
+    end
 end
 % default: not sgifting
 if nargin < 5 || isempty(shift_time_seconds)
@@ -90,18 +104,21 @@ hold all
 sgtitle([DataInfo.experiment_name,': ', DataInfo.measurement_name],...
     'interpreter','none')
 % legend
-legs = {};
+% legs = {};
 for col_index = datacolumn_indexes
+    % legs this way row as above you will get legends as a row when calling 
+    % leg_prev = get(gca,'Legend'); legs = leg_prev.String;
     try
-        legs{end+1,1} = ['MEA ele#',...
+        legs{end+1} = ['MEA ele#',...
             num2str(DataInfo.MEA_electrode_numbers(col_index))];
     catch
-        legs{end+1,1} = ['Datacolumn#',num2str(col_index)];
+        legs{end+1} = ['Datacolumn#',num2str(col_index)];
     end
 end
-dataplots = [];
+% dataplots = [];
 
-for kk = 1:length(datacolumn_indexes)
+% for kk = 1:length(datacolumn_indexes)
+for kk = datacolumn_indexes
     % x-axis
     [timep, xlabel_text] = convert_seconds_to_different_time_units(...
         time_unit, Data_BPM_summary.peak_distance_with_running_index{kk}(:,1),...
