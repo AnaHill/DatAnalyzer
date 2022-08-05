@@ -15,33 +15,40 @@ if nargin < max_inputs || isempty(Data)
     try
         Data = evalin('base', 'Data');
     catch
-        error('No proper Data given or found.')
+        error('No proper Data given or found from workspace.')
     end
 end
 
+file_indexes = sort(unique(file_indexes));
+column_indexes = sort(unique(column_indexes));
+disp(['Removing following data from Data variable'])
+disp(['File indexes: ', num2str(file_indexes)])
+disp(['Data column indexes: ', num2str(column_indexes)])
 
 % removing data
 try
-    if strcmp(remove_whole_file,'yes')
-        for file_ind = file_indexes
+    for file_ind = file_indexes
+        if strcmp(remove_whole_file,'yes') || ...
+                isequal(column_indexes,1:length(Data{file_ind}.data(1,:)))  
+            % if deleting every column, empty whole cell
             Data{file_ind} = [];
+        else % remove chose datacolumns
+            Data{file_ind}.data(:,column_indexes) = [];
         end
-        % https://se.mathworks.com/matlabcentral/answers/27042-how-to-remove-empty-cell-array-contents
-        Data = Data(~cellfun('isempty',Data));
     end
-    for f_ind = file_indexesremove_whole_file
-    
-    end
+    % remove empty cells in Data
+    % https://se.mathworks.com/matlabcentral/answers/27042-how-to-remove-empty-cell-array-contents
+    Data = Data(~cellfun('isempty',Data));
 catch
    error('Check file and column indexes that should be removed.') 
 end
 
 
-% update file index in each Data{}
+% update file index in each cell in Data
 for ind = 1:length(Data)
    Data{ind,1}.file_index =  ind;
 end
 
-
+disp(['Data variable updated'])
 
 end
