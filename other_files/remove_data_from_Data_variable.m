@@ -25,6 +25,13 @@ disp(['Removing following data from Data variable'])
 disp(['File indexes: ', num2str(file_indexes)])
 disp(['Data column indexes: ', num2str(column_indexes)])
 
+% check file_indexes; should not be below one or larger than amount of cells in Data
+if any(file_indexes < 1) || any(file_indexes > length(Data))
+    error('Check file indexes!')
+end
+if any(column_indexes < 1) 
+    error('Check column indexes!')
+end
 % removing data
 try
     for file_ind = file_indexes
