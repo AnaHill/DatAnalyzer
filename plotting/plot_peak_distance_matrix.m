@@ -153,6 +153,6 @@ end
 try
     xlim([0 Inf])
 catch
-    xlim([0 max(timep)])
+    xlim([min(timep) max(timep)])
 end
 end
