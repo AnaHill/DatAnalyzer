@@ -1,8 +1,8 @@
 function DataInfo = update_DataInfo(DataInfo)
-%% Update DataInfo: update_DataInfo.m
+% Update DataInfo: update_DataInfo.m
 % .file_names = file names 
 % .datacol_numbers  = datacolumn number, for MEA from raw data datacolumn numbers taken
-% .datacol_names = naming thse datacolumns
+% .datacol_names = naming these datacolumns
 % .measurement.time.names = adding "measurement name" for legend purposes
 narginchk(0,1)
 nargoutchk(0,1)
