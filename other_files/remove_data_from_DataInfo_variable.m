@@ -114,8 +114,15 @@ if strcmp(remove_whole_file,'no') && strcmp(remove_whole_datacolumn,'no')
     end
 end
 
-%%
+%% if removing full file(s)
 if strcmp(remove_whole_file,'yes')
+    if isfield(DataInfo, 'hypoxia') 
+        % take original hypoxia times to calculate later new times and indexes
+        hps_datetime = DataInfo.measurement_time.datetime(1) + ...
+            seconds(DataInfo.hypoxia.start_time_sec);
+        hpe_datetime = DataInfo.measurement_time.datetime(1) + ...
+            seconds(DataInfo.hypoxia.end_time_sec);
+    end
     DataInfo = rmfield(DataInfo,'measurement_time');
     for index = 1:DataInfo.files_amount
         datetime  = convert_end_string_in_filename_to_datetime...
@@ -134,6 +141,19 @@ if strcmp(remove_whole_file,'yes')
     % after DataInfo.measurement_time.time_sec is created, update field .names
     DataInfo = create_time_names_for_DataInfo(DataInfo);
     % .measurement.time.names = adding "measurement name" for legend purposes
+    
+    % Update DataInfo.hypoxia if exist: only when full file(s) is/are removed
+    if isfield(DataInfo, 'hypoxia')
+        new_datetime = DataInfo.measurement_time.datetime;
+        DataInfo.hypoxia.start_time_sec = seconds(hps_datetime - new_datetime(1));
+        DataInfo.hypoxia.start_time_index = find(new_datetime >= hps_datetime,1);
+        DataInfo.hypoxia.end_time_sec = seconds(hpe_datetime - new_datetime(1)); 
+        DataInfo.hypoxia.end_time_index = find(new_datetime < hpe_datetime,1,'last');
+        % Update hypoxia names
+        DataInfo = set_hypoxia_time_names(DataInfo);
+        disp('DataInfo.hypoxia updated.')
+    end
+    
 end
 
 
