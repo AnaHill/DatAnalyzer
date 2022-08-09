@@ -78,7 +78,7 @@ end
 % Plot: default plot in new figure
 if nargin < 4 || isempty(hfig)
     disp('Create new full size figure.')
-    fig_full 
+    fig_full
     legs = {};
     dataplots = [];
 else

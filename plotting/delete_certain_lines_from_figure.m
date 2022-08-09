@@ -19,7 +19,7 @@ for pp = 1:length(fig_parameters.Children)
          delete(gca.Children(end-linenumbers_to_delete+1)), 
          if strcmp(gca.YLimMode,'auto')
             ylim('auto')
-         else % e.g. normalized figure
+         else % TODO: e.g. normalized figure
              
          end
     end
