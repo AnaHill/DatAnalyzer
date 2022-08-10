@@ -107,7 +107,18 @@ end
 Data_BPM_summary.irregular_beating_table = index_irregular_beating...
     (DataInfo, Data_BPM_summary, DataInfo.irregular_beating_limit);
 sort(unique(Data_BPM_summary.irregular_beating_table.File_index ))
-check_and_plot_irregular_data
+[irregular_file_indexes, irregular_datacolumn_indexes] = ...
+    check_irregular_data(Data_BPM_summary);
+% plot summary of irregular beating files
+plot_summary_of_irregular_data(irregular_file_indexes, ...
+    irregular_datacolumn_indexes)
+% plot individual irregular data
+plot_files_with_irregular_beating(irregular_file_indexes,irregular_datacolumn_indexes)
+% if choose some
+file_indexes = [1,5,length(irregular_file_indexes)];
+% plot_files_with_irregular_beating(irregular_file_indexes(file_indexes),irregular_datacolumn_indexes)
+plot_files_with_irregular_beating(irregular_file_indexes(file_indexes),...
+    irregular_datacolumn_indexes(file_indexes))
 %% plot same data
 time=DataInfo.measurement_time.datetime;
 data = Data_BPM_summary.Amplitude_avg;
