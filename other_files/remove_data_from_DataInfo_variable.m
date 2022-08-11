@@ -150,15 +150,12 @@ if strcmp(remove_whole_file,'yes')
         DataInfo.hypoxia.end_time_sec = seconds(hpe_datetime - new_datetime(1)); 
         DataInfo.hypoxia.end_time_index = find(new_datetime < hpe_datetime,1,'last');
         % Update hypoxia names
-        DataInfo = set_hypoxia_time_names(DataInfo);
+        DataInfo = create_hypoxia_time_names(DataInfo);
         disp('DataInfo.hypoxia updated.')
     end
     
 end
 
-
-
-
-disp(['DataInfo variable updated'])
+disp('DataInfo variable updated')
 
 end

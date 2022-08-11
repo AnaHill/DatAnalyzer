@@ -46,7 +46,6 @@ DataInfo.hypoxia.end_time_index = hpe;
 DataInfo.hypoxia.start_time_sec = tm(hps)*3600;
 DataInfo.hypoxia.end_time_sec = tm(hpe)*3600;
 % Update hypoxia names
-DataInfo = set_hypoxia_time_names(DataInfo);
-
+DataInfo = create_hypoxia_time_names(DataInfo);
 
 end
