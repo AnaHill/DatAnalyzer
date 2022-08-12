@@ -26,7 +26,7 @@ if nargin < 5 || isempty(DataInfo)
     end
 end
 
-if nargin < 4 || isempty(filenumbers)
+if nargin < 3 || isempty(filenumbers)
     filenumbers = 1:DataInfo.files_amount; 
 end
 if nargin < 4 || isempty(datacolumns)
