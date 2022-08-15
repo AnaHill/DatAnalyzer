@@ -116,7 +116,12 @@ disp(['Data filtered: ',text_to_disp])
 
 % plot result if chosen
 if strcmp(plot_result,'yes')
-   fig_full, plot(data,'.'), hold all
+   try 
+       fig_full
+   catch
+       figure
+   end
+   plot(data,'.'), hold all
    hold all, set(gca,'ColorOrderIndex',1),
    plot(data_filtered, 'linewidth',1)
    title(text_to_disp,'interpreter','none'), 
