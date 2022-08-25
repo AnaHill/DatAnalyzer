@@ -1,5 +1,5 @@
-function found_indexes = find_first_index_where_data_reach_threshold(data,threshold_values,...
-    larger_or_smaller)
+function found_indexes = find_first_index_where_data_reach_threshold...
+    (data,threshold_values,larger_or_smaller)
 % find_first_index_where_data_reach_threshold(data,threshold_values)
 % find_first_index_where_data_reach_threshold(data,threshold_values,'smaller')
 narginchk(2,3)
@@ -9,7 +9,7 @@ if nargin < 3 || isempty('larger_or_smaller')
     disp('Set level to find larger value than given threshold')
     larger_or_smaller = 'larger';
 end
-% assuming data column-ordered
+% assuming column-ordered data
 datacolumns_amount = length(data(1,:));
 if datacolumns_amount > length(threshold_values)
     threshold_values = threshold_values(1)*ones(1,datacolumns_amount);
