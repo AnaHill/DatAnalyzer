@@ -1,5 +1,6 @@
-function data_filtered = filter_data(data, fs, filter_type, filter_parameters,plot_result)
-% function data_filtered = filter_data(data, fs, filter_type, filter_parameters, plot_result)
+function data_filtered = filter_data(data, fs, filter_type, filter_parameters, ...
+    plot_result, print_filter)
+% function data_filtered = filter_data(data, fs, filter_type, filter_parameters, plot_result,print_filter)
 % assumes that each column in data is separate
 % filters; to add more filter options, see e.g. smoothdata options
 % https://se.mathworks.com/help/matlab/ref/smoothdata.html#bvhejau-method
@@ -31,7 +32,7 @@ function data_filtered = filter_data(data, fs, filter_type, filter_parameters,pl
 % lowpass_iir (default) and rlowess, e.g. compare with default values
 % data_filtered = filter_data(data, fs,[],[],'yes'); data_filtered = filter_data(data, fs,'rlowess',[],'yes');
 % axis([1000 1250 4e-4 5.5e-4]),  axis([700 900 6.3e-4 7.3e-4]), axis([600 2e3 1e-4 3e-4])
-narginchk(1,5)
+narginchk(1,6)
 nargoutchk(0,1)
 
 %% Check inputs and set parameters
@@ -84,6 +85,11 @@ if nargin < 5 || isempty(plot_result)
     plot_result = 'no';
 end
 
+% default: print/display filter parameters
+if nargin < 6 || isempty(print_filter)
+    print_filter = 'yes';
+end
+
 
 %% filtering data
 fp = filter_parameters; % shorter term for code below
@@ -111,8 +117,10 @@ switch filter_type
         text_to_disp = ['Smoothed with robust Lowess method (rlowess), window size: ',...
             num2str(windowsize)];
 end
-
-disp(['Data filtered: ',text_to_disp])
+if ~strcmp(print_filter,'no')
+    % if user has not specifically chosen not to display filter parameters
+    disp(['Data filtered: ',text_to_disp])
+end
 
 % plot result if chosen
 if strcmp(plot_result,'yes')
