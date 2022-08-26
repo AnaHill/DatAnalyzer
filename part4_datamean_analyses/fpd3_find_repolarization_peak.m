@@ -90,19 +90,4 @@ for file_ind = 1:length(DataPeaks_mean)
     end    
     
 end
-remove_other_variables_than_needed
-%% to plot some results
-% file_ind = 1; col_ind = 1; 
-% data = DataPeaks_mean{file_ind, 1}.data(DataPeaks_summary.peaks{col_ind}.firstp_loc(file_ind):end,col_ind); 
-% data_filtered = filter_data(data, fs, used_filter, ...
-%     filter_parameters,[],'no');
-% fp1=DataPeaks_summary.peaks{col_ind}.firstp_loc(file_ind) - start_index + 1;
-% fp1_val = DataPeaks_summary.peaks{col_ind}.firstp_val(file_ind);
-% fp2 = DataPeaks_summary.peaks{col_ind}.flatp_loc(file_ind) - start_index + 1;
-% fp2_val = DataPeaks_summary.peaks{col_ind}.flatp_val(file_ind);
-% fig_full, plot(data,'.-'), hold all, plot(data_filtered,'--')
-% % plot(fp1,fp1_val,'>','markersize', 30)
-% % plot(fp2,fp2_val,'v','markersize', 30,'color','k')
-% markersize_= 200;
-% scatter(fp1,fp1_val,markersize_,'filled','>')
-% scatter(fp2,fp2_val,markersize_,'filled', 'v')
+% remove_other_variables_than_needed
