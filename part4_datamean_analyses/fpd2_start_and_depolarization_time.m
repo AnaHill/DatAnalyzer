@@ -138,7 +138,7 @@ for file_ind = 1:length(DataPeaks_mean)
             % but original threshold_index used for DataPeaks_summary.fpd_start_index
             fpd_start_value = data_new(threshold_index_new);
             % calculate t_dep
-            peak_start_index = threshold_index + (threshold_index_new-1)/interpolation_gain;
+            peak_start_index = threshold_index - 1 + (threshold_index_new-1)/interpolation_gain;
             t_dep = abs(peak_start_index-peak_end_index)/fs;
         end
         interpolation_gain = interpolation_gain_org; % set original for the next round
@@ -147,10 +147,12 @@ for file_ind = 1:length(DataPeaks_mean)
             DataPeaks_summary.fpd_start_index(file_ind, col_ind) = threshold_index;
             DataPeaks_summary.fpd_start_value(file_ind, col_ind) = fpd_start_value;
             DataPeaks_summary.depolarization_time(file_ind,col_ind) = t_dep;
+            DataPeaks_summary.precise_fpd_start(file_ind,col_ind) = peak_start_index;
         catch
             DataPeaks_summary.fpd_start_index(file_ind, col_ind) = NaN;
             DataPeaks_summary.fpd_start_value(file_ind, col_ind) = NaN;
             DataPeaks_summary.depolarization_time(file_ind,col_ind) = NaN;
+            DataPeaks_summary.precise_fpd_start(file_ind,col_ind) = NaN;
         end
         
             
