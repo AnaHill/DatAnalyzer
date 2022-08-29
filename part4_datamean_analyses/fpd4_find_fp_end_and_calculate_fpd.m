@@ -1,3 +1,21 @@
+function DataPeaks_summary = fpd4_find_fp_end_and_calculate_fpd(...
+    start_index, end_index, ...
+    used_filter, filter_parameters,...
+    threshold_level_from_baseline, acceptable_threshold_change_ratio,...
+    DataInfo, DataPeaks_mean, DataPeaks_summary)
+% fpd calculation #4
+% finds signal end and calculates fpd
+% second (flat) peak used for initial starting point to define signal end
+% outcomes 
+    % DataPeaks_summary.fpd_end_index
+    % DataPeaks_summary.fpd_end_value
+    % DataPeaks_summary.precise_fpd_end_index
+    % DataPeaks_summary.fpd
+% Examples
+% with defaults: DataPeaks_summary = fpd3_find_repolarization_peak;
+max_inputs = 7;    
+narginchk(0,max_inputs)
+nargoutchk(0,1)
 % fpd4: finds signal end and calculates fpd
 % second (flat) peak used for initial starting point to define signal end
 % outcomes 
@@ -169,17 +187,16 @@ for file_ind = 1:length(DataPeaks_mean)
             DataPeaks_summary.fpd_end_index(file_ind, col_ind) = fpd_end_index;
             DataPeaks_summary.fpd_end_value(file_ind, col_ind) = fpd_end_value;
             DataPeaks_summary.fpd(file_ind, col_ind) = fp_duration;
-            DataPeaks_summary.precise_fpd_end(file_ind,col_ind) = fpd_end_index;
+            DataPeaks_summary.precise_fpd_end_index(file_ind,col_ind) = fpd_end_index;
         catch
             DataPeaks_summary.fpd_end_index(file_ind, col_ind) = NaN;
             DataPeaks_summary.fpd_end_value(file_ind, col_ind) = NaN;
             DataPeaks_summary.fpd(file_index, col_ind) = NaN;
-            DataPeaks_summary.precise_fpd_end(file_ind,col_ind) = NaN;
+            DataPeaks_summary.precise_fpd_end_index(file_ind,col_ind) = NaN;
         end
          clear start_index
     end % for col_ind
    
 end % for file_ind 
 disp('DataPeaks_summary fp end_index and fpd calculated.')
-remove_other_variables_than_needed    
-   
+end   
