@@ -1,38 +1,57 @@
-function [] = plot_signal_average(DataPeaks_mean, plot_confidence_level,...
-    confidence_level, file_index_to_analyze, datacolumns, plot_all_files_to_same)
-% function [] = plot_signal_average(DataPeaks_mean, plot_confidence_level,...
-%     confidence_level, file_index_to_analyze, datacolumns,plot_all_files_to_same)
+function [] = plot_signal_average(plot_confidence_level, confidence_level, ...
+    file_index_to_analyze, datacolumns, plot_all_files_to_same, DataPeaks_mean)
+% function [] = plot_signal_average(plot_confidence_level,confidence_level, ...
+%     file_index_to_analyze, datacolumns, plot_all_files_to_same, DataPeaks_mean)
+% plot_all_files_to_same: set 1 or 'yes' if all are plotted to same figure
+% Examples
+% plot randomly one file, all datacolumns, separate subplots: plot_signal_average,
+% above with 95% confidence level: plot_signal_average(1)
+% above with fileindex#3: plot_signal_average(1,[],3)
+% fileindexes #3&4 to same fig: plot_signal_average(0,[],[3,4],[],'yes')
+% For plotting confidence level, see 
+    % https://se.mathworks.com/matlabcentral/answers/414039-plot-confidence-interval-of-a-signal?s_tid=answers_rc1-2_p2_MLT
+    % Calculate 95% Confidence Intervals Of All Experiments At Each Value Of ‘x’
+    % yCI95 = bsxfun(@times, ySEM', CI95(:));
+    % x_plott = [1:size(dat,1) fliplr(1:size(dat,1))];
+    % y_plott = [(yCI95(2,:)+a1') fliplr(yCI95(1,:)+a1')];
+% and plotting confidence with fill
+    % https://se.mathworks.com/matlabcentral/answers/425206-plot-of-confidence-interval-with-fill
+
+max_inputs = 6;    
 narginchk(0,6)
 nargoutchk(0,0)
-
-if nargin < 1 || isempty(DataPeaks_mean) 
+%%%%%%%%%%%
+if nargin < max_inputs || isempty(DataPeaks_mean) 
     try
         DataPeaks_mean = evalin('base','DataPeaks_mean');
     catch
         error('No DataPeaks_mean found')
     end
 end
-
+try
+    DataInfo = evalin('base','DataInfo');
+catch
+    error('No DataInfo')
+end
+%%%% defaults
 % default: not plotting confidence level
-if nargin < 2 || isempty(plot_confidence_level) 
+if nargin < 1 || isempty(plot_confidence_level) 
     plot_confidence_level = 0;
 end
 
 % Default: 95% condifence level calculated with 1.96*SD (normal distribution)
-if nargin < 3 || isempty(confidence_level) 
-    % confidence_level = 95;
+if nargin < 2 || isempty(confidence_level) 
     confidence_level = 1.96;
 end
 
 % default: random plot if file_index_to_analyze not given
-if nargin < 4 || isempty(file_index_to_analyze) 
+if nargin < 3 || isempty(file_index_to_analyze) 
     file_index_to_analyze = randi([1 length(DataPeaks_mean)],1);
     disp(['Plotting randomly file#',num2str(file_index_to_analyze)])
 else
     file_index_to_analyze = unique(sort(file_index_to_analyze));
     disp(['Plotting file(s)# ',num2str(file_index_to_analyze)])
 end
-
 if length(file_index_to_analyze) > 15
     amount_figs = length(file_index_to_analyze);
     answer = questdlg(['Are you sure you want to plot all ',...
@@ -45,23 +64,19 @@ if length(file_index_to_analyze) > 15
             return
     end
 end
-try
-    DataInfo = evalin('base','DataInfo');
-catch
-    error('No DataInfo')
-end
 % default: all datacolumns plotted
-if nargin < 5 || isempty(datacolumns) 
+if nargin < 4 || isempty(datacolumns) 
     datacolumns = 1:length(DataInfo.datacol_numbers);
 end
 
 % default: not plotting all files to same
-if nargin < 6 || isempty(plot_all_files_to_same)
+if nargin < 5 || isempty(plot_all_files_to_same)
     plot_all_files_to_same = 0;
 end
-
-
-if plot_all_files_to_same ~= 0
+% if plot_all_files_to_same is anything else than 1 or 'yes', do not plot to same
+if ~(any(plot_all_files_to_same == 1) || strcmp(plot_all_files_to_same,'yes'))
+    plot_all_files_to_same = 0;
+else
     plot_all_files_to_same = 1;
 end
 
@@ -105,10 +120,7 @@ for kk = 1:length(file_index_to_analyze)
             plot_mean = plot(time, dat.data(:,col),'linewidth',1); hold on
         end
         
-        % plotting confidence level
-        % https://se.mathworks.com/matlabcentral/answers/414039-plot-confidence-interval-of-a-signal?s_tid=answers_rc1-2_p2_MLT
-        % Confidence with fill
-        % https://se.mathworks.com/matlabcentral/answers/425206-plot-of-confidence-interval-with-fill
+        % plotting confidence level; see link provided at start
         if  plot_confidence_level ~= 0
             hold on,
             N = dat.N(1,col);
