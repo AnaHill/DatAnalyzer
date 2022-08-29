@@ -36,7 +36,6 @@ end
 if length(filter_parameters) == 1
     filter_parameters(2) = 0.95; % default iir steepness, see filter_data function
 end
-
 if nargin < 5 || isempty(threshold_level_from_baseline)
     % using default 10% to mark as threshold
    threshold_level_from_baseline = 0.1; % equals 10%
@@ -46,6 +45,7 @@ if nargin < 6 || isempty(acceptable_threshold_change_ratio)
     % using default 0.10% as acceptable level when fp-start it estimated 
    acceptable_threshold_change_ratio = 0.001; % equals 0.10%
 end
+
 
 % reading from workspace if not given: DataInfo, DataPeaks_mean, DataPeaks_summary)
 if nargin < max_inputs - 2 || isempty(DataInfo)
