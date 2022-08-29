@@ -5,55 +5,59 @@ function DataPeaks_summary = fpd4_find_fp_end_and_calculate_fpd(...
     DataInfo, DataPeaks_mean, DataPeaks_summary)
 % fpd calculation #4
 % finds signal end and calculates fpd
-% second (flat) peak used for initial starting point to define signal end
+% default: second (flat) peak used for initial starting point to define signal end
 % outcomes 
     % DataPeaks_summary.fpd_end_index
     % DataPeaks_summary.fpd_end_value
     % DataPeaks_summary.precise_fpd_end_index
     % DataPeaks_summary.fpd
 % Examples
-% with defaults: DataPeaks_summary = fpd3_find_repolarization_peak;
-max_inputs = 7;    
+% with defaults: DataPeaks_summary = fpd4_find_fp_end_and_calculate_fpd;
+max_inputs = 9;    
 narginchk(0,max_inputs)
 nargoutchk(0,1)
-% fpd4: finds signal end and calculates fpd
-% second (flat) peak used for initial starting point to define signal end
-% outcomes 
-    % DataPeaks_summary.fpd_end_index
-    % DataPeaks_summary.fpd_end_value
-    % DataPeaks_summary.precise_fpd_end
-    % DataPeaks_summary.fpd
 
-% if these are empty, finding fpd end between
+
+% default: if these are empty, finding fpd end between
 % DataPeaks_summary.peaks.flatp_loc and signal end
-% start_index = []; 
-% end_index = []; 
-if ~exist('end_index','var') || isempty(end_index)
-    end_index = NaN; % default: end of the signal
+if nargin < 1 || isempty(start_index)
+    start_index = nan;
+end
+if nargin < 2 || isempty(end_index) 
+    end_index = nan; 
 end
 
-filter_options = {'lowpass_iir','rlowess'}; 
-if ~exist('filter_parameters','var') 
-    filter_parameters = []; % using default filter parameters 
-    used_filter = filter_options{1}; % using lowpass_iir
-end    
+if ~isnan(all(start_index)) && length(start_index) > 1
+   start_index = start_index(1);
+   disp(['Set starting index to first start_index(1) = ', num2str(start_index)])
+end
+% filter; default is lowpass IIR filter at 200Hz with Steepness 0.95
+if nargin < 3 || isempty(used_filter) 
+    used_filter = 'lowpass_iir'; % default filter for fp-start
+end
+if nargin < 4 || isempty(filter_parameters)
+    fs_low_freq = 200; % lowpass frequency level, typically used for fp-end
+    filter_parameters = [fs_low_freq, 0.95];
+end
+if length(filter_parameters) == 1
+    filter_parameters(2) = 0.95; % default iir steepness, see filter_data function
+end  
 
-if ~exist('threshold_level_from_baseline','var') 
-    threshold_level_from_baseline = 0.10; % using default = 10%
+if nargin < 5 || isempty(threshold_level_from_baseline)
+    % using default 10% to mark as threshold
+   threshold_level_from_baseline = 0.1; % equals 10%
 end
 
-% if 0.1% or more change around threshold, interpolate more points
-if ~exist('ratio_threshold','var') || isempty(ratio_threshold)
-    ratio_threshold = 0.1;
+if nargin < 6 || isempty(acceptable_threshold_change_ratio)
+    % using default 0.10% as acceptable level when fp-start it estimated 
+   acceptable_threshold_change_ratio = 0.001; % equals 0.10%
 end
 
-% interpolation gain; how many times data is divided into smaller parts
-if ~exist('interpolation_gain','var') || isempty(interpolation_gain)
-    interpolation_gain = 100;
-end
+% if interpolation is needed, in how many subindexes or orignal index interval is divided into
+interpolation_gain = 100; 
 
 for file_ind = 1:length(DataPeaks_mean)
-    disp(['Finding fpd end and calculate total fpd time, file#',...
+    disp(['Finding fp end and calculate fp-signal time (=fpd), file#',...
         num2str(file_ind),'/',num2str(length(DataPeaks_mean))])
     for col_ind = 1:length(DataInfo.datacol_numbers)
         %%
@@ -62,45 +66,52 @@ for file_ind = 1:length(DataPeaks_mean)
         catch
             fs = DataInfo.framerate(file_ind); % each datacolumn has same fs
         end
-        % starting from DataPeaks_summary.peaks{col_ind}.flatp_loc 
-        try
+        if isnan(start_index)
+            % starting from DataPeaks_summary.peaks{col_ind}.flatp_loc 
             start_index = DataPeaks_summary.peaks{col_ind}.flatp_loc(file_ind);
             % disp(['Set start_index to flatpeak index: ',num2str(start_index)])
-        catch
-            start_index = 1;
-            disp('Set start_index to one.')
         end
         
-        % if ending index is not given, take end of data
-        
-        if  ~exist('end_index','var') || isempty(end_index) || isnan(end_index)
+        if isnan(end_index)
+            % if ending index is not given, take end of data
             data = DataPeaks_mean{file_ind, 1}.data(start_index:end,col_ind);
-            end_index_for_search = length(data);
+            end_index = length(data)+start_index-1;
         else
             data = DataPeaks_mean{file_ind, 1}.data(start_index:end_index,col_ind);
-            end_index_for_search = end_index-start_index+1;
         end
         
-        start_index_for_search = 1; % filtered data started from start_index
-        % filtering
-        data_filtered = filter_data(data, fs, used_filter, ...
-            filter_parameters,[],'no');
-        % fig_full, plot(data,'.-'), hold all, plot(data_filtered,'--'),
+        % now data is only from start_index to end, 
+        % i.e. data(1) = DataPeaks_mean{file_ind, 1}.data(start_index)
+        % filter_data(data, fs, filter_type, filter_parameters, plot_result,print_filter)
+        data_filtered = filter_data(data, fs, used_filter, filter_parameters,'no','no');  
         data_current = data_filtered;
-        % calculate baseline 
-        datapoints_for_baseline = round...
-            (fs/4*abs(DataPeaks.time_range_from_peak(1)));
-        baseline_value = median(DataPeaks_mean{file_ind, 1}.data...
-            (1:datapoints_for_baseline,col_ind));
         
-        % calculate threshold value which used to find fpd end
-        try
-            peak_value = DataPeaks_summary.peaks{col_ind}.flatp_val(file_ind);
-            % disp(['Use found flatpeak value as peak: ',num2str(peak_value)])
-        catch
-            peak_value = max(data_current);
-            disp(['Set maximum of data as peak value: ',num2str(peak_value)])
+        % calculate baseline
+        datapoints_for_baseline = round(fs/4*abs(...
+            DataPeaks_mean{file_ind, 1}.time_range_from_peak(1)));
+        baseline_value = median(data_current(1:datapoints_for_baseline));
+        
+        % calculate threshold value which used to find fpd start
+        peak_index = end_index-start_index+1;
+        peak_value = data(peak_index);
+        threshold_value = calculate_threshold_value(peak_value, ...
+            baseline_value, threshold_level_from_baseline);
+        %% uusia, muuta
+        
+        % find location where data reach threshold_value
+        if peak_value < threshold_value
+            % if threshold higher than peak  
+            % -> find location where data sink below threshold
+            threshold_index = find_first_index_where_data_reach_threshold...
+                (data_current,threshold_value,'smaller');
+        else
+            % find when data rise above threshold value
+            threshold_index = find_first_index_where_data_reach_threshold...
+                (data_current, threshold_value,'larger');
         end
+        %%
+        % calculate threshold value which used to find fpd end
+
         
         threshold_value = calculate_threshold_value(peak_value, ...
             baseline_value, threshold_level_from_baseline);
@@ -115,7 +126,7 @@ for file_ind = 1:length(DataPeaks_mean)
             threshold_index = find_first_index_where_data_reach_threshold...
                 (data_current, threshold_value,'larger');
         end
-
+        %%
         % calculate fpd_start_value and t_dep, 
         % these will be updated later if interpolation needed 
         fpd_end_index = threshold_index + start_index-1;
