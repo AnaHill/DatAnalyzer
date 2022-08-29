@@ -1,4 +1,4 @@
-function [DataPeaks_mean] = get_peak_signal_average(DataPeaks,...
+function DataPeaks_mean = get_peak_signal_average(DataPeaks,...
     remove_percent_from_average, file_index_to_analyze, datacolumns)
 % function [PeakSignals_mean] = get_peak_signal_average(Data_PeakSignals,...
 %     remove_percent_from_average, file_index_to_analyze, datacolumns)
@@ -82,34 +82,21 @@ for kk = 1:length(file_index_to_analyze)
                     ' peaks found,  keep all signals'])
             end      
         end
-        % a1 = nanmean(dat,2); a1std = nanstd(dat,0,2);
-        % fs = DataInfo.framerate(1);time=0:1/fs:(length(a1)-1)/fs; 
-        % fig_full,subplot(211),plot(time,dat),axis tight,subplot(212),errorbar(time,a1,a1std),axis tight
-        
         % calculating average, std, confidence intervals
-        % when possible signals are removed
         N = size(dat,2); 
         DataPeaks_mean{file_index,1}.N(1,col) = N;
         DataPeaks_mean{file_index,1}.data(:,col) = nanmean(dat,2);
         DataPeaks_mean{file_index,1}.data_std(:,col) = nanstd(dat,0,2); 
         % confidence interval, see
-        % https://se.mathworks.com/matlabcentral/answers/414039-plot-confidence-interval-of-a-signal?s_tid=answers_rc1-2_p2_MLT
         % Calculate 95% Probability Intervals Of t-Distribution
         DataPeaks_mean{file_index,1}.CI95(:,col) = tinv([0.025 0.975], N-1);    
         DataPeaks_mean{file_index,1}.CI99(:,col) = tinv([0.005 0.995], N-1);        
-        
+        DataPeaks_mean{file_index,1}.time_range_from_peak = DataPeaks.time_range_from_peak;
         % UPDATE 2021/06: YSEM not anymore calculated
         % Compute ‘Standard Error Of The Mean’ Of All Experiments At Each Value Of ‘x’
         % DataPeaks_mean{file_index,1}.ySEM(:,col) = nanstd(dat,0,2)/sqrt(N);
 
-        
-        % confidence levels are not now calculated
-            % see plot_signal_average.m
-        % https://se.mathworks.com/matlabcentral/answers/425206-plot-of-confidence-interval-with-fill 
-        % Calculate 95% Confidence Intervals Of All Experiments At Each Value Of ‘x’
-        % yCI95 = bsxfun(@times, ySEM', CI95(:));  
-        % x_plott = [1:size(dat,1) fliplr(1:size(dat,1))];
-        % y_plott = [(yCI95(2,:)+a1') fliplr(yCI95(1,:)+a1')];
+        % confidence levels are not now calculated, see plot_signal_average.m
         
         
     end
