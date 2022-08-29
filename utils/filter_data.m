@@ -135,7 +135,7 @@ if strcmp(plot_result,'yes')
    title(text_to_disp,'interpreter','none'), 
    zoom on
    axis tight
-   xlabel('Index')
+   xlabel('Data index')
    ylabel('Value')
 end
 
