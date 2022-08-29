@@ -30,7 +30,7 @@ function data_filtered = filter_data(data, fs, filter_type, filter_parameters, .
 % data_filtered = filter_data(data, fs,'rlowess',[],'yes'); Smoothdata with rlowess method chosen.
 % for fpd analysis, best filters seem to be 
 % lowpass_iir (default) and rlowess, e.g. compare with default values
-% data_filtered = filter_data(data, fs,[],[],'yes'); data_filtered = filter_data(data, fs,'rlowess',[],'yes');
+% data_filtered = filter_data(data,fs,[],[],'yes'); data_filtered = filter_data(data, fs,'rlowess',[],'yes');
 % axis([1000 1250 4e-4 5.5e-4]),  axis([700 900 6.3e-4 7.3e-4]), axis([600 2e3 1e-4 3e-4])
 narginchk(1,6)
 nargoutchk(0,1)
@@ -85,9 +85,9 @@ if nargin < 5 || isempty(plot_result)
     plot_result = 'no';
 end
 
-% default: print/display filter parameters
+% default: not print/display filter parameters
 if nargin < 6 || isempty(print_filter)
-    print_filter = 'yes';
+    print_filter = 'no';
 end
 
 
