@@ -1,5 +1,5 @@
 function DataPeaks_summary = fpd4_find_fp_end_and_calculate_fpd(...
-    start_index, end_index, ...
+    starting_index, end_index, ...
     used_filter, filter_parameters,...
     threshold_level_from_baseline, acceptable_threshold_change_ratio,...
     DataInfo, DataPeaks_mean, DataPeaks_summary)
@@ -20,16 +20,16 @@ nargoutchk(0,1)
 
 % default: if these are empty, finding fpd end between
 % DataPeaks_summary.peaks.flatp_loc and signal end
-if nargin < 1 || isempty(start_index)
-    start_index = nan;
+if nargin < 1 || isempty(starting_index)
+    starting_index = nan; % when nan, starting from DataPeaks_summary.peaks.flatp_loc
 end
 if nargin < 2 || isempty(end_index) 
     end_index = nan; 
 end
 
-if ~isnan(all(start_index)) && length(start_index) > 1
-   start_index = start_index(1);
-   disp(['Set starting index to first start_index(1) = ', num2str(start_index)])
+if ~isnan(all(starting_index)) && length(starting_index) > 1
+   starting_index = starting_index(1);
+   disp(['Set starting index to first starting_index(1) = ', num2str(starting_index)])
 end
 % filter; default is lowpass IIR filter at 200Hz with Steepness 0.95
 if nargin < 3 || isempty(used_filter) 
@@ -53,6 +53,34 @@ if nargin < 6 || isempty(acceptable_threshold_change_ratio)
    acceptable_threshold_change_ratio = 0.001; % equals 0.10%
 end
 
+
+% reading from workspace if not given: DataInfo, DataPeaks_mean, DataPeaks_summary)
+if nargin < max_inputs - 2 || isempty(DataInfo)
+    try
+        DataInfo = evalin('base', 'DataInfo');
+        disp('DataInfo read from workspace.')
+    catch
+        error('No proper DataInfo!')
+    end
+end
+if nargin < max_inputs - 1 || isempty(DataPeaks_mean)
+    try
+        DataPeaks_mean = evalin('base', 'DataPeaks_mean');
+        disp('DataPeaks_mean read from workspace.')
+    catch
+        error('No proper DataPeaks_mean!')
+    end
+end
+if nargin < max_inputs || isempty(DataPeaks_summary)
+    try
+        DataPeaks_summary = evalin('base', 'DataPeaks_summary');
+        disp('DataPeaks_summary read from workspace.')
+    catch
+        error('No proper DataPeaks_summary!')
+    end
+end
+
+
 % if interpolation is needed, in how many subindexes or orignal index interval is divided into
 interpolation_gain = 100; 
 
@@ -66,10 +94,12 @@ for file_ind = 1:length(DataPeaks_mean)
         catch
             fs = DataInfo.framerate(file_ind); % each datacolumn has same fs
         end
-        if isnan(start_index)
+        if isnan(starting_index)
             % starting from DataPeaks_summary.peaks{col_ind}.flatp_loc 
             start_index = DataPeaks_summary.peaks{col_ind}.flatp_loc(file_ind);
             % disp(['Set start_index to flatpeak index: ',num2str(start_index)])
+        else
+            start_index = starting_index;
         end
         
         if isnan(end_index)
@@ -89,54 +119,58 @@ for file_ind = 1:length(DataPeaks_mean)
         % calculate baseline
         datapoints_for_baseline = round(fs/4*abs(...
             DataPeaks_mean{file_ind, 1}.time_range_from_peak(1)));
-        baseline_value = median(data_current(1:datapoints_for_baseline));
+%         baseline_value = median(data_current(1:datapoints_for_baseline));
+        baseline_value = median(DataPeaks_mean{file_ind, 1}.data...
+            (1:datapoints_for_baseline,col_ind));
         
         % calculate threshold value which used to find fpd start
-        peak_index = end_index-start_index+1;
-        peak_value = data(peak_index);
+        peak_value = data(1);
         threshold_value = calculate_threshold_value(peak_value, ...
             baseline_value, threshold_level_from_baseline);
-        %% uusia, muuta
-        
         % find location where data reach threshold_value
-        if peak_value < threshold_value
-            % if threshold higher than peak  
+        if peak_value > threshold_value
+            % if peak_value is larger than threshold 
+            
+            % check if threshold_value is reached, if not, estimate 
+            % new baseline value by the end of the signal & estimate new
+            % threshold value
+            if min(data_current) > threshold_value
+                baseline_value = median(DataPeaks_mean{file_ind, 1}.data...
+                    (end-datapoints_for_baseline+1:end,col_ind));
+                threshold_value = calculate_threshold_value(peak_value, ...
+                    baseline_value, threshold_level_from_baseline);
+            end
+            
             % -> find location where data sink below threshold
             threshold_index = find_first_index_where_data_reach_threshold...
-                (data_current,threshold_value,'smaller');
+                (data_current, threshold_value,' smaller');
         else
             % find when data rise above threshold value
+            % check if threshold_value is reached, if not, estimate 
+            % new baseline value by the end of the signal & estimate new
+            % threshold value
+            if max(data_current) < threshold_value
+                baseline_value = median(data_current...
+                    (end-datapoints_for_baseline+1:end,1));
+                threshold_value = calculate_threshold_value(peak_value, ...
+                    baseline_value, threshold_level_from_baseline);
+            end
+            
+            
+            
             threshold_index = find_first_index_where_data_reach_threshold...
                 (data_current, threshold_value,'larger');
         end
-        %%
-        % calculate threshold value which used to find fpd end
-
-        
-        threshold_value = calculate_threshold_value(peak_value, ...
-            baseline_value, threshold_level_from_baseline);
-        
-        % find location where data reach threshold_value
-        if peak_value >= threshold_value
-            % if threshold higher than peak  
-            % -> find location where data sink below threshold
-            threshold_index = find_first_index_where_data_reach_threshold...
-                (data_current,threshold_value,'smaller');
-        else % find when data rise above threshold value
-            threshold_index = find_first_index_where_data_reach_threshold...
-                (data_current, threshold_value,'larger');
-        end
-        %%
-        % calculate fpd_start_value and t_dep, 
+        % calculate fpd_end_value and fpd, 
         % these will be updated later if interpolation needed 
         fpd_end_index = threshold_index + start_index-1;
         fpd_end_value = data_current(threshold_index);
-        fpd_start_index = DataPeaks_summary.precise_fpd_start(file_ind, col_ind);
+        fpd_start_index = DataPeaks_summary.precise_fpd_start_index(file_ind, col_ind);
         fp_duration = (fpd_end_index-fpd_start_index)/fs;
         
         % check if change between two indexes around threshold value is
         % relative large compared to difference between threshold and peak
-        % if change is equal or more than ratio_threshold (default: 0.1%),
+        % if change is equal or more than acceptable_threshold_change_ratio (default: 0.1%),
         % interpolate more points
         change_between_threshold_and_peak = ...
             abs(diff([peak_value,threshold_value]));
@@ -146,14 +180,14 @@ for file_ind = 1:length(DataPeaks_mean)
                 abs(diff(data_current(threshold_index-1:threshold_index)));
         end
         % ratio between change in around threshold and the full change 
-        ratio_percent = change_around_threshold ...
-            / change_between_threshold_and_peak *100;       
-        % if ratio_percent > ratio_threshold, interpolation is needed
-        if ratio_percent >  ratio_threshold
+        ratio_change_around_threshold = change_around_threshold ...
+            / change_between_threshold_and_peak;       
+        % if ratio_percent > acceptable_threshold_change_ratio, interpolation is needed
+        if ratio_change_around_threshold >  acceptable_threshold_change_ratio
             % interpolate more points around threshold
             dat = data_current(threshold_index-1:threshold_index);
             interpolation_gain_org = interpolation_gain;
-            while ratio_percent >= ratio_threshold
+            while ratio_change_around_threshold >= acceptable_threshold_change_ratio
                 % interpolate more points around threshold
                 xq = 1:1/interpolation_gain:length(dat);
                 data_new = interp1(1:length(dat),dat,xq,'pchip')';
@@ -174,28 +208,29 @@ for file_ind = 1:length(DataPeaks_mean)
                     change_around_threshold = 0;
                 end
                % calculate new ratio
-                ratio_percent = change_around_threshold ...
-                    / change_between_threshold_and_peak * 100;
-                if ratio_percent >=  ratio_threshold % update gain if needed
+                ratio_change_around_threshold = change_around_threshold ...
+                    / change_between_threshold_and_peak;
+                if ratio_change_around_threshold >=  acceptable_threshold_change_ratio % update gain if needed
                     interpolation_gain = interpolation_gain * 100;
                 end
             end
             % update values based on interpolated data
             % fpd end_value from interpolated data
             % but original threshold_index used for DataPeaks_summary.fpd_end_index
-% %             fpd_start_value = data_new(threshold_index_new);
-% %             % calculate t_dep
-% %             peak_start_index = threshold_index + (threshold_index_new-1)/interpolation_gain;
-% %             t_dep = abs(peak_start_index-peak_end_index)/fs;
-
             fpd_end_value = data_new(threshold_index_new);
-            fpd_end_index = threshold_index - 1 + (threshold_index_new-1)/interpolation_gain;
+            fpd_end_index = threshold_index + start_index-1;
+            fpd_end_index = fpd_end_index - 1 + (threshold_index_new-1)/interpolation_gain;
             fp_duration = (fpd_end_index-fpd_start_index)/fs;
+            % set original interpolation_gain for the next round
             interpolation_gain = interpolation_gain_org;
         end
+        
+
+        
         % update DataPeaks_summary
         try
-            DataPeaks_summary.fpd_end_index(file_ind, col_ind) = fpd_end_index;
+            % fpd_end_index = threshold_index + start_index-1;
+            DataPeaks_summary.fpd_end_index(file_ind, col_ind) = threshold_index + start_index-1;
             DataPeaks_summary.fpd_end_value(file_ind, col_ind) = fpd_end_value;
             DataPeaks_summary.fpd(file_ind, col_ind) = fp_duration;
             DataPeaks_summary.precise_fpd_end_index(file_ind,col_ind) = fpd_end_index;
@@ -205,7 +240,6 @@ for file_ind = 1:length(DataPeaks_mean)
             DataPeaks_summary.fpd(file_index, col_ind) = NaN;
             DataPeaks_summary.precise_fpd_end_index(file_ind,col_ind) = NaN;
         end
-         clear start_index
     end % for col_ind
    
 end % for file_ind 
