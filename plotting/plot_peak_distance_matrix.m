@@ -134,10 +134,11 @@ for kk = datacolumn_indexes
 end
 ylabel(ylabel_text), % title(tittext)
 xlabel(xlabel_text)
-legend(dataplots,legs, 'interpreter','none','location','best')
 % for hypoxia line, use
 [time_o2, ~] = choose_timep_unit(time_unit,DataInfo);
-plot_hypoxia_line(time_o2, data_converted, DataInfo)
+[line_hypox_start, line_hypox_end] = plot_hypoxia_line(time_o2, data_converted, DataInfo);
+legend(dataplots,legs, 'interpreter','none','location','best')
+
 try
     Data_o2.data(Data_o2.measurement_time.datafile_index);
     yyaxis right
