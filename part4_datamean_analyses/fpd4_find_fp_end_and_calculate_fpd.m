@@ -21,7 +21,8 @@ nargoutchk(0,1)
 % default: if these are empty, finding fpd end between
 % DataPeaks_summary.peaks.flatp_loc and signal end
 if nargin < 1 || isempty(starting_index)
-    starting_index = nan; % when nan, starting from DataPeaks_summary.peaks.flatp_loc
+    % when nan, starting from DataPeaks_summary.peaks.flatp_loc
+    starting_index = nan; 
 end
 if nargin < 2 || isempty(end_index) 
     end_index = nan; 
