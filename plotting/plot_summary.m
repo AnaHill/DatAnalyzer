@@ -92,7 +92,9 @@ if nargin < 8 || isempty(Data_o2)
         disp('No O2 info (Data_o2), found')
     end
 end
-
+if nargin < 9 || isempty(norm_indexes) 
+    norm_indexes = [];
+end
 %%
 % get time units
 [timep, xlabel_text] = choose_timep_unit(time_unit,DataInfo);
@@ -100,18 +102,19 @@ end
 % get normalizing index(es) if used
 if normalizing == 1
     % choosing index(es) which values are used for normalizing values
-    if ~exist('norm_indexes','var') % if not given in function call 
+    if isempty(norm_indexes) 
+        % if normalizing indexing are not given
         % first try to finding hypoxia starting time index
         try 
             ind_hyp = DataInfo.hypoxia.start_time_index;
             if ind_hyp >= 3
                 norm_indexes = ind_hyp-3:ind_hyp-1;
-            elseif ind_hyp >= 1
-                norm_indexes = ind_hyp-1;
+            elseif ind_hyp > 1
+                norm_indexes = ind_hyp-1:ind_hyp;
             else
-                norm_indexes =ind_hyp;
+                norm_indexes = ind_hyp;
             end
-        catch % no hypoxia index: taking first index as normalizing value
+        catch % if no hypoxia index found: taking first index as normalizing value
             norm_indexes = 1;
         end    
     end
