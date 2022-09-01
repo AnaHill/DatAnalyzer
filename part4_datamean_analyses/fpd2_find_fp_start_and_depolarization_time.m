@@ -97,6 +97,13 @@ for file_ind = 1:length(DataPeaks_mean)
             end_index = DataPeaks_summary.peaks{1,col_ind}.firstp_loc(file_ind);
         end
         data = DataPeaks_mean{file_ind, 1}.data(start_index:end_index,col_ind);
+        if all(isnan(data))
+            DataPeaks_summary.fpd_start_index(file_ind, col_ind) = NaN;
+            DataPeaks_summary.fpd_start_value(file_ind, col_ind) = NaN;
+            DataPeaks_summary.depolarization_time(file_ind,col_ind) = NaN;
+            DataPeaks_summary.precise_fpd_start_index(file_ind,col_ind) = NaN;          
+            continue
+        end
         % filtering
         % filter_data(data, fs, filter_type, filter_parameters, plot_result,print_filter)
         data_filtered = filter_data(data, fs, used_filter, filter_parameters,'no','no');   

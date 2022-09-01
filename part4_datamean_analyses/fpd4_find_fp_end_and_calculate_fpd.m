@@ -108,9 +108,19 @@ for file_ind = 1:length(DataPeaks_mean)
             data = DataPeaks_mean{file_ind, 1}.data(start_index:end,col_ind);
             end_index = length(data)+start_index-1;
         else
-            data = DataPeaks_mean{file_ind, 1}.data(start_index:end_index,col_ind);
+            try
+                data = DataPeaks_mean{file_ind, 1}.data(start_index:end_index,col_ind);
+            catch
+                data = NaN;
+            end
         end
-        
+        if all(isnan(data))
+            DataPeaks_summary.fpd_end_index(file_ind, col_ind) = NaN;
+            DataPeaks_summary.fpd_end_value(file_ind, col_ind) = NaN;
+            DataPeaks_summary.fpd(file_ind, col_ind) = NaN;
+            DataPeaks_summary.precise_fpd_end_index(file_ind,col_ind) = NaN;
+            continue
+        end
         % now data is only from start_index to end, 
         % i.e. data(1) = DataPeaks_mean{file_ind, 1}.data(start_index)
         % filter_data(data, fs, filter_type, filter_parameters, plot_result,print_filter)
@@ -238,7 +248,7 @@ for file_ind = 1:length(DataPeaks_mean)
         catch
             DataPeaks_summary.fpd_end_index(file_ind, col_ind) = NaN;
             DataPeaks_summary.fpd_end_value(file_ind, col_ind) = NaN;
-            DataPeaks_summary.fpd(file_index, col_ind) = NaN;
+            DataPeaks_summary.fpd(file_ind, col_ind) = NaN;
             DataPeaks_summary.precise_fpd_end_index(file_ind,col_ind) = NaN;
         end
     end % for col_ind

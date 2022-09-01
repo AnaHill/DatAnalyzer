@@ -98,6 +98,11 @@ for file_ind = 1:length(DataPeaks_mean)
             data = DataPeaks_mean{file_ind, 1}.data(...
                 start_index:end_index,col_ind);
         end        
+        if all(isnan(data))
+            DataPeaks_summary.peaks{1,col_ind}.flatp_loc(file_ind) = NaN;
+            DataPeaks_summary.peaks{1,col_ind}.flatp_val(file_ind) = NaN;
+            continue
+        end
         % now data is only from start_index to end, i.e. peakloc_start_and_end_indexes
         % meaning, that data(1) = DataPeaks_mean{file_ind, 1}.data(start_index)
         % filter_data(data, fs, filter_type, filter_parameters, plot_result,print_filter)
