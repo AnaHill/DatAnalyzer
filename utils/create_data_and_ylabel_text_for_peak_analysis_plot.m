@@ -28,7 +28,7 @@ switch wanted_y_unit
        data_converted = 1 ./ data_distance_in_seconds;
        ylabel_text = 'Frequency (Hz)';     
     case 'peak_distance_in_milliseconds'   
-        data_converted = data_distance_in_seconds;
+        data_converted = data_distance_in_seconds*1e3;
         ylabel_text = 'Peak-to-peak distance (ms)';
     case 'peak_distance_in_seconds'   
         ylabel_text = 'Peak-to-peak distance (s)';
