@@ -105,8 +105,12 @@ for file_ind = 1:length(DataPeaks_mean)
         
         if isnan(end_index)
             % if ending index is not given, take end of data
-            data = DataPeaks_mean{file_ind, 1}.data(start_index:end,col_ind);
-            end_index = length(data)+start_index-1;
+            try
+                data = DataPeaks_mean{file_ind, 1}.data(start_index:end,col_ind);
+                end_index = length(data)+start_index-1;
+            catch
+               data = NaN; 
+            end            
         else
             try
                 data = DataPeaks_mean{file_ind, 1}.data(start_index:end_index,col_ind);

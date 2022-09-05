@@ -96,7 +96,11 @@ for file_ind = 1:length(DataPeaks_mean)
             % get index from firstp_loc in DataPeaks_summary.peaks if not given
             end_index = DataPeaks_summary.peaks{1,col_ind}.firstp_loc(file_ind);
         end
-        data = DataPeaks_mean{file_ind, 1}.data(start_index:end_index,col_ind);
+        if isnan(end_index)
+            data = NaN;
+        else
+            data = DataPeaks_mean{file_ind, 1}.data(start_index:end_index,col_ind);
+        end
         if all(isnan(data))
             DataPeaks_summary.fpd_start_index(file_ind, col_ind) = NaN;
             DataPeaks_summary.fpd_start_value(file_ind, col_ind) = NaN;

@@ -92,11 +92,19 @@ for file_ind = 1:length(DataPeaks_mean)
         
         end_index = round(peakloc_start_and_end_indexes(end));
         if isnan(end_index) % if nan, take end of data
-            data = DataPeaks_mean{file_ind, 1}.data(start_index:end,col_ind);
-            end_index = length(data)+start_index-1;
+            try
+                data = DataPeaks_mean{file_ind, 1}.data(start_index:end,col_ind);
+                end_index = length(data)+start_index-1;
+            catch
+               data = NaN; 
+            end
         else
-            data = DataPeaks_mean{file_ind, 1}.data(...
-                start_index:end_index,col_ind);
+            try 
+                data = DataPeaks_mean{file_ind, 1}.data(...
+                    start_index:end_index,col_ind);
+            catch
+                data = NaN;
+            end
         end        
         if all(isnan(data))
             DataPeaks_summary.peaks{1,col_ind}.flatp_loc(file_ind) = NaN;
