@@ -77,4 +77,5 @@ else
     [values,location_indexes] = min(data(window_indexes,:)); 
 end
 location_indexes = location_indexes - 1 + window_indexes(1);    
+location_indexes(isnan(values)) = NaN;
 end
