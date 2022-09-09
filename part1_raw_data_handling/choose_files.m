@@ -1,6 +1,6 @@
-function [file_numbers_to_analyze] = choose_files(filename_list)
+function file_numbers_to_analyze = choose_files(filename_list)
 %CHOOSE_FILES choose files from the list
-%   [file_numbers_to_analyze] = choose_files(filename_list)
+%   file_numbers_to_analyze = choose_files(filename_list)
 % file_numbers_to_analyze includes indexes of chosen files found in the folder
 narginchk(1,1)
 nargoutchk(0,1)
