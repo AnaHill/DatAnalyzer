@@ -152,5 +152,9 @@ for pp = 1:length(file_indexes)
                temp_low temp_low_loc temp_low_width is_high_peaks is_low_peaks
     end % end kk = 1:length(datacolumns)
 end
+if ~exist('Data_BPM','var')
+    warning('No Data_BPM found --> returning empty Data_BPM')
+    Data_BPM = [];
+end
 
 end
