@@ -197,20 +197,27 @@ for zz = 1:length(datacolumns)
         % include peak number
         extra_in_x_axis = 0.2;
         if isfield(Data_BPM{file_index,1},'peak_values_high')
-            peak_number_high_time = ...
-                time(Data_BPM{file_index,1}.peak_locations_high{col_ind})...
-                + extra_in_x_axis;
-            peak_number_high_yval = Data_BPM{file_index,1}.peak_values_high{col_ind};  
-            text(peak_number_high_time,peak_number_high_yval,...
-                num2str((1:numel(peak_number_high_time))'))
+            try 
+                peak_number_high_time = ...
+                    time(Data_BPM{file_index,1}.peak_locations_high{col_ind})...
+                    + extra_in_x_axis;
+                peak_number_high_yval = Data_BPM{file_index,1}.peak_values_high{col_ind};  
+                text(peak_number_high_time,peak_number_high_yval,...
+                    num2str((1:numel(peak_number_high_time))'))
+            catch
+                
+            end
         end
         if isfield(Data_BPM{file_index,1},'peak_values_low')
-            peak_number_low_time = ...
-                time(Data_BPM{file_index,1}.peak_locations_low{col_ind})...
-                + extra_in_x_axis;
-            peak_number_low_yval = Data_BPM{file_index,1}.peak_values_low{col_ind};  
-            text(peak_number_low_time,peak_number_low_yval,...
-                num2str((1:numel(peak_number_low_time))'))            
+            try 
+                peak_number_low_time = ...
+                    time(Data_BPM{file_index,1}.peak_locations_low{col_ind})...
+                    + extra_in_x_axis;
+                peak_number_low_yval = Data_BPM{file_index,1}.peak_values_low{col_ind};  
+                text(peak_number_low_time,peak_number_low_yval,...
+                    num2str((1:numel(peak_number_low_time))'))            
+            catch
+            end
         end  
     end
     %%%
