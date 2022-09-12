@@ -1,5 +1,7 @@
 # DatAnalyzer
-Environment to analyse data.
+Environment to analyse data.  
+_Please notice, that this readme is currently under developement!_
+
 - Tools: MATLAB
 
 **Please notice that currenly, DatAnalyzer works best with MEA .h5 files**
