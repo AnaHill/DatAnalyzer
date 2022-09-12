@@ -11,11 +11,11 @@ Prerequisites for DatAnalyzer
 
 Get files
 ```
-git clone https://github.com/dataworkshop/prerequisite
+git clone https://github.com/AnaHill/DatAnalyzer
 ```
-Or choose Code --> Download ZIP --> unzip files to your computer
-Figure below highlights these steps
-![How to download codes](doc_pics/2022-09-12-13-51-12.png) 
+Or choose Code --> Download ZIP --> unzip files to your computer. Snapshot below highlights these steps.
+![How to download codes](doc_pics/2022-09-12-13-51-12.png)
+
 
 
 
