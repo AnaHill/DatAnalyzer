@@ -32,7 +32,7 @@ DatAnalyzer was partly developed during the research related to following paper.
 - TBA
 
 
-## Example Data
+## Example Data and tutorial for DatAnalyzer
 
 Example data, that is used in the following tutorial is available [here](https://google.com).TODO #3:link
 
