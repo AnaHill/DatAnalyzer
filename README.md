@@ -2,7 +2,7 @@
 Tools to load, visualize, and analyse data using MATLAB.  
 _Please notice, that this readme is currently under developement!_
 
-
+The main philosophy of this program is to provide flexible, customizable semi-autonomous data analysis tools. Idea is, that all functionalities can be used either through GUI (DatAnalyzer App) or through MATLAB's command line (or scripts). The meaning of semi-autonomous here is that DatAnalyzer provides _i_) quite good automatic settings, for example to detect most of the peaks from large data-sets, and _ii_) flexible tools to manually modify these found peaks, for example deleting some incorrect ones or add individual missing peaks.
 
 **Please notice that currenly, DatAnalyzer works best with MEA .h5 files**  
 Before MEA data  can be viewed or analyzed, measurement files must be converted to HDF5 files. Multichannel Systems data, this can be done using their MultiChannel Systems Data Manager software (available [here](https://www.multichannelsystems.com/software/multi-channel-datamanager#docs))
