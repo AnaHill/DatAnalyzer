@@ -83,7 +83,8 @@ for pp = 1:length(filenumbers)
 end
 if isempty(irregular_beating_indexes)
     disp(['No irregular beating found with given irregular beating limit: ',...
-        num2str(irregular_limit)])
+        num2str(irregular_limit), ' that equals ', ...
+        num2str(irregular_limit*100),'% of average peak distance'])
     irregular_beating_table = [];
 else
     irregular_beating_table = array2table(irregular_beating_indexes,...
