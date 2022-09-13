@@ -1,17 +1,20 @@
 # DatAnalyzer
-Environment to analyse data.  
+Tools to load, visualize, and analyse data using MATLAB.  
 _Please notice, that this readme is currently under developement!_
 
-- Tools: MATLAB
 
-**Please notice that currenly, DatAnalyzer works best with MEA .h5 files**
 
-## Prerequisites
+**Please notice that currenly, DatAnalyzer works best with MEA .h5 files**  
+Before MEA data  can be viewed or analyzed, measurement files must be converted to HDF5 files. Multichannel Systems data, this can be done using their MultiChannel Systems Data Manager software (available [here](https://www.multichannelsystems.com/software/multi-channel-datamanager#docs))
+
+
+
+## Installation
 Prerequisites for DatAnalyzer
 - MATLAB R2018B or newer
 
 
-Get files
+Installing files either cloning
 ```
 git clone https://github.com/AnaHill/DatAnalyzer.git
 ```
@@ -22,11 +25,20 @@ Or choose Code --> Download ZIP --> unzip files to your computer. Snapshot below
 
 
 ## References and Citation
-DatAnalyzer was partly developed for the following research article. If you find it useful, please consider citing this paper
+DatAnalyzer was partly developed during the research related to following paper. If you find DatAnalyzer useful, please consider citing 
 > Häkli, M., Kreutzer, J., Mäki, A.-J., Välimäki, H., Lappi, H., Huhtala, H., Kallio, P., Aalto-Setälä, K., & Pekkanen-Mattila, M. (2021). Human induced pluripotent stem cell-based platform for modeling cardiac ischemia. Scientific Reports, 11(1), 4153. https://doi.org/10.1038/s41598-021-83740-w
 
 ## Code structure
 - TBA
+
+
+## Example Data
+
+Example data, that is used in the following tutorial is available [here](https://google.com).TODO #3:link
+
 ## Future improvements
 TO DO list
+- [ ] Provide link to example data and write tutorial
+- [ ] Good data recommender: check raw (MEA) data and recommend which electrodes would include information (measurement data) as typically many electrodes mainly include noise
+- [ ] cropping data: user could crop data by mouse, e.g. covering only time between 10 and 15 sec in 1 minute long recording
 - [ ] abf file reading for MEA files
