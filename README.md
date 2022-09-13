@@ -7,6 +7,9 @@ The main philosophy of this program is to provide flexible, customizable semi-au
 **Please notice that currenly, DatAnalyzer works best with MEA .h5 files**  
 Before MEA data  can be viewed or analyzed, measurement files must be converted to HDF5 files. Multichannel Systems data, this can be done using their MultiChannel Systems Data Manager software (available [here](https://www.multichannelsystems.com/software/multi-channel-datamanager#docs))
 
+GUI is following
+![DatAnalyzer](doc_pics/2022-09-13-08-34-27.png)
+
 
 
 ## Installation
