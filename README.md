@@ -21,10 +21,10 @@ Installing files either cloning
 ```
 git clone https://github.com/AnaHill/DatAnalyzer.git
 ```
-Or choose Code --> Download ZIP --> unzip files to some folder in your computer. Snapshot below highlights these steps.
+Or choose Code --> Download ZIP --> unzip files to some folder in your computer. Snapshot below highlights these steps.  
 ![How to download codes](doc_pics/2022-09-12-13-51-12.png)
 
-Add this folder to MATLAB's path (see snapshot below): Home tab --> Set Path --> Add with Subfolders
+Add this folder to MATLAB's path (see snapshot below): Home tab --> Set Path --> Add with Subfolders  
 ![Set path](doc_pics/2022-09-14-08-39-58.png)
 
 ## References and Citation
