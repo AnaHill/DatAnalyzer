@@ -43,7 +43,7 @@ for zz = 1:length(datacolumns)
     time = 0:ts:(length(dat)-1)*ts;
     try 
         exp_name_title = [DataInfo.experiment_name,' / ',...
-            measurement_name];
+            DataInfo.measurement_name];
         time_name_title = [', t=',num2str(round(DataInfo.measurement_time.time_sec...
                 (file_index, 1)/3600,1)),'h'];
         try
@@ -81,24 +81,30 @@ for zz = 1:length(datacolumns)
             num2str(DataInfo.MEA_electrode_numbers(col_ind))]; 
     catch % non-mea or old data
         try
-            title_general_start = ['Col#',num2str(...
-                DataInfo.datacol_numbers(col_ind))];
+            title_general_start = [DataInfo.datacol_names{col_ind}];
         catch
             try 
-                title_general_start = ['Col#',...
-                    num2str(Data{file_index,1}.datacolumns(col_ind))];
-            catch % old data
-                title_general_start = ['Electrode#',...
-                    num2str(Data{file_index,1}.data_MEA_electrode_number(col_ind))];
+            title_general_start = ['Col#',...
+                num2str(DataInfo.datacol_numbers(col_ind))];
+            catch
+                try
+                    title_general_start = ['Col#',...
+                        num2str(Data{file_index,1}.datacolumns(col_ind))];
+                catch % old data
+                    title_general_start = ['Electrode#',...
+                        num2str(Data{file_index,1}.data_MEA_electrode_number(col_ind))];
+                end
             end
         end
+        
+        
+
     end
     title_full  = [title_general_start];
 
     % plotting: to separate subfigs or to same
     if plot_datacolumns_to_same_fig ~= 1
         subplot(sub_fig_rows,sub_fig_cols,zz)
-        sgtitle(sqtitle_text,'interpreter','none','fontsize',12)
     else
         if zz == 1
             sgtitle(sqtitle_text,'interpreter','none','fontsize',12)
@@ -106,17 +112,21 @@ for zz = 1:length(datacolumns)
     end
     hfig_raw(zz,1) = plot(time, dat); hold all, 
     %%%
-    if plot_datacolumns_to_same_fig == 1
+    if plot_datacolumns_to_same_fig ~= 1
+        title(title_full,'interpreter','none','fontsize',12)
+    else
         legs{zz,1} = title_full;
     end
     axis tight
     xlabel('Time (sec)')
-    ylabel('Measurement (V)')
+    ylabel('Measurement (V)') % TODO: if other unit is used
     clear title_full
    
-end
+end % 1:length(datacolumns)
 if plot_datacolumns_to_same_fig == 1
     legend(hfig_raw, legs, 'location', 'best')
+else % if subplots, add sgtitle
+    sgtitle(sqtitle_text,'interpreter','none','fontsize',12)
 end
 % remove_other_variables_than_needed
 evalin( 'base', 'clear file_ind_workspace' )
