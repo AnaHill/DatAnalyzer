@@ -8,9 +8,16 @@ end
 [file_numbers_to_analyze] = choose_files(filename_list);
 
 % set experimental and measurement names and date
-info_temp = {exp_name; meas_name; meas_date};
 % below will create info.experiment_name, measurement_name, measurement_date
-DataInfo = set_experimental_names(folder_of_files,info_temp);
+try
+    info_temp = {exp_name; meas_name; meas_date};
+    DataInfo = set_experimental_names(folder_of_files,info_temp);
+catch
+    DataInfo = set_experimental_names(folder_of_files);
+end
+
+
+
 DataInfo.folder_raw_files = folder_of_files;
 % 26.3.2021: adding these two, list_files.m updated
 DataInfo.file_type = file_type;
