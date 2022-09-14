@@ -40,8 +40,16 @@ DatAnalyzer was partly developed during the research related to following paper.
 Example data, that is used in the following tutorial is available [here](https://google.com).TODO #3:link
 
 ## Future improvements
-TO DO list
+TO DO list: currently under development
 - [ ] Provide link to example data and write tutorial
-- [ ] Good data recommender: check raw (MEA) data and recommend which electrodes would include information (measurement data) as typically many electrodes mainly include noise
+- [ ] Good data recommender: checks raw (MEA) data and recommends "most suitable" electrodes 
+  - Recommended data/electrodes should include measurement information (e.g. beating signal) as typically many electrodes mainly include noise
 - [ ] cropping data: user could crop data by mouse, e.g. covering only time between 10 and 15 sec in 1 minute long recording
 - [ ] abf file reading for MEA files
+
+Backlog / Long-term goals
+- [ ] Calculate and visualize signal propagation (for MEA files)
+- [ ] Architechture change so that big data analysis
+- [ ] More interactive GUI, e.g. user could delete or add peaks by clicking mouse
+- [ ] GUI: fusing Analysis and plotting tabs to single tab
+- [ ] Data filtering 
