@@ -124,8 +124,12 @@ for zz = 1:length(datacolumns)
             title_general_start = ['Electrode#',...
                 num2str(DataInfo.MEA_electrode_numbers(col_ind))]; 
         else
-            title_general_start = ['Col#',...
-                num2str(DataInfo.datacol_numbers(col_ind))];
+            try
+                title_general_start = [DataInfo.datacol_names{col_ind}];
+            catch
+                title_general_start = ['Col#',...
+                    num2str(DataInfo.datacol_numbers(col_ind))];
+            end
         end 
     catch    % ennen 2021/03 muutoksia
         try % mea
