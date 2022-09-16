@@ -42,13 +42,13 @@ If you find DatAnalyzer useful, please consider citing following paper
 Example data, that is used in the tutorial, is available [TBA](https://google.com).TODO #3:link
 
 ## Future improvements
-TO DO list: currently under development
+**Currently under development**
 - [ ] Provide link to example data and write tutorial
 - [ ] Good data recommender: checks raw (MEA) data and recommends "most suitable" electrodes 
   - Recommended data/electrodes should include measurement information (e.g. beating signal) as typically many electrodes mainly include noise
 - [ ] .abf file reading for MEA files
 
-Backlog / Long-term goals
+**Backlog / Long-term goals**
 - [ ] GUI: fusing Analysis and plotting tabs to single tab
 - [ ] Calculate and visualize signal propagation (for MEA files)
 - [ ] More interactive GUI, e.g. user could
