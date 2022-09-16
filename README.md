@@ -26,7 +26,7 @@ Or choose Code --> Download ZIP --> unzip files to some folder in your computer.
 ![How to download codes](doc_pics/2022-09-12-13-51-12.png)
 
 Add this folder to MATLAB's path (see snapshot below): Home tab --> Set Path --> Add with Subfolders  
-![Set path](doc_pics/2022-09-14-08-39-58.png)
+![Set path](doc_pics/2022-09-16-09-17-03.png)
 
 ## References and Citations
 DatAnalyzer has been developed at Tampere University (TAU) in [Micro- and Nanosystems Research Group](https://research.tuni.fi/mst/) (MST) lead by professor Pasi Kallio. 
