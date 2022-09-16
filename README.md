@@ -47,9 +47,10 @@ Example data, that is used in the tutorial, is available [TBA](https://google.co
 - [ ] Good data recommender: checks raw (MEA) data and recommends "most suitable" electrodes 
   - Recommended data/electrodes should include measurement information (e.g. beating signal) as typically many electrodes mainly include noise
 - [ ] .abf file reading for MEA files
+- [ ] GUI: fusing Analysis and plotting tabs to single tab
+- [ ] Area under curve calculation for FP signal
 
 **Backlog / Long-term goals**
-- [ ] GUI: fusing Analysis and plotting tabs to single tab
 - [ ] Calculate and visualize signal propagation (for MEA files)
 - [ ] More interactive GUI, e.g. user could
   - [ ] delete or add peaks by clicking mouse
