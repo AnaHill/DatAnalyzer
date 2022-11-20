@@ -31,7 +31,7 @@ Add your folder (_with subfolder_!) to MATLAB's path (see snapshot below): Home 
 ## References and Citations
 DatAnalyzer has been developed at Tampere University (TAU) in [Micro- and Nanosystems Research Group](https://research.tuni.fi/mst/) (MST) lead by professor Pasi Kallio. 
 It has partly developed during the collaboration project between MST and TAU's [Heart Group](https://research.tuni.fi/heart-group/) lead by professor Katriina Aalto-Setälä. 
-If you find DatAnalyzer useful, please consider citing following paper 
+If you find DatAnalyzer useful, please consider citing following paper
 > Häkli, M., Kreutzer, J., Mäki, A.-J., Välimäki, H., Lappi, H., Huhtala, H., Kallio, P., Aalto-Setälä, K., & Pekkanen-Mattila, M. (2021). Human induced pluripotent stem cell-based platform for modeling cardiac ischemia. Scientific Reports, 11(1), 4153. https://doi.org/10.1038/s41598-021-83740-w
 
 ## Code structure
@@ -39,7 +39,36 @@ If you find DatAnalyzer useful, please consider citing following paper
 
 
 ## Example Data and tutorial for DatAnalyzer
-Example data, that is used in the tutorial, is available [TBA](https://google.com).TODO #3:link
+_Notice: Example data used in the tutorial will be available later._ 
+<!-- in[TBA](https://google.com)._ TODO #3:link --> 
+
+This section introduces briefly DatAnalyzer. Basic steps are following
+1) loading raw data
+2) data exploration (plotting)
+3) finding peaks
+4) analyze
+
+In the following example, MEA raw data (.h5 files) is loaded and analyzed. 
+
+### Load raw data
+Go to _Load & process data_ tab to load data, where you can fill the following fields. Notice, that this is only recommendation, not compulsory, as these parameters will be asked again later during the loading process. The figure below shows which sections were filled 
+- `experiment name`: MEA2020_03_02 (experimental name that can include several parallel measurements, seperated with the next field)
+- `measurement name`: MEA21002b (used to separate parallel experiments belonging to same experiment)
+- `measurement date`: 2020_03_02 (starting day of the experiment) 
+
+In addition, so-called "good MEA electrodes" were chosen beforehand to reduce the amount of data loaded. In this example, MEA electrodes 21, 28, 31, and 51 had a reasonable beating and were chosen for further analysis.
+(_Notice: currently, choose of the "good" electrodes is a manual process, which can be done in MATLAB or any other software. So-called "good data recommender" have been developed separately but it had not yet been implemented in DatAnalyzer._)
+
+After these fields are filled, click _Read raw data_ button.
+![loading_example_data](doc_pics/2022-11-20-18-31-48.png)
+
+For the start, choose folder where your data is located. During loading process, DatAnalyzer will ask several questions. Firstly, it asks that are all found data (files) or only some used. This can be used to pick only certain data files from the chosen folder. If you click _Choose_, you can pick which files are loaded as shown in the following figures
+
+![choosing_all_files](doc_pics/2022-11-20-18-48-39.png)
+![pick_files](doc_pics/2022-11-20-18-52-09.png)
+
+Next, 
+
 
 ## Future improvements
 **Currently under development**
