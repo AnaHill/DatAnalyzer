@@ -9,8 +9,8 @@ Before MEA data can be viewed or analyzed, measurement files must be converted t
 If using Multichannel Systems devices, this data conversion to .h5 files can be done using their MultiChannel Systems Data Manager software, available [here](https://www.multichannelsystems.com/software/multi-channel-datamanager#docs).
 
 Snapshot below shows the opening page of the developed GUI.
-![DatAnalyzer_GUI](doc_pics/DatAnalyzer_GUI.png)
-**Figure 1.** GUI of DatAnalyzer.
+![DatAnalyzer_GUI](doc_pics/DatAnalyzer_GUI.png)  
+**Figure 1.** Main page of DatAnalyzer.
 
 
 ## Installation
@@ -23,11 +23,11 @@ Installing files either cloning
 git clone https://github.com/AnaHill/DatAnalyzer.git
 ```
 Or choose Code --> Download ZIP --> unzip files to some folder in your computer. Snapshot below highlights these steps.  
-![How to download codes](doc_pics/Download_zip.png)
+![How to download codes](doc_pics/Download_zip.png)  
 **Figure 2.** Downloading codes.
 
 Add your folder (_with subfolder_!) to MATLAB's path (see snapshot below): Home tab --> Set Path --> Add with Subfolders  
-![Set path](doc_pics/set_matlab_path.png)
+![Set path](doc_pics/set_matlab_path.png)  
 **Figure 3.** Setting DatAnalyzer folder for MATLAB path.
 
 ## References and Citations
