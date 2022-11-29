@@ -1,6 +1,6 @@
 # DatAnalyzer
 Tools to load, visualize, and analyse data using MATLAB.  
-_Please notice, that this readme is currently under developement!_
+_Please notice, that this readme is currently under development!_
 
 The main philosophy of this program is to provide flexible, customizable semi-autonomous data analysis tools. Idea is, that all functionalities can be used either through GUI (DatAnalyzer App) or through MATLAB's command line (or scripts). The meaning of semi-autonomous here is that DatAnalyzer provides _i_) quite good automatic settings, for example to detect most of the peaks from large data-sets, and _ii_) flexible tools to manually modify these found peaks, for example deleting some incorrect ones or add individual missing peaks.
 
@@ -10,7 +10,7 @@ If using Multichannel Systems devices, this data conversion to .h5 files can be 
 
 Snapshot below shows the opening page of the developed GUI.
 ![DatAnalyzer_GUI](doc_pics/DatAnalyzer_GUI.png)  
-**Figure 1.** Main page of DatAnalyzer.
+**Figure 1.** Main page of DatAnalyzer GUI. Highlighted parts are following: 1) plotting raw data and found peaks, 2) saving and loading, 3) load and process raw data, 4) findling and handling peaks, 5) analysis, 6) plotting final results.
 
 
 ## Installation
@@ -73,6 +73,28 @@ During process, if will be asked "_Want to plot every 10th data?_". If chosen ye
 ![Plotting_every_10th](doc_pics/plotting_every_10th_process.png)
 **Tutorial Figure 2.** Demonstration what data will be plotted if answere Yes to Plot fig question.
 
+## Data exploration and plotting
+Before finding peaks for further analysis, it is typically useful to manually check loaded data. The main parts are presented in Tutorial Figure 3.
+
+![Plotting tools presented](doc_pics/plotting_tools.png)
+**Tutorial Figure 3.** Plotting tools for data exploration: 1) choosing file numbers and data columns (electodes); if field `Datacolumns` is set to _All_, all columns will be plotted, but this can be changed by clicking _choose_, and writing wanted data column number(s) to appeared _columns_ field as shown in the inspect; 2) choosing, how chosen data are plotted, e.g. in separate or same figure. Examples will be given below; 3) choosing plot parameters (figure size and are found peaks included) and plotting data.
+
+Next, some examples of how data can be plotted are given using options presented in part 2) in Tutorial Figure 3. Figures are using files numbered 1, 50, and 129 (last one), and all data columns, which is four different electrodes in this example. Notice, that in the following figures, the figure size is set to MATLAB's default size as highlighted in Tutorial Figure 4.
+
+![Example raw plot1](doc_pics/plot_raw_example1.png)
+**Tutorial Figure 4.** Example raw plot#1: when neither data columns or data files to same are not checked, three separate 2x2 subplots are plotted.
+
+![Example raw plot2](doc_pics/plot_raw_example2.png)
+**Tutorial Figure 5.** Example raw plot#2: when data columns to same are checked, three separate figures without subplots are plotted; each plot includes all four electode data separated by colors.
+
+![Example raw plot3](doc_pics/plot_raw_example3.png)
+**Tutorial Figure 6.** Example raw plot#3: when both data columns and files to same are checked, only one figure including all 12 data (3*4) are plotted.
+
+
+
+
+
+
 ## Future improvements
 **Currently under development**
 - [ ] Provide link to example data and write tutorial
@@ -86,6 +108,6 @@ During process, if will be asked "_Want to plot every 10th data?_". If chosen ye
 - [ ] Calculate and visualize signal propagation (for MEA files)
 - [ ] More interactive GUI, e.g. user could
   - [ ] delete or add peaks by clicking mouse
-  - [ ] crop data by mouse for partial data analysis, e.g. only consider time between 10 and 15 sec in 1 minute long recording
-- [ ] More options for data filtering 
-- [ ] Architechtural change enabling better data analysis
+  - [ ] crop data by mouse for partial data analysis, e.g. only consider time between 10 and 15 sec in a minute-long recording
+- [ ] More data filtering options
+- [ ] Architectural change enabling better data analysis
