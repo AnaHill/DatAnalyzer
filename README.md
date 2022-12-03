@@ -89,7 +89,12 @@ Next, some examples of how data can be plotted are given using options presented
 ![Example raw plot3](doc_pics/plot_raw_example3.png)
 **Tutorial Figure 6.** Example raw plot#3: when both data columns and files to same are checked, only one figure including all 12 data (3*4) is plotted.
 
-With the tools presented above, you can estimate what would be 
+With the tools presented above, you can estimate what would be good rules to find the peaks. This will be explained in next section.
+
+### Find peaks
+
+
+### Analyze peaks
 
 
 
