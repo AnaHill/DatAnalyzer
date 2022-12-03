@@ -59,10 +59,9 @@ Go to _Load & process data_ tab to load data, where you can fill the following f
 - `measurement name`: MEA21002b (used to separate parallel experiments belonging to same experiment)
 - `measurement date`: 2020_03_02 (starting day of the experiment) 
 
-In addition, so-called "good MEA electrodes" were chosen beforehand to reduce the amount of data loaded. In this example, MEA electrodes 21, 28, 31, and 51 had a reasonable beating and were chosen for further analysis.
-(_Notice: currently, choose of the "good" electrodes is a manual process, which can be done in MATLAB or any other software. So-called "good data recommender" have been developed separately but it had not yet been implemented in DatAnalyzer._)
+In addition, so-called "good MEA electrodes" were chosen beforehand to reduce the amount of data loaded. In this example, MEA electrodes 21, 28, 31, and 51 had a reasonable beating and were chosen for further analysis. _MEA Layout_ field, showed in Tutorial Figure 1, is now empty as a default electrode layout, Multichannels 60-MEA, is used. In case of other layout, you should load text file that has similar structure than file `mea_layouts\MEA_64_electrode_layout.txt`: first column indicates electode number, second _index_ points colummn in the raw data. Please also notice that currently, choose of the "good" electrodes is a manual process, which can be done in MATLAB or any other software beforehand. So-called automatical "good data recommender" have been developed separately but it had not yet been implemented in DatAnalyzer.
 
-After these fields are filled, click _Read raw data_ button as shown in Tutorial Figure 1. For the start, choose folder where your data is located. During loading process, DatAnalyzer will ask several questions. Firstly, it asks that are all found data (files) or only some used. This can be used to pick only certain data files from the chosen folder. If you click _Choose_, you can pick which files are loaded as shown in the following figure (4b). Then, loading of raw data files is started, and finally, there should be two variables, Data and DataInfo, on the Workspace.
+After the fields are filled, click _Read raw data_ button as shown in Tutorial Figure 1. For the start, choose folder where your data is located. During loading process, DatAnalyzer will ask several questions. Firstly, it asks that are all found data (files) or only some used. This can be used to pick only certain data files from the chosen folder. If you click _Choose_, you can pick which files are loaded as shown in the following figure (4b). Then, loading of raw data files is started, and finally, there should be two variables, Data and DataInfo, on the Workspace.
 
 
 ![loading_example_data](doc_pics/load_raw_data_process.png)
@@ -88,9 +87,9 @@ Next, some examples of how data can be plotted are given using options presented
 **Tutorial Figure 5.** Example raw plot#2: when data columns to same are checked, three separate figures without subplots are plotted; each plot includes all four electode data separated by colors.
 
 ![Example raw plot3](doc_pics/plot_raw_example3.png)
-**Tutorial Figure 6.** Example raw plot#3: when both data columns and files to same are checked, only one figure including all 12 data (3*4) are plotted.
+**Tutorial Figure 6.** Example raw plot#3: when both data columns and files to same are checked, only one figure including all 12 data (3*4) is plotted.
 
-
+With the tools presented above, you can estimate what would be 
 
 
 
