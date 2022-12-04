@@ -97,7 +97,7 @@ This part involves includes the most of the required manual work in the whole an
 2) find/add invidual missing peaks on specific locations (file, datacolumn, time range)
 3) remove specific, typically incorrect, peaks
 
-To demonstrate above statements, we will first find low peaks from each data file. Looking raw data that was presented in the previous section, we estimated that minimum peak amplitude could be set to 5e-5 (V, i.e. 50 µV), and max beating frequency Max BPM to 40 beats-per-minute as shown in Tutorial Figure 7. With these parameters, we will find quite many correct peaks, however, some manual tuning is needed as will be presented.
+To demonstrate above statements, we will first find low peaks from each data file. Looking raw data that was presented in the previous section, we estimated that minimum peak amplitude could be set to 5e-5 (V, i.e. 50 µV), and max beating frequency Max BPM to 40 beats-per-minute as shown in Tutorial Figure 7. With these parameters, we will find quite many correct peaks, however, some manual tuning is needed as will be presented next in this section.
 
 ![Example peak find plot1](doc_pics/find_peaks_1.png)
 **Tutorial Figure 7.** Finding peaks: intial run to batch all signals. Properties are set in 1), where filenums, data columns, and peak rules are set. Peak finding is started with find_peaks_with_rules button. After processed, Data_BPM variable should be created on MATLAB Workspace as shown in 2). Next, in 3) six different files (file numbers 1, 31, 61, 91, 121, and 129) are plotted. 
