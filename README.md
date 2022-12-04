@@ -87,11 +87,24 @@ Next, some examples of how data can be plotted are given using options presented
 **Tutorial Figure 5.** Example raw plot#2: when data columns to same are checked, three separate figures without subplots are plotted; each plot includes all four electode data separated by colors.
 
 ![Example raw plot3](doc_pics/plot_raw_example3.png)
-**Tutorial Figure 6.** Example raw plot#3: when both data columns and files to same are checked, only one figure including all 12 data (3*4) is plotted.
+**Tutorial Figure 6.** Example raw plot#3: when both data columns and files to same are checked, only one figure including all 12 signals (3 files * 4 electrodes) is plotted.
 
 With the tools presented above, you can estimate what would be good rules to find the peaks. This will be explained in next section.
 
 ### Find peaks
+This part involves includes the most of the required manual work in the whole analysis process. I strongly believe, that it is very difficult, if not even impossible, to totally automatize this step so that it would handle all the possible field potential signals. This is because signal amplitudes, frequencies, signal-to-noise ratios, and signal forms varies greatly between different measurements, electrodes, used hardware set-up. (e.g. used amplifier), and so on. More correctly each individual peak is defined will improve the following analysis. Therefore, DatAnalyzer is designed to take the following semi-autonomous approach so that the user can easily:
+1) find peaks in batch mode from all the files and datacolumns (i.e. electrodes), or only find peaks for specific data files and/or data colummns addressed by the user
+2) find/add invidual missing peaks on specific locations (file, datacolumn, time range)
+3) remove specific, typically incorrect, peaks
+
+To demonstrate above statements, we will first find low peaks from each data file. Looking raw data that was presented in the previous section, we estimated that minimum peak amplitude could be set to 5e-5 (V, i.e. 50 µV), and max beating frequency Max BPM to 40 beats-per-minute as shown in Tutorial Figure 7. This will automatically 
+
+![Example peak find plot1](doc_pics/find_peaks_1.png)
+**Tutorial Figure 7.** Finding peaks: intial run to batch all signals. Properties are set in 1), where filenums, data columns, and peak rules are set. Peak finding is started with find_peaks_with_rules button. After processed, Data_BPM variable should be created on MATLAB Workspace as shown in 2). Next, in 3) six different files (file numbers 1, 31, 61, 91, 121, and 129) are plotted. These figures are discussed in more detail in the following figures. 
+
+
+![Example peak find plot2](doc_pics/find_peaks_2.png)
+**Tutorial Figure 8.** .
 
 
 ### Analyze peaks
