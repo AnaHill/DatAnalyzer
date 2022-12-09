@@ -34,8 +34,9 @@ Add your folder (_with subfolder_!) to MATLAB's path (see snapshot below): Home 
 DatAnalyzer has been developed at Tampere University (TAU) in [Micro- and Nanosystems Research Group](https://research.tuni.fi/mst/) (MST) lead by professor Pasi Kallio. 
 It has partly developed during the collaboration project between MST and TAU's [Heart Group](https://research.tuni.fi/heart-group/) lead by professor Katriina Aalto-Setälä. 
 
-If you find DatAnalyzer useful, please consider citing following paper
-> Häkli, M., Kreutzer, J., Mäki, A.-J., Välimäki, H., Lappi, H., Huhtala, H., Kallio, P., Aalto-Setälä, K., & Pekkanen-Mattila, M. (2021). Human induced pluripotent stem cell-based platform for modeling cardiac ischemia. Scientific Reports, 11(1), 4153. https://doi.org/10.1038/s41598-021-83740-w
+If you find DatAnalyzer useful, please consider citing following papers
+> - Häkli, M., Kreutzer, J., Mäki, A.-J., Välimäki, H., Lappi, H., Huhtala, H., Kallio, P., Aalto-Setälä, K., & Pekkanen-Mattila, M. (2021). Human induced pluripotent stem cell-based platform for modeling cardiac ischemia. _Scientific Reports_, 11(1), 4153. https://doi.org/10.1038/s41598-021-83740-w
+> - Häkli, M _et al_. (2022). Electrophysiological changes of human induced pluripotent stem cell-derived cardiomyocytes during acute hypoxia and reoxygenation. _Stem Cells International_ (Accepted).
 
 ## Code structure
 - TBA
