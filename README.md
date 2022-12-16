@@ -109,14 +109,18 @@ To demonstrate above statements, we will first find low peaks from each data fil
 ![Example peak find plot2](doc_pics/find_peaks_2.png)
 **Tutorial Figure 8.** Example plot (data file number 31) showing raw signal with found peaks.
 
-![Example peak find plot2](doc_pics/find_peaks_3.png)
+![Example peak find plot3](doc_pics/find_peaks_3.png)
 **Tutorial Figure 9.** Example plot (data file number 1) where one peak was not originally found as highlighted in 1) and 2). This peak can be found using GUI as demonstrated in 3): finding local maxima (in absolut term) on proper time range.
 
 
 ### Analyze peaks
+Peak analysis can be performed after peaks are correctly found. This is demonstrated in Tutorial Figure 9, which shows steps to create variables `Data_BPM_summary`, `DataPeaks`, `DataPeaks_mean`, and finally `DataPeaks_summary`. After that, using `Plot DataPeaks_summary` found in _Plotting_ tab can be used to plot the final results.
 
+![Analysis plot1](doc_pics/analysis_1.png)
+**Tutorial Figure 9.** Signal analysis: highlighting buttons that are used to create 1) `Data_BPM_summary` , 2) `DataPeaks`, 3) `DataPeaks_mean`, and 4) `DataPeaks_summary`.
 
-
+![Analysis plot2](doc_pics/analysis_2.png)
+**Tutorial Figure 10.** Plotting `DataPeaks_summary` to summarize beating rate (BPM), signal amplitude (mV), and corrected field potential duration (FPDc) on one figure.
 
 ## Future improvements
 **Currently under development**
