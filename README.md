@@ -2,7 +2,8 @@
 Tools to load, visualize, and analyse data using MATLAB.  
 _Please notice, that this readme is currently under development!_
 
-The main philosophy of this program is to provide flexible, customizable semi-autonomous data analysis tools. Idea is, that all functionalities can be used either through GUI (DatAnalyzer App) or through MATLAB's command line (or scripts). The meaning of semi-autonomous here is that DatAnalyzer provides _i_) quite good automatic settings, for example to detect most of the peaks from large data-sets, and _ii_) flexible tools to manually modify these found peaks, for example deleting some incorrect ones or add individual missing peaks.
+The main philosophy of this program is to provide flexible, customizable semi-autonomous data analysis tools. Idea is, that all functionalities can be used either through GUI (DatAnalyzer App) or through MATLAB's command line (or scripts). The meaning of semi-autonomous here is that DatAnalyzer provides _i_) quite good automatic settings, for example to detect most of the peaks from large data-sets, and _ii_) flexible tools to manually modify these found peaks, for example deleting some incorrect ones or add individual missing peaks. More detaila are given in a following paper: 
+> - Mäki, A.-J. (2023). Opinion: The correct way to analyze FP signals. Zenodo. https://doi.org/10.5281/zenodo.10205591
 
 **Notice: currently, DatAnalyzer works best with MEA .h5 files**  
 Before MEA data can be viewed or analyzed, measurement files must be converted to HDF5 (.h5) files. 
@@ -35,6 +36,7 @@ DatAnalyzer has been developed at Tampere University (TAU) in [Micro- and Nanosy
 It has partly developed during the collaboration project between MST and TAU's [Heart Group](https://research.tuni.fi/heart-group/) lead by professor Katriina Aalto-Setälä. 
 
 If you find DatAnalyzer useful, please consider citing following papers
+> - Mäki, A.-J. (2023). Opinion: The correct way to analyze FP signals. Zenodo. https://doi.org/10.5281/zenodo.10205591
 > - Häkli, M., Kreutzer, J., Mäki, A.-J., Välimäki, H., Lappi, H., Huhtala, H., Kallio, P., Aalto-Setälä, K., & Pekkanen-Mattila, M. (2021). Human induced pluripotent stem cell-based platform for modeling cardiac ischemia. _Scientific Reports_, Vol. 11(1), 4153. https://doi.org/10.1038/s41598-021-83740-w
 > - Häkli, M., Kreutzer, J., Mäki, A.-J., Välimäki, H., Cherian, R.M., Kallio, P., Aalto-Setälä, K. & Pekkanen-Mattila, M. (2022). Electrophysiological changes of human-induced pluripotent stem cell-derived cardiomyocytes during acute hypoxia and reoxygenation. _Stem Cells International_, Vol. 2022, 9438281. https://doi.org/10.1155/2022/9438281 
 
