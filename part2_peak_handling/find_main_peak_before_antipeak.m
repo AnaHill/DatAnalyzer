@@ -118,7 +118,8 @@ for pp = 1:length(file_index)
         end
         
     end
-    remove_other_variables_than_needed
+    % TODO: kumpi oikea?! nyt kommentointu funktio pois 25.9.2023
+%     remove_other_variables_than_needed
     clearvars -except ...
         Data DataInfo Data_BPM Data_BPM_summary ...
         Data_o2 DataPeaks DataPeaks_mean DataPeaks_mean_summary...
