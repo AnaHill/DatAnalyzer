@@ -1,8 +1,11 @@
 # DatAnalyzer
 Tools to load, visualize, and analyse data using MATLAB.  
-_Please notice, that this readme is currently under development!_
 
-The main philosophy of this program is to provide flexible, customizable semi-autonomous data analysis tools. Idea is, that all functionalities can be used either through GUI (DatAnalyzer App) or through MATLAB's command line (or scripts). The meaning of semi-autonomous here is that DatAnalyzer provides _i_) quite good automatic settings, for example to detect most of the peaks from large data-sets, and _ii_) flexible tools to manually modify these found peaks, for example deleting some incorrect ones or add individual missing peaks. More details are given in the following paper; if you find DatAnalyzer useful, please consider citing this: 
+The main philosophy of this program is to provide flexible, customizable semi-autonomous data analysis tools. Idea is, that all functionalities can be used either through GUI (DatAnalyzer App) or through MATLAB's command line (and/or running scripts). The meaning of semi-autonomous here is that DatAnalyzer provides   
+_i_) good automatic settings to, for example, detect most of the peaks from large data-sets, and  
+_ii_) flexible tools to manually modify these found peaks, for example deleting some incorrect ones or add individual missing peaks.   
+
+More details are given in the following paper; if you find DatAnalyzer useful, please consider citing this: 
 > Mäki, A.-J. (2023). Opinion: The correct way to analyze FP signals. Zenodo. https://doi.org/10.5281/zenodo.10205591
 
 **Notice: currently, DatAnalyzer works best with MEA .h5 files**  
@@ -23,7 +26,7 @@ Installing files either cloning
 git clone https://github.com/AnaHill/DatAnalyzer.git
 ```
 Or choose Code --> Download ZIP --> unzip files to some folder in your computer. Snapshot below highlights these steps.  
-![How to download codes](doc_pics/Download_zip.png)  
+<img src="doc_pics/Download_zip.png" alt="How to download codes" style="width:20%;">
 **Figure 2.** Downloading codes.
 
 Add your folder (_with subfolder_!) to MATLAB's path (see snapshot below): Home tab --> Set Path --> Add with Subfolders  
