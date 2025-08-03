@@ -41,9 +41,195 @@ It has been used at least in the following studies:
 > - Häkli, M. et al. (2021). Human induced pluripotent stem cell-based platform for modeling cardiac ischemia. _Scientific Reports_, Vol. 11(1), 4153. https://doi.org/10.1038/s41598-021-83740-w
 
 ## Code structure
-- TBA
-
-
+```text 
+DatAnalyzer
+│   DatAnalyzer.mlapp
+│   DatAnalyzer_main.m
+│   MEA_data_analysis_main.m
+│   README.md
+│
+├───doc_pics
+│       analysis_1.png
+│       analysis_2.png
+│       Choose_data_files.png
+│       DatAnalyzer_GUI.png
+│       Download_zip.png
+│       find_peaks_1.png
+│       find_peaks_2.png
+│       find_peaks_3.png
+│       load_raw_data_process.png
+│       plotting_every_10th_process.png
+│       plotting_tools.png
+│       plot_raw_example1.png
+│       plot_raw_example2.png
+│       plot_raw_example3.png
+│       question_plotting_every_10th.png
+│       set_matlab_path.png
+│
+├───mea_layouts
+│       MEA_64_electrode_layout.txt
+│
+├───part1_raw_data_handling
+│       choose_files.m
+│       convert_begin_string_in_filename_to_datetime.m
+│       convert_end_string_in_filename_to_datetime.m
+│       create_DataInfo_framerate_using_get_h5info.m
+│       create_DataInfo_start.m
+│       create_Data_and_DataInfo_from_mea_data.m
+│       create_Data_from_h5files.m
+│       create_time_names_for_DataInfo.m
+│       find_MEA_electrode_index.m
+│       find_MEA_electrode_number_from_datacol_index.m
+│       get_Data_and_DataInfo_from_MEA_in_loop.m
+│       get_files.m
+│       get_h5info.m
+│       get_h5_framerate.m
+│       list_files.m
+│       load_raw_mea_data_to_Data_and_DataInfo.m
+│       read_chosen_mea_electrode_data.m
+│       read_h5_to_data.m
+│       read_hypoxia_info.m
+│       read_mea_data_MAIN.m
+│       read_MEA_electrode_layout.m
+│       read_o2_data_to_DataInfo.m
+│       read_raw_mea_file.m
+│       read_wanted_electrodes_of_measurement.m
+│       remove_offset.m
+│       remove_offset_from_single_data_and_update_Data.m
+│       set_experimental_names.m
+│       set_initial_names.m
+│       update_DataInfo.m
+│
+├───part2_peak_handling
+│   │   add_first_peak_from_low_peak_signal.m
+│   │   add_local_max_from_low_peak.m
+│   │   add_max_value_as_high_peak_from_low_peak.m
+│   │   add_min_value_as_low_peak_from_high_peak.m
+│   │   add_peaks_from_other.m
+│   │   add_peak_with_time.m
+│   │   check_peak_distance_from_edges.m
+│   │   define_other_peaks_from_main_peaks.m
+│   │   delete_all_peaks.m
+│   │   delete_peaks_above_value.m
+│   │   delete_peaks_below_value.m
+│   │   delete_peaks_with_peaknumber.m
+│   │   delete_peaks_with_time.m
+│   │   find_main_peak_before_antipeak.m
+│   │   find_peaks_in_loop.m
+│   │   find_peaks_in_loop_from_time_range.m
+│   │   find_peak_start_or_end.m
+│   │   index_peak_numbers_in_time_range.m
+│   │   modify_individual_peak.m
+│   │   run_check_edges.m
+│   │   set_default_filetype_rules_for_peak_finding.m
+│   │   set_signal_type.m
+│   │   trim_peaks_values_and_locations.m
+│   │   update_max_bpm_rule.m
+│   │
+│   └───findpeak_functions_from_others
+│           findpeaksG.m
+│           findpeaksx.m
+│           find_peaks_in_loop_peakfinder.m
+│           gaussfit.m
+│           ipeak.m
+│           peakfinder.m
+│
+├───part3_data_handling_and_analyses
+│       calculate_and_check_fft.m
+│       check_and_plot_irregular_data.m
+│       check_irregular_data.m
+│       create_BPM_summary.m
+│       create_hypoxia_time_names.m
+│       filter_signal_data.m
+│       find_indexes_in_given_time_range.m
+│       include_peak_distance_matrix_to_Data_BPM_summary.m
+│       index_irregular_beating.m
+│       run_hypoxia_info_to_DataInfo.m
+│       set_hypoxia_info_to_DataInfo_with_datetime.m
+│       should_high_peak_data_be_used.m
+│       turn_signal_and_Data_BPM.m
+│       update_Data_BPM.m
+│       update_Data_BPM_peaks_with_low_or_high_peaks.m
+│       update_Data_BPM_single_file.m
+│
+├───part4_datamean_analyses
+│       check_peak_forms.m
+│       fpd1_find_first_peak_and_depolarization_amplitude.m
+│       fpd2_find_fp_start_and_depolarization_time.m
+│       fpd3_find_repolarization_peak.m
+│       fpd4_find_fp_end_and_calculate_fpd.m
+│       fpd_find_low_peaks.m
+│       get_peak_signals.m
+│       get_peak_signal_average.m
+│       plot_signal_average.m
+│       slice_peak_data.m
+│       which_fpd_correction.m
+│
+├───plotting
+│       calculate_subfig_grid.m
+│       cal_subfig_parameters.m
+│       create_datacolumn_text.m
+│       create_experiment_info_text.m
+│       create_figure_with_size.m
+│       delete_certain_lines_from_figure.m
+│       fig_full.m
+│       fig_half.m
+│       limit_y_axes.m
+│       ntitle.m
+│       plotDatainfig.m
+│       plot_chosen_data_files.m
+│       PLOT_datacolumns_from_multiple_files.m
+│       plot_DataMean.m
+│       PLOT_DataOnly.m
+│       PLOT_DataOnly_no_own_figure.m
+│       PLOT_DataWithPeaks.m
+│       PLOT_DataWithPeaks_no_own_fig.m
+│       PLOT_DataWithPeaks_no_own_figure.m
+│       PLOT_Data_and_mp_ap_fp.m
+│       plot_data_to_subplots.m
+│       plot_data_to_subplots_with_layout.m
+│       plot_data_with_linestyle.m
+│       plot_fft.m
+│       plot_files_with_irregular_beating.m
+│       plot_fp_summary.m
+│       plot_hypoxia_line.m
+│       PLOT_multiple_data_with_peaks.m
+│       plot_peak_distance_matrix.m
+│       plot_quick_BPM_summary_plot.m
+│       PLOT_signal_upside_down.m
+│       plot_signal_with_fpd_parameters.m
+│       plot_summary.m
+│       plot_summary_of_irregular_data.m
+│       plot_tdep.m
+│       set_figure_to_half_or_full_screen_size.m
+│       set_sqtitle.m
+│       slice_and_plot_datapeak_signals.m
+│       Summarize_plot_DataPeaks_summary.m
+│       tight_subplot.m
+│
+├───saving
+│       choose_saving_folder.m
+│       choose_saving_name.m
+│       save_data_files.m
+│       save_each_data_in_Data_to_single_mat_files.m
+│
+└───utils
+        calculate_threshold_value.m
+        choose_timep_unit.m
+        convert_indexes_to_sec.m
+        convert_seconds_to_different_time_units.m
+        create_data_and_ylabel_text_for_peak_analysis_plot.m
+        disp_found_peaks.m
+        filter_data.m
+        find_first_index_where_data_reach_threshold.m
+        find_max_or_min.m
+        find_max_or_min_with_lowpass.m
+        find_peak_info.m
+        remove_data_from_DataInfo_variable.m
+        remove_data_from_Data_BPM_variable.m
+        remove_data_from_Data_variable.m
+        remove_other_variables_than_needed.m
+``` 
 ## Example Data and tutorial for DatAnalyzer
 _Notice: Example data used in the tutorial will be available later._ 
 <!-- in[TBA](https://google.com)._ TODO #3:link --> 
