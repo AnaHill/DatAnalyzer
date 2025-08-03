@@ -2,8 +2,8 @@
 Tools to load, visualize, and analyse data using MATLAB.  
 _Please notice, that this readme is currently under development!_
 
-The main philosophy of this program is to provide flexible, customizable semi-autonomous data analysis tools. Idea is, that all functionalities can be used either through GUI (DatAnalyzer App) or through MATLAB's command line (or scripts). The meaning of semi-autonomous here is that DatAnalyzer provides _i_) quite good automatic settings, for example to detect most of the peaks from large data-sets, and _ii_) flexible tools to manually modify these found peaks, for example deleting some incorrect ones or add individual missing peaks. More details are given in the following paper: 
-> - Mäki, A.-J. (2023). Opinion: The correct way to analyze FP signals. Zenodo. https://doi.org/10.5281/zenodo.10205591
+The main philosophy of this program is to provide flexible, customizable semi-autonomous data analysis tools. Idea is, that all functionalities can be used either through GUI (DatAnalyzer App) or through MATLAB's command line (or scripts). The meaning of semi-autonomous here is that DatAnalyzer provides _i_) quite good automatic settings, for example to detect most of the peaks from large data-sets, and _ii_) flexible tools to manually modify these found peaks, for example deleting some incorrect ones or add individual missing peaks. More details are given in the following paper; if you find DatAnalyzer useful, please consider citing this: 
+> Mäki, A.-J. (2023). Opinion: The correct way to analyze FP signals. Zenodo. https://doi.org/10.5281/zenodo.10205591
 
 **Notice: currently, DatAnalyzer works best with MEA .h5 files**  
 Before MEA data can be viewed or analyzed, measurement files must be converted to HDF5 (.h5) files. 
@@ -12,7 +12,6 @@ If using Multichannel Systems devices, this data conversion to .h5 files can be 
 Snapshot below shows the opening page of the developed GUI.
 ![DatAnalyzer_GUI](doc_pics/DatAnalyzer_GUI.png)  
 **Figure 1.** Main page of DatAnalyzer GUI. Highlighted parts are following: 1) plotting raw data and found peaks, 2) saving and loading, 3) load and process raw data, 4) findling and handling peaks, 5) analysis, 6) plotting final results.
-
 
 ## Installation
 Prerequisites for DatAnalyzer
@@ -31,14 +30,15 @@ Add your folder (_with subfolder_!) to MATLAB's path (see snapshot below): Home 
 ![Set path](doc_pics/set_matlab_path.png)  
 **Figure 3.** Setting DatAnalyzer folder for MATLAB path.
 
-## References and Citations
+## Citations
 DatAnalyzer has been developed at Tampere University (TAU) in [Micro- and Nanosystems Research Group](https://research.tuni.fi/mst/) (MST) lead by professor Pasi Kallio. 
 It has partly developed during the collaboration project between MST and TAU's [Heart Group](https://research.tuni.fi/heart-group/) lead by professor Katriina Aalto-Setälä. 
 
-If you find DatAnalyzer useful, please consider citing following papers
+It has been used at least in the following studies: 
 > - Mäki, A.-J. (2023). Opinion: The correct way to analyze FP signals. Zenodo. https://doi.org/10.5281/zenodo.10205591
-> - Häkli, M., Kreutzer, J., Mäki, A.-J., Välimäki, H., Lappi, H., Huhtala, H., Kallio, P., Aalto-Setälä, K., & Pekkanen-Mattila, M. (2021). Human induced pluripotent stem cell-based platform for modeling cardiac ischemia. _Scientific Reports_, Vol. 11(1), 4153. https://doi.org/10.1038/s41598-021-83740-w
-> - Häkli, M., Kreutzer, J., Mäki, A.-J., Välimäki, H., Cherian, R.M., Kallio, P., Aalto-Setälä, K. & Pekkanen-Mattila, M. (2022). Electrophysiological changes of human-induced pluripotent stem cell-derived cardiomyocytes during acute hypoxia and reoxygenation. _Stem Cells International_, Vol. 2022, 9438281. https://doi.org/10.1155/2022/9438281 
+> - Lönnrot, A. et al. (2025). Patient-derived Lamin A/C mutant cardiomyocytes demonstrate altered electrophysiological characteristics and responses to hypoxia induced stress. _Next Research_, Vol. 2(3), 100640. https://doi.org/10.1016/j.nexres.2025.100640
+> - Häkli, M. et al. (2022). Electrophysiological changes of human-induced pluripotent stem cell-derived cardiomyocytes during acute hypoxia and reoxygenation. _Stem Cells International_, Vol. 2022, 9438281. https://doi.org/10.1155/2022/9438281
+> - Häkli, M. et al. (2021). Human induced pluripotent stem cell-based platform for modeling cardiac ischemia. _Scientific Reports_, Vol. 11(1), 4153. https://doi.org/10.1038/s41598-021-83740-w
 
 ## Code structure
 - TBA
